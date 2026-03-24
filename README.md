@@ -1,2 +1,5 @@
-# tech
-Tech support for Heritage on the Marina residents
+# Heritage Happenings Tech Support
+
+[Tech Support Charter]( https://drive.google.com/file/d/1PXpn5lyEV5kNpnaU58Z0nJI2WfoVLj4g/view?usp=drive_link)
+
+resident form with much Much simpler choices, perhaps four out of five

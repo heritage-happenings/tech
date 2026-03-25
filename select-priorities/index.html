@@ -197,7 +197,7 @@
 
     /* ========== Google Sheet Fetcher ========== */
     async function fetchResults() {
-      const url = `https://docs.google.com/spreadsheets/d/${CONFIG.SHEET_ID}/gviz/tq?tqx=out:csv`;
+      const url = `https://docs.google.com/spreadsheets/d/1h2TQvgPPm0FlLEI0f4wierF4NmIBdi_Up6nqMAGVCD0/gviz/tq?tqx=out:csv`;
       const resp = await fetch(url);
       if (!resp.ok) throw new Error('Could not fetch sheet');
       const text = await resp.text();

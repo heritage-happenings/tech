@@ -1,96 +1,196 @@
-# Tech Support Priorities — Setup Guide
+# Setup Guide: Saving Survey Responses to Google Sheets
 
-This voting app runs entirely on GitHub Pages and uses a **Google Form** to collect votes and a **published Google Sheet** to display results. No server needed.
+This takes about 5 minutes. You'll create a Google Sheet, add a small script to it, and paste one URL into `index.html`. No server needed.
 
 ---
 
-## Step 1: Create the Google Form
+## Step 1 — Create the Google Sheet
 
-1. Go to [Google Forms](https://docs.google.com/forms/) and create a new blank form.
-2. Add **exactly 3 questions** in this order:
+1. Go to [Google Sheets](https://sheets.google.com) and create a new blank spreadsheet.
+2. Name it something like **Tech Support Survey Responses**.
+3. In **Row 1**, add these column headers:
 
-   | # | Question title | Type          |
-   |---|---------------|---------------|
-   | 1 | Name          | Short answer  |
-   | 2 | Picks         | Short answer  |
-   | 3 | Suggestions   | Short answer  |
+| A | B | C | D |
+|---|---|---|---|
+| **Timestamp** | **Name** | **Picks** | **Custom Suggestions** |
 
-3. The "Picks" field will receive a JSON array of topic IDs (the app fills this in automatically).
-4. The "Suggestions" field will receive any write-in suggestions.
+4. (Optional) Rename the sheet tab at the bottom to `Responses`.
 
-## Step 2: Get the Form Entry IDs
+---
 
-1. Open your Google Form and click the **three-dot menu → Get pre-filled link**.
-2. Type a placeholder word in each field (e.g., "test1", "test2", "test3") and click **Get link**.
-3. The URL will look like:
-   ```
-   https://docs.google.com/forms/d/e/FORM_ID/viewform?usp=pp_url&entry.111111=test1&entry.222222=test2&entry.333333=test3
-   ```
-4. Write down:
-   - **FORM_ID**: the long string after `/e/` and before `/viewform`
-   - **entry.111111**: the entry ID for Name
-   - **entry.222222**: the entry ID for Picks
-   - **entry.333333**: the entry ID for Suggestions
+## Step 2 — Add the Apps Script
 
-## Step 3: Create the Response Spreadsheet
+1. In your spreadsheet, go to **Extensions → Apps Script**.
+2. Delete any code already in the editor.
+3. Paste in this entire script:
 
-1. In your Google Form, click the **Responses** tab.
-2. Click the green Sheets icon to create a linked spreadsheet.
-3. Open that spreadsheet. Copy its **SHEET_ID** from the URL:
-   ```
-   https://docs.google.com/spreadsheets/d/SHEET_ID/edit
-   ```
-4. Make the sheet viewable: **Share → "Anyone with the link" → Viewer**.
+```javascript
+// ── Handle incoming survey submissions (POST) ──
+function doPost(e) {
+  try {
+    var data = JSON.parse(e.postData.contents);
+    var sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
 
-## Step 4: Configure the App
+    var timestamp = data.timestamp || new Date().toISOString();
+    var name      = data.name || 'Anonymous';
+    var picks     = (data.picks || []).join(' || ');
+    var custom    = (data.customSuggestions || []).join(' || ');
 
-Open `index.html` and find the `CONFIG` object near the top of the `<script>` block:
+    sheet.appendRow([timestamp, name, picks, custom]);
 
-```js
-const CONFIG = {
-  FORM_ID:      "YOUR_FORM_ID_HERE",
-  ENTRY_NAME:   "entry.XXXXXXX",
-  ENTRY_PICKS:  "entry.XXXXXXX",
-  ENTRY_CUSTOM: "entry.XXXXXXX",
-  SHEET_ID:     "YOUR_SHEET_ID_HERE",
-};
+    return ContentService
+      .createTextOutput(JSON.stringify({ status: 'ok' }))
+      .setMimeType(ContentService.MimeType.JSON);
+  } catch (err) {
+    return ContentService
+      .createTextOutput(JSON.stringify({ status: 'error', message: err.toString() }))
+      .setMimeType(ContentService.MimeType.JSON);
+  }
+}
+
+// ── Return aggregated results (GET) ──
+function doGet(e) {
+  try {
+    var sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+    var rows  = sheet.getDataRange().getValues();
+
+    // Skip header row
+    var dataRows = rows.slice(1).filter(function(row) {
+      return row[0] !== '' && row[0] !== null;
+    });
+
+    var totalResponses = dataRows.length;
+    var topicCounts = {};
+    var customSuggestions = [];
+
+    dataRows.forEach(function(row) {
+      var name   = row[1] || 'Anonymous';
+      var picks  = (row[2] || '').toString();
+      var custom = (row[3] || '').toString();
+
+      // Count each pick
+      if (picks) {
+        picks.split(' || ').forEach(function(topic) {
+          var t = topic.trim();
+          if (t) {
+            topicCounts[t] = (topicCounts[t] || 0) + 1;
+          }
+        });
+      }
+
+      // Collect custom suggestions
+      if (custom) {
+        custom.split(' || ').forEach(function(suggestion) {
+          var s = suggestion.trim();
+          if (s) {
+            customSuggestions.push({
+              topic: s,
+              submittedBy: name
+            });
+          }
+        });
+      }
+    });
+
+    var result = {
+      totalResponses: totalResponses,
+      topicCounts: topicCounts,
+      customSuggestions: customSuggestions
+    };
+
+    return ContentService
+      .createTextOutput(JSON.stringify(result))
+      .setMimeType(ContentService.MimeType.JSON);
+  } catch (err) {
+    return ContentService
+      .createTextOutput(JSON.stringify({ error: err.toString() }))
+      .setMimeType(ContentService.MimeType.JSON);
+  }
+}
 ```
 
-Replace the Form values with the IDs you collected above.
+4. Click the **Save** icon (or Ctrl+S / Cmd+S).
+5. Name the project something like "Survey Handler".
 
-For `SHEET_ID`, use the ID from your spreadsheet's **edit URL**:
+---
+
+## Step 3 — Deploy as a Web App
+
+1. Click **Deploy → New deployment**.
+2. Click the gear icon next to "Select type" and choose **Web app**.
+3. Set these options:
+   - **Description:** Survey endpoint
+   - **Execute as:** Me
+   - **Who has access:** **Anyone**
+4. Click **Deploy**.
+5. If prompted, authorize the script (it needs permission to write to your sheet).
+6. **Copy the Web app URL** — it looks like:
+   ```
+   https://script.google.com/macros/s/AKfycbx.../exec
+   ```
+
+---
+
+## Step 4 — Paste the URL into index.html
+
+Open `index.html` and find this line near the top of the `<script>` block:
+
+```javascript
+const APPS_SCRIPT_URL = '';
 ```
-https://docs.google.com/spreadsheets/d/THIS_PART_HERE/edit
+
+Paste your URL between the quotes:
+
+```javascript
+const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbx.../exec';
 ```
 
-⚠️ **Do NOT use the `2PACX-...` published ID** — that one appears in the "Publish to web" link but doesn't support cross-origin requests from JavaScript.
+Save the file. Done!
 
-**Important:** The spreadsheet must be shared so **"Anyone with the link"** can view it. (Go to Share → General access → "Anyone with the link" → Viewer.)
+---
 
-## Step 5: Deploy to GitHub Pages
+## Step 5 — Test It
 
-1. Commit `index.html` (and optionally this README) to your repo.
-2. Push to GitHub.
-3. Go to **Settings → Pages** in your repo.
-4. Set the source to your branch (e.g., `main`) and folder (`/ (root)`).
-5. Your app will be live at `https://YOUR_USERNAME.github.io/YOUR_REPO/`.
+1. Open `index.html` in a browser (locally or on GitHub Pages).
+2. Pick a few topics, enter a name, and click **Submit My Picks**.
+3. Check your Google Sheet — a new row should appear within a few seconds.
+4. Click **View Results** in the header — you should see a bar chart of all submissions.
+
+You can also link directly to the results view:
+```
+https://yoursite.github.io/#results
+```
 
 ---
 
 ## How It Works
 
-| Action       | Mechanism                                                                  |
-|--------------|----------------------------------------------------------------------------|
-| **Submit**   | POST to Google Form (`/formResponse`) in no-cors mode                      |
-| **Read**     | Fetch Google Visualization API JSON (`/gviz/tq`), parse and tally client-side |
+**Submitting (POST):**
+- The survey page sends a `POST` with JSON to your Apps Script.
+- The script appends a row: timestamp, name, comma-separated picks, comma-separated custom suggestions.
+- We use `mode: 'no-cors'` because Apps Script doesn't support CORS preflight for POST. The data still arrives; we just can't read the response.
 
-- Each vote is one row: `[Timestamp, Name, Picks JSON, Suggestions]`
-- The results page fetches via Google's Visualization API (which supports CORS), parses the JSON, and tallies everything live.
-- Multiple people can vote; each submission adds a new row.
+**Viewing results (GET):**
+- The results page sends a `GET` request to the same URL.
+- The `doGet` function reads all rows, tallies votes per topic, collects custom suggestions, and returns JSON.
+- The page renders a horizontal bar chart sorted by popularity, plus stats and write-in ideas.
 
-## Notes
+---
 
-- **No login required** for voters — anyone with the link can vote.
-- **Results are public** via the published sheet. Keep the sheet URL internal if you want privacy.
-- If a person votes again, both votes are recorded (you can de-duplicate manually in the sheet).
-- The Google Form will also collect a timestamp automatically.
+## Updating the Script Later
+
+If you change the script code, you must create a **new deployment** (Deploy → New deployment) to get a fresh URL, then update `APPS_SCRIPT_URL` in `index.html`. Editing code alone doesn't update a live deployment.
+
+---
+
+## Troubleshooting
+
+| Problem | Fix |
+|---|---|
+| Submit does nothing | Check browser console (F12). Most likely the URL is wrong or empty. |
+| "Setup needed" banner | You haven't pasted the URL into `APPS_SCRIPT_URL` yet. |
+| Data not appearing | Make sure script is deployed with **Anyone** access. Re-deploy if unsure. |
+| Results won't load | Make sure you deployed the version with **both** `doPost` and `doGet`. A deployment made before adding `doGet` won't have it — create a new deployment. |
+| Authorization popup | Click "Advanced" → "Go to [project name] (unsafe)" → Allow. Google warns because the script isn't verified, but it's your own code. |
+| CORS error on results | This usually means the URL is wrong or the deployment access isn't set to "Anyone". |
+| Old rows show split topics | Data submitted before this version used commas as delimiters. Either re-enter those rows or find-and-replace `, ` with ` \|\| ` in columns C and D of your sheet. |

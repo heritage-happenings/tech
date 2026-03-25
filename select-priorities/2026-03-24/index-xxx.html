@@ -1,0 +1,727 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tech Support Priorities — Vote</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;0,700;1,400&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+  <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+  <script crossorigin src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --cream: #faf6f1;
+      --warm-white: #fefcf9;
+      --sand: #f0e8dd;
+      --clay: #e3d5c4;
+      --bark: #8b7355;
+      --espresso: #3d2e1f;
+      --ink: #2c1810;
+      --rust: #b85c38;
+      --rust-light: #d4845e;
+      --rust-glow: #f5ded1;
+      --sage: #5a7a60;
+      --sage-light: #d4e4d6;
+      --slate: #5a6570;
+      --mist: #e8ecef;
+    }
+
+    html { font-size: 16px; }
+
+    body {
+      font-family: 'DM Sans', 'Segoe UI', system-ui, sans-serif;
+      background: var(--cream);
+      color: var(--espresso);
+      line-height: 1.6;
+      min-height: 100vh;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background:
+        radial-gradient(ellipse at 20% 0%, rgba(184,92,56,0.06) 0%, transparent 60%),
+        radial-gradient(ellipse at 80% 100%, rgba(90,122,96,0.05) 0%, transparent 50%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    #root { position: relative; z-index: 1; }
+
+    ::selection { background: var(--rust-glow); color: var(--ink); }
+
+    input:focus { border-color: var(--rust) !important; box-shadow: 0 0 0 3px rgba(184,92,56,0.15); outline: none; }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(16px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes scaleIn {
+      from { opacity: 0; transform: scale(0.95); }
+      to { opacity: 1; transform: scale(1); }
+    }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+
+  <script type="text/babel">
+    const { useState, useEffect, useCallback } = React;
+
+    /* =========================================================
+       CONFIGURATION — Fill these in from your Google Form/Sheet
+       See SETUP.md for step-by-step instructions.
+       ========================================================= */
+    const CONFIG = {
+      // Google Form
+      FORM_ID: "1FAIpQLSdoTZqXRbzaGRA7F1JtUdqRhlgYOepodO9cTv1VsOje00wVsg",
+      ENTRY_NAME: "entry.1620429122",
+      ENTRY_PICKS: "entry.1191333837",
+      ENTRY_CUSTOM: "entry.490937696",
+      
+      // Google Sheet — use the spreadsheet ID from the /edit URL:
+      //   https://docs.google.com/spreadsheets/d/THIS_PART/edit
+      // NOT the "2PACX-..." published ID — that one doesn't support CORS.
+      SHEET_ID:     "1h2TQvgPPm0FlLEI0f4wierF4NmIBdi_Up6nqMAGVCD0",
+    };
+
+    const isConfigured = !CONFIG.FORM_ID.includes("YOUR_")
+      && !CONFIG.SHEET_ID.includes("YOUR_");
+
+    /* ========== Topic Data ========== */
+    const TOPICS = {
+      "Hardware": {
+        "Computers": ["Laptops", "Desktops", "Peripherals (keyboards, mice, monitors)"],
+        "Printing Devices": [],
+        "Mobile Devices": ["Smartphones", "Tablets"],
+        "Internet Connectivity": ["Wi-Fi setup and troubleshooting", "Modem/router configuration"],
+        "Entertainment Systems": ["Smart TVs", "Streaming devices (Roku, Apple TV, etc.)", "Audio systems (speakers, headphones)"],
+        "Assistive Technology": ["Hearing aids", "Screen readers", "Mobility devices (wheelchairs, scooters)"],
+        "Home Automation": ["Smart home devices (thermostats, lights, security systems)"],
+        "Wearable Technology": ["Fitness trackers", "Smartwatches", "Virtual Reality (VR) headsets"],
+      },
+      "Software": {
+        "Operating Systems": ["Windows", "MacOS", "Linux"],
+        "Mobile OS": ["iOS", "Android"],
+        "Productivity Software": ["Microsoft Office", "Google Workspace", "Email clients (Outlook, Gmail)"],
+        "Communication Tools": ["Video conferencing (Zoom, Skype, FaceTime)", "Messaging apps (WhatsApp, Messenger)"],
+        "Social Media Platforms": ["Facebook", "Twitter", "Instagram"],
+        "Online Services": ["Online banking", "E-commerce platforms (Amazon, eBay)", "Government services (social security, healthcare portals)"],
+        "Entertainment Software": ["Streaming services (Netflix, Hulu)", "Music platforms (Spotify, Apple Music)"],
+        "Educational Resources": ["Online courses (Coursera, Udemy)", "E-books and audiobooks"],
+        "Security Software": ["Antivirus programs", "Password managers", "VPN services"],
+        "Accessibility Software": ["Screen magnifiers", "Voice recognition software", "Text-to-speech applications"],
+        "Software Updates & Maintenance": ["Regular updates", "Troubleshooting common software issues"],
+        "Data Management": ["Cloud storage solutions (Google Drive, Dropbox)", "Backup strategies", "File organization and management"],
+        "Digital Literacy": ["Basic computer skills", "Internet safety and privacy", "Recognizing and avoiding scams and phishing"],
+        "Customizing User Experience": ["Personalizing settings and preferences", "Accessibility features", "Using assistive technologies effectively"],
+      }
+    };
+
+    const SECTION_ICONS = { "Hardware": "🔧", "Software": "💻" };
+    const MAX_PICKS = 10;
+
+    function getAllItems() {
+      const items = [];
+      for (const [section, categories] of Object.entries(TOPICS)) {
+        for (const [category, subs] of Object.entries(categories)) {
+          if (subs.length === 0) {
+            items.push({ section, category, item: category, id: `${section}::${category}` });
+          } else {
+            for (const sub of subs) {
+              items.push({ section, category, item: sub, id: `${section}::${category}::${sub}` });
+            }
+          }
+        }
+      }
+      return items;
+    }
+
+    const ALL_ITEMS = getAllItems();
+
+    /* ========== Google Form Submission ========== */
+    async function submitToForm(name, picks, customSuggestions) {
+      const url = `https://docs.google.com/forms/d/e/${CONFIG.FORM_ID}/formResponse`;
+      const body = new URLSearchParams();
+      body.append(CONFIG.ENTRY_NAME, name);
+      body.append(CONFIG.ENTRY_PICKS, JSON.stringify(picks));
+      body.append(CONFIG.ENTRY_CUSTOM, customSuggestions);
+
+      await fetch(url, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: body.toString(),
+      });
+    }
+
+    /* ========== Google Sheet Fetcher ========== */
+    async function fetchResults() {
+      // The gviz/tq JSON endpoint supports CORS when the sheet is shared "Anyone with the link"
+      const url = `https://docs.google.com/spreadsheets/d/${CONFIG.SHEET_ID}/gviz/tq?tqx=out:json`;
+      const resp = await fetch(url);
+      if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
+      const raw = await resp.text();
+
+      // Response is: /*O_o*/\ngoogle.visualization.Query.setResponse({...});
+      // Extract the JSON object
+      const match = raw.match(/setResponse\(([\s\S]+)\);?\s*$/);
+      if (!match) throw new Error('Unexpected response format');
+      const data = JSON.parse(match[1]);
+
+      if (!data.table || !data.table.rows) return { voters: [], tally: {} };
+
+      const cols = data.table.cols;   // [{label, type}, ...]
+      const rows = data.table.rows;   // [{c: [{v: ...}, ...]}, ...]
+
+      const voters = [];
+      const tally = {};
+      ALL_ITEMS.forEach(i => { tally[i.id] = { ...i, count: 0, votedBy: [] }; });
+
+      for (const row of rows) {
+        const cells = row.c || [];
+        // Columns: 0=Timestamp, 1=Name, 2=Picks, 3=Suggestions
+        const voterName = (cells[1] && cells[1].v || '').trim();
+        const picksRaw  = (cells[2] && cells[2].v || '').trim();
+        const sugRaw    = (cells[3] && cells[3].v || '').trim();
+
+        if (!voterName) continue;
+        if (!voters.includes(voterName)) voters.push(voterName);
+
+        let picks = [];
+        try { picks = JSON.parse(picksRaw); } catch { continue; }
+
+        for (const id of picks) {
+          if (tally[id]) {
+            tally[id].count++;
+            tally[id].votedBy.push(voterName);
+          } else if (id.startsWith('custom::')) {
+            tally[id] = {
+              id, section: 'Write-in', category: 'Suggestions',
+              item: id.replace('custom::', ''), count: 1, votedBy: [voterName]
+            };
+          }
+        }
+
+        if (sugRaw) {
+          const customId = `custom::${sugRaw}`;
+          if (!tally[customId]) {
+            tally[customId] = {
+              id: customId, section: 'Write-in', category: 'Suggestions',
+              item: sugRaw, count: 0, votedBy: []
+            };
+          }
+        }
+      }
+
+      return { voters, tally };
+    }
+
+    /* ========== Styles ========== */
+    const S = {
+      container: {
+        maxWidth: 660, margin: '0 auto', padding: '32px 20px 64px',
+      },
+      // Welcome
+      hero: {
+        textAlign: 'center', paddingTop: 20, marginBottom: 36,
+        animation: 'fadeUp 0.6s ease both',
+      },
+      badge: {
+        display: 'inline-block', fontSize: 11, fontWeight: 700,
+        textTransform: 'uppercase', letterSpacing: '0.12em',
+        color: 'var(--rust)', background: 'var(--rust-glow)',
+        padding: '5px 14px', borderRadius: 20, marginBottom: 16,
+      },
+      h1: {
+        fontFamily: "'Lora', 'Georgia', serif",
+        fontSize: 32, fontWeight: 700, color: 'var(--ink)',
+        lineHeight: 1.25, marginBottom: 14, letterSpacing: '-0.01em',
+      },
+      lead: {
+        fontSize: 16, color: 'var(--bark)', maxWidth: 480,
+        margin: '0 auto 12px', lineHeight: 1.65,
+      },
+      highlight: {
+        fontSize: 15, color: 'var(--espresso)',
+        background: 'linear-gradient(to bottom, transparent 55%, var(--rust-glow) 55%)',
+        padding: '0 2px', fontWeight: 600,
+      },
+      // Cards & inputs
+      card: {
+        background: 'var(--warm-white)', border: '1px solid var(--clay)',
+        borderRadius: 14, padding: 28, marginBottom: 20,
+        animation: 'fadeUp 0.5s ease 0.15s both',
+      },
+      label: {
+        display: 'block', fontSize: 13, fontWeight: 600,
+        color: 'var(--bark)', marginBottom: 6,
+        textTransform: 'uppercase', letterSpacing: '0.06em',
+      },
+      input: {
+        width: '100%', padding: '12px 16px', fontSize: 17,
+        fontFamily: "'DM Sans', sans-serif",
+        border: '2px solid var(--clay)', borderRadius: 10,
+        background: 'var(--cream)', color: 'var(--ink)',
+        transition: 'border-color 0.2s, box-shadow 0.2s',
+        marginBottom: 16, outline: 'none',
+      },
+      btn: {
+        display: 'block', width: '100%', padding: '14px 24px',
+        fontSize: 16, fontWeight: 700,
+        fontFamily: "'DM Sans', sans-serif",
+        color: '#fff', background: 'var(--rust)',
+        border: 'none', borderRadius: 10, cursor: 'pointer',
+        transition: 'background 0.2s, transform 0.1s',
+        letterSpacing: '0.01em',
+      },
+      btnDisabled: { background: 'var(--clay)', cursor: 'not-allowed', color: 'var(--bark)' },
+      btnSecondary: {
+        display: 'block', width: '100%', textAlign: 'center',
+        padding: '10px', fontSize: 14, fontWeight: 500,
+        color: 'var(--rust)', background: 'none', border: 'none',
+        cursor: 'pointer', fontFamily: "'DM Sans', sans-serif",
+        marginTop: 10,
+      },
+      smallBtn: {
+        padding: '7px 16px', fontSize: 13, fontWeight: 600,
+        color: 'var(--rust)', background: 'var(--rust-glow)',
+        border: 'none', borderRadius: 8, cursor: 'pointer',
+        fontFamily: "'DM Sans', sans-serif",
+      },
+      // Sticky header
+      sticky: {
+        position: 'sticky', top: 0, zIndex: 10,
+        background: 'rgba(250,246,241,0.92)', backdropFilter: 'blur(12px)',
+        padding: '16px 0 12px', marginBottom: 12,
+        borderBottom: '1px solid var(--clay)',
+      },
+      headerRow: {
+        display: 'flex', justifyContent: 'space-between', alignItems: 'center',
+        marginBottom: 10,
+      },
+      headerTitle: {
+        fontFamily: "'Lora', serif", fontSize: 20, fontWeight: 700, color: 'var(--ink)',
+      },
+      counter: {
+        fontWeight: 700, fontSize: 14, padding: '5px 14px',
+        borderRadius: 20, color: '#fff', fontVariantNumeric: 'tabular-nums',
+        transition: 'background 0.3s',
+      },
+      track: {
+        height: 5, background: 'var(--sand)', borderRadius: 3, overflow: 'hidden',
+      },
+      fill: {
+        height: '100%', borderRadius: 3, transition: 'width 0.35s ease',
+        background: 'linear-gradient(90deg, var(--rust), var(--rust-light))',
+      },
+      fullMsg: {
+        fontSize: 12, color: 'var(--sage)', margin: '7px 0 0', fontStyle: 'italic',
+      },
+      // Sections
+      section: { marginBottom: 32 },
+      sectionHead: {
+        fontFamily: "'Lora', serif", fontSize: 22, fontWeight: 700,
+        color: 'var(--ink)', margin: '24px 0 14px', paddingBottom: 8,
+        borderBottom: '2px solid var(--sand)',
+      },
+      catBlock: { marginBottom: 18 },
+      catTitle: {
+        fontSize: 12, fontWeight: 700, color: 'var(--bark)',
+        textTransform: 'uppercase', letterSpacing: '0.08em',
+        margin: '0 0 8px',
+      },
+      chipGrid: { display: 'flex', flexWrap: 'wrap', gap: 8 },
+      chip: {
+        display: 'inline-flex', alignItems: 'center', gap: 7,
+        padding: '9px 15px', fontSize: 14,
+        fontFamily: "'DM Sans', sans-serif",
+        color: 'var(--espresso)', background: 'var(--warm-white)',
+        border: '2px solid var(--sand)', borderRadius: 10,
+        cursor: 'pointer', transition: 'all 0.15s ease', lineHeight: 1.35,
+        userSelect: 'none',
+      },
+      chipOn: {
+        background: 'var(--rust-glow)', borderColor: 'var(--rust)',
+        color: 'var(--ink)', fontWeight: 600,
+      },
+      chipOff: { opacity: 0.35, cursor: 'not-allowed' },
+      chipDot: {
+        width: 8, height: 8, borderRadius: '50%',
+        border: '2px solid var(--clay)', flexShrink: 0,
+        transition: 'all 0.15s',
+      },
+      chipDotOn: {
+        background: 'var(--rust)', borderColor: 'var(--rust)',
+        boxShadow: '0 0 0 2px var(--rust-glow)',
+      },
+      // Write-in
+      writeInNote: { fontSize: 14, color: 'var(--bark)', margin: '0 0 12px' },
+      addBtn: {
+        fontSize: 13, color: 'var(--rust)', background: 'none',
+        border: '1.5px dashed var(--rust-light)', borderRadius: 8,
+        padding: '7px 14px', cursor: 'pointer',
+        fontFamily: "'DM Sans', sans-serif",
+      },
+      submitBtn: {
+        marginTop: 20, fontSize: 18, padding: '16px 24px',
+        boxShadow: '0 4px 16px rgba(184,92,56,0.25)',
+      },
+      // Results
+      resultRow: {
+        display: 'flex', alignItems: 'center', gap: 14,
+        padding: '14px 0', borderBottom: '1px solid var(--sand)',
+      },
+      rank: {
+        fontSize: 18, fontWeight: 700, color: 'var(--bark)',
+        width: 38, textAlign: 'center', flexShrink: 0,
+      },
+      resultInfo: { flex: 1, minWidth: 0 },
+      resultName: {
+        fontSize: 15, fontWeight: 600, color: 'var(--ink)',
+      },
+      resultMeta: { fontSize: 12, color: 'var(--slate)', marginTop: 2 },
+      barTrack: {
+        height: 6, background: 'var(--sand)', borderRadius: 3,
+        marginTop: 7, overflow: 'hidden',
+      },
+      barFill: {
+        height: '100%', borderRadius: 3, transition: 'width 0.5s ease',
+        background: 'linear-gradient(90deg, var(--rust), var(--rust-light))',
+        minWidth: 4,
+      },
+      voteNum: {
+        fontSize: 22, fontWeight: 700, color: 'var(--rust)',
+        width: 40, textAlign: 'center', flexShrink: 0,
+        fontVariantNumeric: 'tabular-nums',
+      },
+      empty: {
+        textAlign: 'center', padding: '48px 24px', color: 'var(--bark)',
+      },
+      error: {
+        color: '#c0392b', fontSize: 14, textAlign: 'center', margin: '10px 0',
+        background: '#fdecea', padding: '10px 16px', borderRadius: 8,
+      },
+      configWarn: {
+        background: '#fff3cd', border: '1px solid #ffc107', borderRadius: 10,
+        padding: 20, marginBottom: 24, fontSize: 14, lineHeight: 1.6,
+        color: '#664d03',
+      },
+    };
+
+    /* ========== Components ========== */
+    function ConfigWarning() {
+      return (
+        <div style={S.configWarn}>
+          <strong>⚠️ Not yet configured.</strong> Open <code>index.html</code> and fill in the
+          <code> CONFIG</code> object with your Google Form IDs and
+          the spreadsheet ID from the <code>/edit</code> URL.
+          See <code>SETUP.md</code> for instructions.
+        </div>
+      );
+    }
+
+    function App() {
+      const [view, setView] = useState('welcome');
+      const [name, setName] = useState('');
+      const [selected, setSelected] = useState(new Set());
+      const [customItems, setCustomItems] = useState(['']);
+      const [voters, setVoters] = useState([]);
+      const [tally, setTally] = useState(null);
+      const [loading, setLoading] = useState(false);
+      const [error, setError] = useState(null);
+
+      const remaining = MAX_PICKS - selected.size;
+
+      const toggleItem = (id) => {
+        setSelected(prev => {
+          const next = new Set(prev);
+          if (next.has(id)) next.delete(id);
+          else if (next.size < MAX_PICKS) next.add(id);
+          return next;
+        });
+      };
+
+      const handleSubmit = async () => {
+        if (!name.trim() || selected.size === 0 || !isConfigured) return;
+        setLoading(true);
+        setError(null);
+        try {
+          const picks = [...selected];
+          const customs = customItems.filter(c => c.trim());
+          customs.forEach(c => picks.push(`custom::${c.trim()}`));
+          const customStr = customs.join('; ');
+          await submitToForm(name.trim(), picks, customStr);
+          setView('thanks');
+        } catch (e) {
+          setError('Submission may have failed. Please try again.');
+        }
+        setLoading(false);
+      };
+
+      const loadResults = useCallback(async () => {
+        if (!isConfigured) return;
+        setLoading(true);
+        setError(null);
+        try {
+          const data = await fetchResults();
+          setVoters(data.voters);
+          setTally(data.tally);
+        } catch (e) {
+          setError('Could not load results. Make sure SHEET_ID is the ID from the /edit URL (not the 2PACX published ID) and the sheet is shared as "Anyone with the link".');
+        }
+        setLoading(false);
+      }, []);
+
+      useEffect(() => {
+        if (view === 'results') loadResults();
+      }, [view, loadResults]);
+
+      /* ---------- Welcome ---------- */
+      if (view === 'welcome') {
+        return (
+          <div style={S.container}>
+            {!isConfigured && <ConfigWarning />}
+            <div style={S.hero}>
+              <div style={S.badge}>Community Survey</div>
+              <h1 style={S.h1}>Tech Support Priorities</h1>
+              <p style={S.lead}>
+                Help us decide what to focus on first. Our mission is helping elders maintain
+                independence and connection — and empowering caregivers to support them with technology.
+              </p>
+              <p style={{ fontSize: 15, color: 'var(--espresso)', marginTop: 14 }}>
+                You'll choose up to <span style={S.highlight}>10 topics</span> you think matter most.
+              </p>
+            </div>
+
+            <div style={S.card}>
+              <label style={S.label}>Your name</label>
+              <input
+                style={S.input}
+                placeholder="Enter your name"
+                value={name}
+                onChange={e => setName(e.target.value)}
+                onKeyDown={e => e.key === 'Enter' && name.trim() && isConfigured && setView('vote')}
+              />
+              <button
+                style={{ ...S.btn, ...(name.trim() && isConfigured ? {} : S.btnDisabled) }}
+                disabled={!name.trim() || !isConfigured}
+                onClick={() => name.trim() && isConfigured && setView('vote')}
+              >
+                Start voting →
+              </button>
+            </div>
+
+            <button style={S.btnSecondary} onClick={() => setView('results')}>
+              View results so far
+            </button>
+          </div>
+        );
+      }
+
+      /* ---------- Vote ---------- */
+      if (view === 'vote') {
+        return (
+          <div style={S.container}>
+            <div style={S.sticky}>
+              <div style={S.headerRow}>
+                <h2 style={S.headerTitle}>Hi {name}! Pick your top 10</h2>
+                <div style={{
+                  ...S.counter,
+                  background: remaining === 0 ? 'var(--sage)' : remaining <= 3 ? '#c57d2f' : 'var(--rust)',
+                }}>
+                  {selected.size}/{MAX_PICKS}
+                </div>
+              </div>
+              <div style={S.track}>
+                <div style={{ ...S.fill, width: `${(selected.size / MAX_PICKS) * 100}%` }} />
+              </div>
+              {remaining === 0 && (
+                <p style={S.fullMsg}>All 10 picks used — tap one to deselect and swap</p>
+              )}
+            </div>
+
+            {Object.entries(TOPICS).map(([section, categories]) => (
+              <div key={section} style={S.section}>
+                <h2 style={S.sectionHead}>{SECTION_ICONS[section]} {section}</h2>
+                {Object.entries(categories).map(([cat, subs]) => {
+                  const items = subs.length === 0
+                    ? [{ item: cat, id: `${section}::${cat}` }]
+                    : subs.map(s => ({ item: s, id: `${section}::${cat}::${s}` }));
+                  return (
+                    <div key={cat} style={S.catBlock}>
+                      <h3 style={S.catTitle}>{cat}</h3>
+                      <div style={S.chipGrid}>
+                        {items.map(({ item, id }) => {
+                          const on = selected.has(id);
+                          const off = !on && remaining === 0;
+                          return (
+                            <button
+                              key={id}
+                              onClick={() => !off && toggleItem(id)}
+                              style={{
+                                ...S.chip,
+                                ...(on ? S.chipOn : {}),
+                                ...(off ? S.chipOff : {}),
+                              }}
+                            >
+                              <span style={{ ...S.chipDot, ...(on ? S.chipDotOn : {}) }} />
+                              {item}
+                            </button>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            ))}
+
+            <div style={S.section}>
+              <h2 style={S.sectionHead}>✏️ Something Missing?</h2>
+              <p style={S.writeInNote}>Add topics not listed above:</p>
+              {customItems.map((val, i) => (
+                <input
+                  key={i}
+                  style={{ ...S.input, marginBottom: 10 }}
+                  placeholder={`Write-in suggestion ${i + 1}`}
+                  value={val}
+                  onChange={e => {
+                    const next = [...customItems];
+                    next[i] = e.target.value;
+                    setCustomItems(next);
+                  }}
+                />
+              ))}
+              {customItems.length < 3 && (
+                <button style={S.addBtn} onClick={() => setCustomItems([...customItems, ''])}>
+                  + Add another
+                </button>
+              )}
+            </div>
+
+            {error && <p style={S.error}>{error}</p>}
+
+            <button
+              style={{
+                ...S.btn, ...S.submitBtn,
+                ...(selected.size === 0 || loading ? S.btnDisabled : {}),
+              }}
+              disabled={selected.size === 0 || loading}
+              onClick={handleSubmit}
+            >
+              {loading ? 'Submitting…' : `Submit my ${selected.size} pick${selected.size !== 1 ? 's' : ''}`}
+            </button>
+          </div>
+        );
+      }
+
+      /* ---------- Thanks ---------- */
+      if (view === 'thanks') {
+        return (
+          <div style={S.container}>
+            <div style={{ ...S.hero, animation: 'scaleIn 0.4s ease both' }}>
+              <div style={{ fontSize: 64, marginBottom: 12 }}>🎉</div>
+              <h1 style={S.h1}>Thanks, {name}!</h1>
+              <p style={S.lead}>
+                Your priorities have been recorded. They'll help shape what we focus on first.
+              </p>
+              <p style={{ fontSize: 13, color: 'var(--bark)', marginTop: 8, fontStyle: 'italic' }}>
+                Note: results may take a moment to appear in the spreadsheet.
+              </p>
+            </div>
+            <button style={S.btn} onClick={() => setView('results')}>
+              See how everyone voted →
+            </button>
+            <button style={S.btnSecondary} onClick={() => {
+              setSelected(new Set());
+              setCustomItems(['']);
+              setName('');
+              setView('welcome');
+            }}>
+              Start over (different person)
+            </button>
+          </div>
+        );
+      }
+
+      /* ---------- Results ---------- */
+      if (view === 'results') {
+        const sorted = tally
+          ? Object.values(tally).filter(v => v.count > 0).sort((a, b) => b.count - a.count)
+          : [];
+        const maxCount = sorted.length > 0 ? sorted[0].count : 1;
+
+        return (
+          <div style={S.container}>
+            {!isConfigured && <ConfigWarning />}
+            <div style={S.headerRow}>
+              <h1 style={{ ...S.h1, fontSize: 26 }}>📊 Results</h1>
+              <button style={S.smallBtn} onClick={() => setView('welcome')}>← Back</button>
+            </div>
+            <p style={{ ...S.lead, textAlign: 'left', margin: '0 0 8px' }}>
+              {voters.length} team member{voters.length !== 1 ? 's' : ''} voted
+              {voters.length > 0 ? `: ${voters.join(', ')}` : ''}
+            </p>
+
+            {loading && <p style={{ textAlign: 'center', color: 'var(--bark)', fontStyle: 'italic', padding: 32 }}>Loading results…</p>}
+
+            {error && <p style={S.error}>{error}</p>}
+
+            {!loading && sorted.length === 0 && (
+              <div style={S.empty}>
+                <div style={{ fontSize: 52, marginBottom: 14 }}>🗳️</div>
+                <p style={{ marginBottom: 16 }}>No votes yet. Be the first!</p>
+                <button style={{ ...S.btn, maxWidth: 260, margin: '0 auto' }} onClick={() => setView('welcome')}>
+                  Cast your vote
+                </button>
+              </div>
+            )}
+
+            {!loading && sorted.length > 0 && (
+              <div style={{ marginTop: 20 }}>
+                {sorted.map((item, i) => (
+                  <div key={item.id} style={{ ...S.resultRow, animation: `fadeUp 0.35s ease ${i * 0.04}s both` }}>
+                    <div style={S.rank}>
+                      {i < 3 ? ['🥇', '🥈', '🥉'][i] : `#${i + 1}`}
+                    </div>
+                    <div style={S.resultInfo}>
+                      <div style={S.resultName}>{item.item}</div>
+                      <div style={S.resultMeta}>
+                        {item.section !== 'Write-in'
+                          ? `${item.section} › ${item.category}`
+                          : 'Write-in suggestion'}
+                        {' · '}
+                        {item.votedBy.join(', ')}
+                      </div>
+                      <div style={S.barTrack}>
+                        <div style={{ ...S.barFill, width: `${(item.count / maxCount) * 100}%` }} />
+                      </div>
+                    </div>
+                    <div style={S.voteNum}>{item.count}</div>
+                  </div>
+                ))}
+              </div>
+            )}
+
+            <button style={{ ...S.btnSecondary, marginTop: 24 }} onClick={loadResults}>
+              ↻ Refresh results
+            </button>
+          </div>
+        );
+      }
+
+      return null;
+    }
+
+    ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+  </script>
+</body>
+</html>

@@ -379,13 +379,8 @@
   .custom-tag .remove {
     cursor: pointer; font-size: 1.1rem; line-height: 1;
     opacity: 0.5; transition: opacity 0.2s;
-    background: none; border: none; padding: 0;
-    color: inherit; font-family: inherit;
   }
   .custom-tag .remove:hover { opacity: 1; }
-  .custom-tag .remove:focus-visible {
-    outline: 2px solid currentColor; border-radius: 3px;
-  }
 
   /* ── Summary Section ── */
   .summary-section {
@@ -812,7 +807,6 @@
       <div class="big-check">✓</div>
       <h2>Thank You!</h2>
       <p>Your picks have been recorded. They'll help us decide what to cover first.</p>
-      <p style="font-size:0.82rem;color:var(--ink-muted);margin-top:-0.5rem;">Don't see your name in results? The network may have dropped — feel free to resubmit.</p>
       <div class="btn-row">
         <button class="btn-another" onclick="resetSurvey()">Submit Another Response</button>
         <button class="btn-results" onclick="showView('results')">View Results</button>
@@ -891,7 +885,6 @@ const MAX = 10;
 let selected = new Set();
 let customTopics = [];
 let currentView = 'survey';
-let cachedResults = null;
 
 if (!APPS_SCRIPT_URL) document.getElementById('configBanner').style.display = 'block';
 
@@ -975,7 +968,7 @@ function addCustomTopic() {
 function removeCustomTopic(i) { customTopics.splice(i,1); renderCustomTopics(); updateUI(); save(); }
 function renderCustomTopics() {
   document.getElementById('customList').innerHTML = customTopics.map((t,i) =>
-    `<span class="custom-tag">${escHtml(t)}<button class="remove" onclick="removeCustomTopic(${i})" aria-label="Remove ${escHtml(t)}">&times;</button></span>`
+    `<span class="custom-tag">${escHtml(t)}<span class="remove" onclick="removeCustomTopic(${i})" title="Remove">&times;</span></span>`
   ).join('');
 }
 document.getElementById('customInput').addEventListener('keydown', e => { if (e.key === 'Enter') addCustomTopic(); });
@@ -1029,7 +1022,6 @@ async function submitToSheet() {
       headers: { 'Content-Type': 'text/plain' },
       body: JSON.stringify(payload)
     });
-    cachedResults = null;
     showThankYou();
   } catch (err) {
     showFeedback('Something went wrong. Please try again.', 'var(--peach)');
@@ -1058,7 +1050,7 @@ function resetSurvey() {
 // ══════════════════════════════════════════
 // ── RESULTS VIEW ──
 // ══════════════════════════════════════════
-async function loadResults(force = false) {
+async function loadResults() {
   const container = document.getElementById('resultsContent');
 
   if (!APPS_SCRIPT_URL) {
@@ -1068,19 +1060,13 @@ async function loadResults(force = false) {
     return;
   }
 
-  if (!force && cachedResults) {
-    renderResults(cachedResults);
-    return;
-  }
-
   container.innerHTML = `<div class="results-loading">
     <div class="spinner"></div><br>Loading results…</div>`;
 
   try {
-    const resp = await fetch(APPS_SCRIPT_URL);
+    const resp = await fetch(APPS_SCRIPT_URL + '?action=results');
     if (!resp.ok) throw new Error('HTTP ' + resp.status);
     const data = await resp.json();
-    cachedResults = data;
     renderResults(data);
   } catch (err) {
     container.innerHTML = `<div class="results-error">
@@ -1117,7 +1103,7 @@ function renderResults(data) {
       <div class="stat-label">Write-in Ideas</div></div>
   </div>`;
 
-  html += `<button class="btn-refresh" onclick="loadResults(true)">↻ Refresh Results</button>`;
+  html += `<button class="btn-refresh" onclick="loadResults()">↻ Refresh Results</button>`;
 
   // Bar chart
   html += `<div class="results-chart"><h2>Topic Popularity</h2>`;

@@ -32,17 +32,15 @@ This voting app runs entirely on GitHub Pages and uses a **Google Form** to coll
    - **entry.222222**: the entry ID for Picks
    - **entry.333333**: the entry ID for Suggestions
 
-## Step 3: Publish the Response Spreadsheet
+## Step 3: Create the Response Spreadsheet
 
 1. In your Google Form, click the **Responses** tab.
-2. Click the green Sheets icon to create a linked spreadsheet (or link to an existing one).
+2. Click the green Sheets icon to create a linked spreadsheet.
 3. Open that spreadsheet. Copy its **SHEET_ID** from the URL:
    ```
    https://docs.google.com/spreadsheets/d/SHEET_ID/edit
    ```
-4. Go to **File → Share → Publish to web**.
-5. Choose **Entire document** and **Comma-separated values (.csv)**.
-6. Click **Publish** and confirm.
+4. Make the sheet viewable: **Share → "Anyone with the link" → Viewer**.
 
 ## Step 4: Configure the App
 
@@ -50,15 +48,24 @@ Open `index.html` and find the `CONFIG` object near the top of the `<script>` bl
 
 ```js
 const CONFIG = {
-  FORM_ID:        "YOUR_FORM_ID_HERE",
-  ENTRY_NAME:     "entry.XXXXXXX",
-  ENTRY_PICKS:    "entry.XXXXXXX",
-  ENTRY_CUSTOM:   "entry.XXXXXXX",
-  SHEET_ID:       "YOUR_SHEET_ID_HERE",
+  FORM_ID:      "YOUR_FORM_ID_HERE",
+  ENTRY_NAME:   "entry.XXXXXXX",
+  ENTRY_PICKS:  "entry.XXXXXXX",
+  ENTRY_CUSTOM: "entry.XXXXXXX",
+  SHEET_ID:     "YOUR_SHEET_ID_HERE",
 };
 ```
 
-Replace each placeholder with the values you collected above.
+Replace the Form values with the IDs you collected above.
+
+For `SHEET_ID`, use the ID from your spreadsheet's **edit URL**:
+```
+https://docs.google.com/spreadsheets/d/THIS_PART_HERE/edit
+```
+
+⚠️ **Do NOT use the `2PACX-...` published ID** — that one appears in the "Publish to web" link but doesn't support cross-origin requests from JavaScript.
+
+**Important:** The spreadsheet must be shared so **"Anyone with the link"** can view it. (Go to Share → General access → "Anyone with the link" → Viewer.)
 
 ## Step 5: Deploy to GitHub Pages
 
@@ -72,13 +79,13 @@ Replace each placeholder with the values you collected above.
 
 ## How It Works
 
-| Action       | Mechanism                                                       |
-|--------------|-----------------------------------------------------------------|
-| **Submit**   | POST to Google Form (`/formResponse`) in no-cors mode           |
-| **Read**     | Fetch published Sheet as CSV, parse, and tally votes client-side|
+| Action       | Mechanism                                                                  |
+|--------------|----------------------------------------------------------------------------|
+| **Submit**   | POST to Google Form (`/formResponse`) in no-cors mode                      |
+| **Read**     | Fetch Google Visualization API JSON (`/gviz/tq`), parse and tally client-side |
 
 - Each vote is one row: `[Timestamp, Name, Picks JSON, Suggestions]`
-- The results page fetches the CSV every time it's opened and tallies everything live.
+- The results page fetches via Google's Visualization API (which supports CORS), parses the JSON, and tallies everything live.
 - Multiple people can vote; each submission adds a new row.
 
 ## Notes

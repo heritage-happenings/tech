@@ -80,14 +80,20 @@
        See SETUP.md for step-by-step instructions.
        ========================================================= */
     const CONFIG = {
+      // Google Form
       FORM_ID:      "1FAIpQLSdoTZqXRbzaGRA7F1JtUdqRhlgYOepodO9cTv1VsOje00wVsg",
       ENTRY_NAME:   "entry.1620429122",
       ENTRY_PICKS:  "entry.1191333837",
       ENTRY_CUSTOM: "entry.490937696",
-      SHEET_ID:     "1h2TQvgPPm0FlLEI0f4wierF4NmIBdi_Up6nqMAGVCD0",
+
+      // Google Sheet — use the spreadsheet ID from the /edit URL:
+      //   https://docs.google.com/spreadsheets/d/THIS_PART/edit
+      // NOT the "2PACX-..." published ID — that one doesn't support CORS.
+      SHEET_ID:     "16cBb4d_e0OEiIG4jiTTkoEuRYKK-IVeg905_ZSQBkkQ",
     };
 
-    const isConfigured = !CONFIG.FORM_ID.includes("YOUR_") && !CONFIG.SHEET_ID.includes("YOUR_");
+    const isConfigured = !CONFIG.FORM_ID.includes("YOUR_")
+      && !CONFIG.SHEET_ID.includes("YOUR_");
 
     /* ========== Topic Data ========== */
     const TOPICS = {
@@ -140,45 +146,6 @@
 
     const ALL_ITEMS = getAllItems();
 
-    /* ========== CSV Parser ========== */
-    function parseCSV(text) {
-      const rows = [];
-      let current = '';
-      let inQuotes = false;
-      const lines = text.split('\n');
-
-      for (const line of lines) {
-        if (inQuotes) {
-          current += '\n' + line;
-        } else {
-          current = line;
-        }
-        const quoteCount = (current.match(/"/g) || []).length;
-        inQuotes = quoteCount % 2 !== 0;
-
-        if (!inQuotes) {
-          const fields = [];
-          let field = '';
-          let fq = false;
-          for (let i = 0; i < current.length; i++) {
-            const ch = current[i];
-            if (ch === '"') {
-              if (fq && current[i + 1] === '"') { field += '"'; i++; }
-              else fq = !fq;
-            } else if (ch === ',' && !fq) {
-              fields.push(field); field = '';
-            } else {
-              field += ch;
-            }
-          }
-          fields.push(field);
-          rows.push(fields);
-          current = '';
-        }
-      }
-      return rows;
-    }
-
     /* ========== Google Form Submission ========== */
     async function submitToForm(name, picks, customSuggestions) {
       const url = `https://docs.google.com/forms/d/e/${CONFIG.FORM_ID}/formResponse`;
@@ -197,25 +164,33 @@
 
     /* ========== Google Sheet Fetcher ========== */
     async function fetchResults() {
-      const url = `https://docs.google.com/spreadsheets/d/${CONFIG.SHEET_ID}/gviz/tq?tqx=out:csv`;
+      // The gviz/tq JSON endpoint supports CORS when the sheet is shared "Anyone with the link"
+      const url = `https://docs.google.com/spreadsheets/d/${CONFIG.SHEET_ID}/gviz/tq?tqx=out:json`;
       const resp = await fetch(url);
-      if (!resp.ok) throw new Error('Could not fetch sheet');
-      const text = await resp.text();
-      const rows = parseCSV(text);
+      if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
+      const raw = await resp.text();
 
-      if (rows.length < 2) return { voters: [], tally: {} };
+      // Response is: /*O_o*/\ngoogle.visualization.Query.setResponse({...});
+      // Extract the JSON object
+      const match = raw.match(/setResponse\(([\s\S]+)\);?\s*$/);
+      if (!match) throw new Error('Unexpected response format');
+      const data = JSON.parse(match[1]);
 
-      // Row 0 is headers: Timestamp, Name, Picks, Suggestions
+      if (!data.table || !data.table.rows) return { voters: [], tally: {} };
+
+      const cols = data.table.cols;   // [{label, type}, ...]
+      const rows = data.table.rows;   // [{c: [{v: ...}, ...]}, ...]
+
       const voters = [];
       const tally = {};
       ALL_ITEMS.forEach(i => { tally[i.id] = { ...i, count: 0, votedBy: [] }; });
 
-      for (let r = 1; r < rows.length; r++) {
-        const row = rows[r];
-        if (row.length < 3) continue;
-        const voterName = (row[1] || '').trim();
-        const picksRaw = (row[2] || '').trim();
-        const suggestionsRaw = (row[3] || '').trim();
+      for (const row of rows) {
+        const cells = row.c || [];
+        // Columns: 0=Timestamp, 1=Name, 2=Picks, 3=Suggestions
+        const voterName = (cells[1] && cells[1].v || '').trim();
+        const picksRaw  = (cells[2] && cells[2].v || '').trim();
+        const sugRaw    = (cells[3] && cells[3].v || '').trim();
 
         if (!voterName) continue;
         if (!voters.includes(voterName)) voters.push(voterName);
@@ -235,13 +210,12 @@
           }
         }
 
-        // Also capture standalone suggestions
-        if (suggestionsRaw) {
-          const customId = `custom::${suggestionsRaw}`;
+        if (sugRaw) {
+          const customId = `custom::${sugRaw}`;
           if (!tally[customId]) {
             tally[customId] = {
               id: customId, section: 'Write-in', category: 'Suggestions',
-              item: suggestionsRaw, count: 0, votedBy: []
+              item: sugRaw, count: 0, votedBy: []
             };
           }
         }
@@ -447,8 +421,9 @@
       return (
         <div style={S.configWarn}>
           <strong>⚠️ Not yet configured.</strong> Open <code>index.html</code> and fill in the
-          <code> CONFIG</code> object with your Google Form ID, entry IDs, and Sheet ID.
-          See <code>SETUP.md</code> for instructions. Voting and results are disabled until configured.
+          <code> CONFIG</code> object with your Google Form IDs and
+          the spreadsheet ID from the <code>/edit</code> URL.
+          See <code>SETUP.md</code> for instructions.
         </div>
       );
     }
@@ -500,7 +475,7 @@
           setVoters(data.voters);
           setTally(data.tally);
         } catch (e) {
-          setError('Could not load results. Is the sheet published?');
+          setError('Could not load results. Make sure SHEET_ID is the ID from the /edit URL (not the 2PACX published ID) and the sheet is shared as "Anyone with the link".');
         }
         setLoading(false);
       }, []);

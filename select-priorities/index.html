@@ -81,15 +81,15 @@
        ========================================================= */
     const CONFIG = {
       // Google Form
-      FORM_ID:      "1FAIpQLSdoTZqXRbzaGRA7F1JtUdqRhlgYOepodO9cTv1VsOje00wVsg",
-      ENTRY_NAME:   "entry.1620429122",
-      ENTRY_PICKS:  "entry.1191333837",
+      FORM_ID: "1FAIpQLSdoTZqXRbzaGRA7F1JtUdqRhlgYOepodO9cTv1VsOje00wVsg",
+      ENTRY_NAME: "entry.1620429122",
+      ENTRY_PICKS: "entry.1191333837",
       ENTRY_CUSTOM: "entry.490937696",
 
       // Google Sheet — use the spreadsheet ID from the /edit URL:
       //   https://docs.google.com/spreadsheets/d/THIS_PART/edit
       // NOT the "2PACX-..." published ID — that one doesn't support CORS.
-      SHEET_ID:     "16cBb4d_e0OEiIG4jiTTkoEuRYKK-IVeg905_ZSQBkkQ",
+      SHEET_ID:     "1h2TQvgPPm0FlLEI0f4wierF4NmIBdi_Up6nqMAGVCD0",
     };
 
     const isConfigured = !CONFIG.FORM_ID.includes("YOUR_")
@@ -165,7 +165,7 @@
     /* ========== Google Sheet Fetcher ========== */
     async function fetchResults() {
       // The gviz/tq JSON endpoint supports CORS when the sheet is shared "Anyone with the link"
-      const url = `https://docs.google.com/spreadsheets/d/${CONFIG.SHEET_ID}/gviz/tq?tqx=out:json`;
+      const url = `https://docs.google.com/spreadsheets/d/1h2TQvgPPm0FlLEI0f4wierF4NmIBdi_Up6nqMAGVCD0/gviz/tq?tqx=out:json`;
       const resp = await fetch(url);
       if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
       const raw = await resp.text();

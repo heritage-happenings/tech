@@ -53,13 +53,6 @@
       --cat-sec-light: #FEF7E6;
       --cat-acc: #8B5CF6;
       --cat-acc-light: #F1ECFE;
-      /* Tier colors */
-      --tier1: #14B8A6;
-      --tier1-light: #E6FAF7;
-      --tier2: #5B5BD6;
-      --tier2-light: #EDEDFC;
-      --tier3: #F59E0B;
-      --tier3-light: #FEF7E6;
     }
 
     html {
@@ -311,60 +304,6 @@
 
     .category-card .card-border.acc {
       background: var(--cat-acc);
-    }
-
-    .category-card .card-border.t1 {
-      background: var(--tier1);
-    }
-
-    .category-card .card-border.t2 {
-      background: var(--tier2);
-    }
-
-    .category-card .card-border.t3 {
-      background: var(--tier3);
-    }
-
-    /* Tier section header */
-    .tier-header {
-      display: flex;
-      align-items: center;
-      gap: 0.75rem;
-      margin: 2rem 0 1rem;
-      animation: fadeUp 0.4s ease-out;
-    }
-
-    .tier-header:first-child {
-      margin-top: 0;
-    }
-
-    .tier-badge {
-      font-family: 'Sora', sans-serif;
-      font-size: 0.75rem;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      padding: 0.3rem 0.75rem;
-      border-radius: 99px;
-      color: white;
-      white-space: nowrap;
-    }
-
-    .tier-badge.t1 {
-      background: var(--tier1);
-    }
-
-    .tier-badge.t2 {
-      background: var(--tier2);
-    }
-
-    .tier-badge.t3 {
-      background: var(--tier3);
-    }
-
-    .tier-desc {
-      font-size: 0.85rem;
-      color: var(--ink-muted);
     }
 
     .category-card .card-body {
@@ -819,18 +758,6 @@
       background: var(--cat-acc);
     }
 
-    .bar-fill.t1 {
-      background: var(--tier1);
-    }
-
-    .bar-fill.t2 {
-      background: var(--tier2);
-    }
-
-    .bar-fill.t3 {
-      background: var(--tier3);
-    }
-
     .bar-fill.custom {
       background: var(--violet);
     }
@@ -1024,9 +951,7 @@
   <div id="surveyView">
     <div class="container">
       <div class="instructions">
-        Our focus is on helping <strong>elders (ages 80–100+)</strong> maintain independence and connection,
-        and empowering their caregivers to support them with technology.<br><br>
-        Browse the topics below and <strong>tap up to 10</strong> you would most like the Tech Support
+        Browse the categories below and <strong>tap up to 10 topics</strong> you would most like the Tech Support
         Subcommittee to cover. You can also add your own suggestions. When you are ready, enter your name and submit.
       </div>
 
@@ -1116,238 +1041,46 @@
     var APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyRMmlXbKxOxFNB9OATnrX6WbnTt6lQZbcm2CiVhy7hzx0CnaYGGkqM6qgMi4YDa8jaIA/exec';
     var MAX = 10;
 
-    // -- Tier definitions --
-    var TIERS = [
-      { id: 't1', label: 'Tier 1 \u2014 Core', desc: 'Expect these weekly' },
-      { id: 't2', label: 'Tier 2 \u2014 Regular', desc: 'Expect these monthly' },
-      { id: 't3', label: 'Tier 3 \u2014 Uncommon', desc: 'Handle as they arise' }
-    ];
-
-    // -- Topic Data (organized by tier) --
+    // -- Topic Data --
     var DATA = [
-      // ── Tier 1: Core ──
       {
-        name: "Staying Connected", icon: "\uD83D\uDCDE", barClass: "t1", tier: "t1",
+        name: "Hardware", icon: "\uD83D\uDDA5\uFE0F", barClass: "hw",
         subcategories: [
-          {
-            label: "Video & Voice", items: [
-              "Video calling (Zoom, FaceTime, Skype)",
-              "Phone basics (contacts, voicemail, volume)"
-            ]
-          },
-          {
-            label: "Messaging & Sharing", items: [
-              "Email (reading, composing, attachments, spam)",
-              "Messaging with family (WhatsApp, iMessage, Messenger)",
-              "Photo sharing with family"
-            ]
-          }
+          { label: "Computers", items: [ "Laptops", "Desktops", "Peripherals (keyboards, mice, monitors)" ] },
+          { label: "Printing", items: [ "Printing Devices" ] },
+          { label: "Mobile Devices", items: [ "Smartphones", "Tablets" ] },
+          { label: "Internet Connectivity", items: [ "Wi-Fi setup & troubleshooting", "Modem / router configuration" ] },
+          { label: "Entertainment Systems", items: [ "Smart TVs", "Streaming devices (Roku, Apple TV, etc.)", "Audio systems (speakers, headphones)" ] },
+          { label: "Assistive Technology", items: [ "Hearing aids", "Screen readers", "Mobility devices" ] },
+          { label: "Home Automation", items: [ "Smart home devices (thermostats, lights, security)" ] },
+          { label: "Wearables", items: [ "Fitness trackers", "Smartwatches", "VR headsets" ] }
         ]
       },
       {
-        name: "Staying Safe", icon: "\uD83D\uDEE1\uFE0F", barClass: "t1", tier: "t1",
+        name: "Software", icon: "\uD83D\uDCBE", barClass: "sw",
         subcategories: [
-          {
-            label: "Scam Awareness", items: [
-              "Recognizing scams (phone, email, text phishing)",
-              "Avoiding dangerous links and pop-ups",
-              "What to do when something goes wrong"
-            ]
-          },
-          {
-            label: "Passwords & Privacy", items: [
-              "Password basics (creation, storage, resets)",
-              "Privacy basics (what not to share online)"
-            ]
-          }
+          { label: "Operating Systems", items: [ "Windows", "macOS", "Linux", "iOS", "Android" ] },
+          { label: "Productivity", items: [ "Microsoft Office", "Google Workspace", "Email clients (Outlook, Gmail)" ] },
+          { label: "Communication", items: [ "Video calls (Zoom, Skype, FaceTime)", "Messaging apps (WhatsApp, Messenger)" ] },
+          { label: "Social Media", items: [ "Facebook", "Twitter / X", "Instagram" ] },
+          { label: "Online Services", items: [ "Online banking", "E-commerce (Amazon, eBay)", "Government portals (SSA, healthcare)" ] },
+          { label: "Entertainment", items: [ "Streaming (Netflix, Hulu)", "Music (Spotify, Apple Music)" ] },
+          { label: "Learning", items: [ "Online courses (Coursera, Udemy)", "E-books & audiobooks" ] }
         ]
       },
       {
-        name: "Everyday Devices", icon: "\uD83D\uDCF1", barClass: "t1", tier: "t1",
+        name: "Security & Privacy", icon: "\uD83D\uDD12", barClass: "sec",
         subcategories: [
-          {
-            label: "Tablets & Phones", items: [
-              "Tablet basics (navigation, apps, charging, frozen screens)",
-              "Smartphone basics (settings, text size, volume)"
-            ]
-          },
-          {
-            label: "TV & Laptops", items: [
-              "TV & streaming (remote help, input switching, Roku/Apple TV)",
-              "Laptop basics (power, Wi-Fi, browser, common stuck states)"
-            ]
-          }
+          { label: "Protection", items: [ "Antivirus programs", "Password managers", "VPN services" ] },
+          { label: "Digital Literacy", items: [ "Internet safety & privacy", "Recognizing scams & phishing" ] }
         ]
       },
       {
-        name: "Seeing & Hearing Better", icon: "\uD83D\uDC53", barClass: "t1", tier: "t1",
+        name: "Accessibility & Customization", icon: "\u267F", barClass: "acc",
         subcategories: [
-          {
-            label: "Display & Audio", items: [
-              "Making text and icons larger (display settings, zoom)",
-              "Volume and audio adjustments across devices",
-              "Bluetooth hearing aid pairing & troubleshooting"
-            ]
-          },
-          {
-            label: "Voice & Screen Readers", items: [
-              "Voice assistants (Alexa, Siri, Google) for hands-free control",
-              "Screen reader basics (VoiceOver, TalkBack)"
-            ]
-          }
-        ]
-      },
-      {
-        name: "Staying Independent", icon: "\uD83C\uDFE0", barClass: "t1", tier: "t1",
-        subcategories: [
-          {
-            label: "Health & Finance", items: [
-              "Telehealth (joining video appointments, patient portals)",
-              "Online banking (logging in, checking balances, spotting fraud)",
-              "Prescription management (pharmacy apps, refill systems)"
-            ]
-          },
-          {
-            label: "Services & Government", items: [
-              "Grocery & meal delivery apps (Instacart, DoorDash)",
-              "Ride-hailing basics (Uber, Lyft)",
-              "Government services (Social Security, Medicare portals)"
-            ]
-          }
-        ]
-      },
-      // ── Tier 2: Regular ──
-      {
-        name: "Hardware Support", icon: "\uD83D\uDDA8\uFE0F", barClass: "t2", tier: "t2",
-        subcategories: [
-          {
-            label: "Computers & Printers", items: [
-              "Laptop maintenance, updates & performance",
-              "Printer setup, connectivity & troubleshooting",
-              "Peripherals (external keyboards, mice, monitors)"
-            ]
-          },
-          {
-            label: "Assistive & Wearable", items: [
-              "Arthritis-friendly input devices (trackballs, large-key keyboards)",
-              "Medical alert systems (pendant setup, testing, battery)",
-              "Smartwatches (Apple Watch fall detection)"
-            ]
-          }
-        ]
-      },
-      {
-        name: "Internet & Connectivity", icon: "\uD83C\uDF10", barClass: "t2", tier: "t2",
-        subcategories: [
-          {
-            label: "Wi-Fi & Bluetooth", items: [
-              "Wi-Fi troubleshooting (dropouts, reconnecting devices)",
-              "Modem/router basics (restarting, when to call ISP)",
-              "Bluetooth pairing (headphones, speakers, hearing aids)"
-            ]
-          }
-        ]
-      },
-      {
-        name: "Software & Settings", icon: "\u2699\uFE0F", barClass: "t2", tier: "t2",
-        subcategories: [
-          {
-            label: "Operating Systems", items: [
-              "Windows and macOS navigation",
-              "iOS and Android (settings, updates, storage)"
-            ]
-          },
-          {
-            label: "Apps & Browser", items: [
-              "App installation and removal",
-              "Software updates (when, how, handling restart prompts)",
-              "Browser basics (bookmarks, tabs, clearing cache)"
-            ]
-          }
-        ]
-      },
-      {
-        name: "Communication Beyond Basics", icon: "\uD83D\uDCAC", barClass: "t2", tier: "t2",
-        subcategories: [
-          {
-            label: "Email & Contacts", items: [
-              "Setting up new email accounts",
-              "Managing contacts across devices"
-            ]
-          },
-          {
-            label: "Calls & Calendars", items: [
-              "Group video calls and family check-ins",
-              "Shared calendars with caregivers or family"
-            ]
-          }
-        ]
-      },
-      {
-        name: "Entertainment", icon: "\uD83C\uDFB5", barClass: "t2", tier: "t2",
-        subcategories: [
-          {
-            label: "Streaming & Music", items: [
-              "Streaming services (Netflix, Hulu, YouTube, PBS)",
-              "Music & audiobooks (Spotify, Apple Music, Audible, Libby)"
-            ]
-          },
-          {
-            label: "E-Books & Audio", items: [
-              "E-books (Kindle, library apps)",
-              "Audio systems (connecting speakers, soundbars, headphones)"
-            ]
-          }
-        ]
-      },
-      {
-        name: "Data & Files", icon: "\uD83D\uDCC2", barClass: "t2", tier: "t2",
-        subcategories: [
-          {
-            label: "Cloud & Backup", items: [
-              "Cloud storage basics (iCloud, Google Drive, photo backup)",
-              "Backup strategies (what matters, how to automate)"
-            ]
-          },
-          {
-            label: "File Management", items: [
-              "Finding files (photos, downloads, documents)",
-              "Transferring photos from phone to computer or to family"
-            ]
-          }
-        ]
-      },
-      // ── Tier 3: Uncommon ──
-      {
-        name: "Less Common Hardware", icon: "\uD83D\uDD27", barClass: "t3", tier: "t3",
-        subcategories: [
-          {
-            label: "Devices", items: [
-              "Desktop computers",
-              "Fitness trackers",
-              "Webcam setup (standalone)",
-              "Adaptive/assistive mobility tech (wheelchair controls, scooter interfaces)"
-            ]
-          }
-        ]
-      },
-      {
-        name: "Less Common Software", icon: "\uD83D\uDCBB", barClass: "t3", tier: "t3",
-        subcategories: [
-          {
-            label: "Productivity & Security", items: [
-              "Microsoft Office & Google Workspace (occasional letter or spreadsheet)",
-              "Antivirus configuration"
-            ]
-          },
-          {
-            label: "Social & Learning", items: [
-              "Social media (Facebook, Instagram, Twitter/X)",
-              "Online courses and educational platforms",
-              "E-commerce beyond basics (eBay, returns, subscriptions)",
-              "Text-to-speech and voice recognition (beyond built-in)"
-            ]
-          }
+          { label: "Accessibility Tools", items: [ "Screen magnifiers", "Voice recognition software", "Text-to-speech" ] },
+          { label: "Customization", items: [ "Personalizing settings & preferences", "Using accessibility features effectively" ] },
+          { label: "Maintenance", items: [ "Software updates", "Troubleshooting common issues", "Cloud storage & backups", "File organization" ] }
         ]
       }
     ];
@@ -1423,22 +1156,8 @@
     function renderCategories () {
       var container = document.getElementById( 'categoryCards' );
       container.innerHTML = '';
-      var currentTier = '';
 
       DATA.forEach( function ( cat ) {
-        // Insert tier section header when tier changes
-        if ( cat.tier && cat.tier !== currentTier ) {
-          currentTier = cat.tier;
-          var tierInfo = TIERS.filter( function ( t ) { return t.id === currentTier; } )[ 0 ];
-          if ( tierInfo ) {
-            var header = document.createElement( 'div' );
-            header.className = 'tier-header';
-            header.innerHTML = '<span class="tier-badge ' + tierInfo.id + '">' + escapeHTML( tierInfo.label ) + '</span>'
-              + '<span class="tier-desc">' + escapeHTML( tierInfo.desc ) + '</span>';
-            container.appendChild( header );
-          }
-        }
-
         var card = document.createElement( 'div' );
         card.className = 'category-card';
 
@@ -1674,7 +1393,7 @@
 
     function showThankYou () {
       document.getElementById( 'summaryPanel' ).classList.remove( 'visible' );
-      var hideEls = document.querySelectorAll( '.category-card, .tier-header, .write-in-section, .instructions, .setup-banner' );
+      var hideEls = document.querySelectorAll( '.category-card, .write-in-section, .instructions, .setup-banner' );
       for ( var i = 0; i < hideEls.length; i++ ) {
         hideEls[ i ].style.display = 'none';
       }
@@ -1686,7 +1405,7 @@
       customTopics = [];
 
       // Re-show elements
-      var showEls = document.querySelectorAll( '.category-card, .tier-header, .write-in-section, .instructions' );
+      var showEls = document.querySelectorAll( '.category-card, .write-in-section, .instructions' );
       for ( var i = 0; i < showEls.length; i++ ) {
         showEls[ i ].style.display = '';
       }

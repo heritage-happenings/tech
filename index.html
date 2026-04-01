@@ -900,7 +900,7 @@
         // Local repo uses relative paths; remote repos use raw.githubusercontent.com
         const isLocal = CONFIG.repo === CONFIG.localRepo;
         const fileUrl = isLocal
-          ? "../" + item.path
+          ? "./" + item.path
           : `https://raw.githubusercontent.com/${ CONFIG.owner }/${ CONFIG.repo }/${ CONFIG.branch }/${ item.path }`;
         const safeName = escapeHtml( item.name );
         const safeUrl = encodeURI( fileUrl );

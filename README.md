@@ -33,4 +33,7 @@ This folder will contain the charter and mission statement for our tech support 
 
 This folder will contain notes and summaries from  any relevant correspondence with residents, caregivers, and other stakeholders.
 
-## 
+## Priorities
+
+This folder contains a list of tech support priorities for our residents, based on feedback and observations from our support sessions. This is meant to be a living document that can be updated and refined as we learn more about the needs and interests of our residents.
+

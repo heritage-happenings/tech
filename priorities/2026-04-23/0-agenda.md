@@ -1,6 +1,13 @@
-# Heritage Happenings Tech Support
+# Select Priorities Agenda
 
-[Tech Support Charter]( https://drive.google.com/file/d/1PXpn5lyEV5kNpnaU58Z0nJI2WfoVLj4g/view?usp=drive_link)
+This document outlines the agenda for the "Select Priorities" session, where we will discuss and prioritize topics for our upcoming work.
+
+https://heritage-happenings.github.io/tech/select-priorities/
+
+## Survey Responses
+
+https://docs.google.com/spreadsheets/d/1b4OM6E1dd6wWw6v-nCmFEbD7uv0Qt-pphyFAyBDk-z8/edit?gid=0#gid=0
+
 
 resident form with much Much simpler choices, perhaps four out of five
 

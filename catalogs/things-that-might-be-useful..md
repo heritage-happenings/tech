@@ -1,4 +1,4 @@
-# Catalog
+# Catalogs
 
 Things That Might Be Useful
 

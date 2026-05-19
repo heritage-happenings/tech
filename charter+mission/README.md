@@ -1,6 +1,5 @@
-# Charter _ Mission
-
-![]( https://heritage-happenings.github.io/tech//.images/Tech_Support_Subcommittee_Charter.png )
+# Charter and Mission
+![]( https://heritage-happenings.github.io/tech/charter%2Bmission/images/Tech_Support_Subcommittee_Charter.png )
 
 This folder is for documents relating to why the Tech Committee exists and what it should be doing.
 

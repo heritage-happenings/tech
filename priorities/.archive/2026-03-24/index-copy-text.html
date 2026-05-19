@@ -1,0 +1,724 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tech Support Topics Survey</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..900;1,9..144,300..900&family=Source+Sans+3:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --cream: #FDF6EC;
+    --warm-white: #FFFDF9;
+    --bark: #3B2F24;
+    --bark-light: #5C4A3A;
+    --sage: #6B8F71;
+    --sage-light: #E8F0E9;
+    --sage-dark: #4A7050;
+    --gold: #D4A853;
+    --gold-light: #F5EDDA;
+    --coral: #D47B6A;
+    --coral-light: #FAEDEA;
+    --sky: #6A9BC2;
+    --sky-light: #E6F0F8;
+    --shadow-sm: 0 1px 3px rgba(59,47,36,0.08);
+    --shadow-md: 0 4px 12px rgba(59,47,36,0.1);
+    --shadow-lg: 0 8px 30px rgba(59,47,36,0.12);
+    --radius: 12px;
+    --radius-sm: 8px;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Source Sans 3', Georgia, serif;
+    background: var(--cream);
+    color: var(--bark);
+    line-height: 1.6;
+    font-size: 18px;
+    min-height: 100vh;
+  }
+
+  /* ── Header ── */
+  .hero {
+    background: linear-gradient(135deg, var(--bark) 0%, var(--bark-light) 100%);
+    color: var(--cream);
+    padding: 3rem 1.5rem 2.5rem;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0; right: 0;
+    height: 40px;
+    background: var(--cream);
+    border-radius: 50% 50% 0 0 / 100% 100% 0 0;
+  }
+  .hero h1 {
+    font-family: 'Fraunces', Georgia, serif;
+    font-size: clamp(1.8rem, 5vw, 2.8rem);
+    font-weight: 500;
+    letter-spacing: -0.02em;
+    margin-bottom: 0.5rem;
+    font-optical-sizing: auto;
+  }
+  .hero p {
+    font-size: 1.1rem;
+    opacity: 0.85;
+    max-width: 560px;
+    margin: 0 auto;
+    line-height: 1.5;
+  }
+
+  /* ── Sticky Counter Bar ── */
+  .counter-bar {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: var(--warm-white);
+    border-bottom: 1px solid rgba(59,47,36,0.1);
+    padding: 0.75rem 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    box-shadow: var(--shadow-sm);
+    transition: box-shadow 0.3s;
+  }
+  .counter-bar.scrolled { box-shadow: var(--shadow-md); }
+  .counter-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: var(--sage-light);
+    border: 2px solid var(--sage);
+    border-radius: 50px;
+    padding: 0.4rem 1.2rem;
+    font-weight: 600;
+    font-size: 1.05rem;
+    transition: all 0.3s;
+  }
+  .counter-pill.full {
+    background: var(--gold-light);
+    border-color: var(--gold);
+  }
+  .counter-pill .num {
+    font-family: 'Fraunces', Georgia, serif;
+    font-size: 1.4rem;
+    font-weight: 700;
+    min-width: 1.6ch;
+    text-align: center;
+  }
+  .counter-bar .hint {
+    font-size: 0.95rem;
+    color: var(--bark-light);
+  }
+
+  /* ── Progress Dots ── */
+  .progress-dots {
+    display: flex;
+    gap: 6px;
+    align-items: center;
+  }
+  .progress-dots .dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: rgba(59,47,36,0.12);
+    transition: background 0.3s, transform 0.3s;
+  }
+  .progress-dots .dot.filled {
+    background: var(--sage);
+    transform: scale(1.15);
+  }
+  .progress-dots .dot.filled.full { background: var(--gold); }
+
+  /* ── Main ── */
+  .main { max-width: 820px; margin: 0 auto; padding: 1.5rem 1.5rem 4rem; }
+
+  .instructions {
+    background: var(--warm-white);
+    border: 1px solid rgba(59,47,36,0.08);
+    border-left: 4px solid var(--sage);
+    border-radius: var(--radius-sm);
+    padding: 1.25rem 1.5rem;
+    margin-bottom: 2rem;
+    font-size: 1.05rem;
+    box-shadow: var(--shadow-sm);
+  }
+  .instructions strong { color: var(--sage-dark); }
+
+  /* ── Category ── */
+  .category {
+    margin-bottom: 2rem;
+    animation: fadeUp 0.5s ease both;
+  }
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  .category:nth-child(2) { animation-delay: 0.05s; }
+  .category:nth-child(3) { animation-delay: 0.1s; }
+  .category:nth-child(4) { animation-delay: 0.15s; }
+
+  .category-header {
+    font-family: 'Fraunces', Georgia, serif;
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: 0.25rem;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+  }
+  .category-header .icon { font-size: 1.3rem; }
+
+  .subcategory-label {
+    font-weight: 600;
+    font-size: 1rem;
+    color: var(--bark-light);
+    margin: 1rem 0 0.5rem 0;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+
+  /* ── Topic Cards ── */
+  .topics-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 10px;
+  }
+
+  .topic-card {
+    background: var(--warm-white);
+    border: 2px solid rgba(59,47,36,0.08);
+    border-radius: var(--radius-sm);
+    padding: 0.8rem 1rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+    box-shadow: var(--shadow-sm);
+    font-size: 1.05rem;
+  }
+  .topic-card:hover {
+    border-color: var(--sage);
+    box-shadow: var(--shadow-md);
+    transform: translateY(-1px);
+  }
+  .topic-card:active { transform: scale(0.98); }
+  .topic-card.selected {
+    background: var(--sage-light);
+    border-color: var(--sage);
+    box-shadow: 0 0 0 1px var(--sage), var(--shadow-sm);
+  }
+  .topic-card.disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+    pointer-events: none;
+  }
+  .topic-card .check {
+    width: 24px;
+    height: 24px;
+    border-radius: 6px;
+    border: 2px solid rgba(59,47,36,0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    transition: all 0.2s;
+    font-size: 14px;
+    color: transparent;
+    background: var(--warm-white);
+  }
+  .topic-card.selected .check {
+    background: var(--sage);
+    border-color: var(--sage);
+    color: white;
+  }
+
+  /* ── Custom Topic Input ── */
+  .custom-section {
+    margin-top: 2.5rem;
+    background: var(--warm-white);
+    border: 1px solid rgba(59,47,36,0.08);
+    border-radius: var(--radius);
+    padding: 1.5rem;
+    box-shadow: var(--shadow-sm);
+  }
+  .custom-section h2 {
+    font-family: 'Fraunces', Georgia, serif;
+    font-size: 1.3rem;
+    margin-bottom: 0.75rem;
+  }
+  .custom-input-row {
+    display: flex;
+    gap: 0.5rem;
+  }
+  .custom-input-row input {
+    flex: 1;
+    font-family: inherit;
+    font-size: 1.05rem;
+    padding: 0.65rem 1rem;
+    border: 2px solid rgba(59,47,36,0.15);
+    border-radius: var(--radius-sm);
+    background: var(--cream);
+    color: var(--bark);
+    outline: none;
+    transition: border-color 0.2s;
+  }
+  .custom-input-row input:focus { border-color: var(--sage); }
+  .custom-input-row button {
+    font-family: inherit;
+    font-size: 1rem;
+    font-weight: 600;
+    padding: 0.65rem 1.4rem;
+    border: none;
+    border-radius: var(--radius-sm);
+    background: var(--sage);
+    color: white;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.15s;
+    white-space: nowrap;
+  }
+  .custom-input-row button:hover { background: var(--sage-dark); }
+  .custom-input-row button:active { transform: scale(0.96); }
+
+  .custom-topics-list {
+    margin-top: 0.75rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .custom-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    background: var(--coral-light);
+    border: 1px solid var(--coral);
+    border-radius: 50px;
+    padding: 0.35rem 0.9rem;
+    font-size: 0.95rem;
+    font-weight: 500;
+  }
+  .custom-tag .remove {
+    cursor: pointer;
+    font-size: 1.1rem;
+    line-height: 1;
+    opacity: 0.6;
+    transition: opacity 0.2s;
+  }
+  .custom-tag .remove:hover { opacity: 1; }
+
+  /* ── Summary Section ── */
+  .summary-section {
+    margin-top: 2.5rem;
+    background: var(--warm-white);
+    border: 2px solid var(--sage);
+    border-radius: var(--radius);
+    padding: 1.5rem;
+    box-shadow: var(--shadow-md);
+    display: none;
+  }
+  .summary-section.visible { display: block; animation: fadeUp 0.4s ease both; }
+  .summary-section h2 {
+    font-family: 'Fraunces', Georgia, serif;
+    font-size: 1.3rem;
+    margin-bottom: 0.75rem;
+    color: var(--sage-dark);
+  }
+  .summary-list {
+    list-style: none;
+    padding: 0;
+  }
+  .summary-list li {
+    padding: 0.4rem 0;
+    border-bottom: 1px solid rgba(59,47,36,0.06);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 1.05rem;
+  }
+  .summary-list li:last-child { border: none; }
+  .summary-list .cat-label {
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--bark-light);
+    opacity: 0.7;
+  }
+
+  .btn-copy {
+    margin-top: 1rem;
+    font-family: inherit;
+    font-size: 1rem;
+    font-weight: 600;
+    padding: 0.7rem 1.6rem;
+    border: 2px solid var(--sage);
+    border-radius: var(--radius-sm);
+    background: var(--sage-light);
+    color: var(--sage-dark);
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .btn-copy:hover { background: var(--sage); color: white; }
+
+  /* ── Footer ── */
+  .footer {
+    text-align: center;
+    padding: 2rem 1rem;
+    font-size: 0.9rem;
+    color: var(--bark-light);
+    opacity: 0.7;
+  }
+
+  /* ── Responsive ── */
+  @media (max-width: 600px) {
+    .hero { padding: 2rem 1rem 2rem; }
+    .main { padding: 1rem 1rem 3rem; }
+    .topics-grid { grid-template-columns: 1fr; }
+    .progress-dots { display: none; }
+    .custom-input-row { flex-direction: column; }
+  }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <h1>Tech Support Topics</h1>
+  <p>Help us focus our efforts. Pick the <strong>10 topics</strong> that matter most to you.</p>
+</header>
+
+<div class="counter-bar" id="counterBar">
+  <div class="progress-dots" id="progressDots"></div>
+  <div class="counter-pill" id="counterPill">
+    <span class="num" id="counterNum">0</span>
+    <span>of 10 chosen</span>
+  </div>
+  <span class="hint" id="counterHint">Tap topics to choose</span>
+</div>
+
+<main class="main">
+  <div class="instructions">
+    <strong>How it works:</strong> Browse the topics below and tap up to <strong>10</strong> that you think are most important for our tech support sessions. Your picks appear in a summary at the bottom. You can also add your own ideas!
+  </div>
+
+  <div id="topicsContainer"></div>
+
+  <div class="custom-section">
+    <h2>Something Missing?</h2>
+    <p style="margin-bottom:0.75rem;color:var(--bark-light);">Add a topic you'd like us to cover:</p>
+    <div class="custom-input-row">
+      <input type="text" id="customInput" placeholder="e.g. Electric wheelchair charging" maxlength="80" aria-label="Add a custom topic">
+      <button onclick="addCustomTopic()" id="customBtn">Add</button>
+    </div>
+    <div class="custom-topics-list" id="customList"></div>
+  </div>
+
+  <div class="summary-section" id="summarySection">
+    <h2>Your Top Picks</h2>
+    <ol class="summary-list" id="summaryList"></ol>
+    <button class="btn-copy" onclick="copySummary()">Copy to Clipboard</button>
+    <span id="copyFeedback" style="margin-left:0.75rem;font-size:0.95rem;color:var(--sage-dark);opacity:0;transition:opacity 0.3s;"></span>
+  </div>
+</main>
+
+<footer class="footer">
+  Tech Support Subcommittee &middot; 2026
+</footer>
+
+<script>
+// ── Data ──
+const DATA = [
+  {
+    name: "Hardware",
+    icon: "🖥️",
+    subcategories: [
+      { label: "Computers", items: ["Laptops", "Desktops", "Peripherals (keyboards, mice, monitors)"] },
+      { label: "Printing", items: ["Printing Devices"] },
+      { label: "Mobile Devices", items: ["Smartphones", "Tablets"] },
+      { label: "Internet Connectivity", items: ["Wi-Fi setup & troubleshooting", "Modem / router configuration"] },
+      { label: "Entertainment Systems", items: ["Smart TVs", "Streaming devices (Roku, Apple TV, etc.)", "Audio systems (speakers, headphones)"] },
+      { label: "Assistive Technology", items: ["Hearing aids", "Screen readers", "Mobility devices"] },
+      { label: "Home Automation", items: ["Smart home devices (thermostats, lights, security)"] },
+      { label: "Wearables", items: ["Fitness trackers", "Smartwatches", "VR headsets"] }
+    ]
+  },
+  {
+    name: "Software",
+    icon: "💾",
+    subcategories: [
+      { label: "Operating Systems", items: ["Windows", "macOS", "Linux", "iOS", "Android"] },
+      { label: "Productivity", items: ["Microsoft Office", "Google Workspace", "Email clients (Outlook, Gmail)"] },
+      { label: "Communication", items: ["Video calls (Zoom, Skype, FaceTime)", "Messaging apps (WhatsApp, Messenger)"] },
+      { label: "Social Media", items: ["Facebook", "Twitter / X", "Instagram"] },
+      { label: "Online Services", items: ["Online banking", "E-commerce (Amazon, eBay)", "Government portals (SSA, healthcare)"] },
+      { label: "Entertainment", items: ["Streaming (Netflix, Hulu)", "Music (Spotify, Apple Music)"] },
+      { label: "Learning", items: ["Online courses (Coursera, Udemy)", "E-books & audiobooks"] }
+    ]
+  },
+  {
+    name: "Security & Privacy",
+    icon: "🔒",
+    subcategories: [
+      { label: "Protection", items: ["Antivirus programs", "Password managers", "VPN services"] },
+      { label: "Digital Literacy", items: ["Internet safety & privacy", "Recognizing scams & phishing"] }
+    ]
+  },
+  {
+    name: "Accessibility & Customization",
+    icon: "♿",
+    subcategories: [
+      { label: "Accessibility Tools", items: ["Screen magnifiers", "Voice recognition software", "Text-to-speech"] },
+      { label: "Customization", items: ["Personalizing settings & preferences", "Using accessibility features effectively"] },
+      { label: "Maintenance", items: ["Software updates", "Troubleshooting common issues", "Cloud storage & backups", "File organization"] }
+    ]
+  }
+];
+
+const MAX = 10;
+let selected = new Set();
+let customTopics = [];
+
+// ── Build UI ──
+function buildTopics() {
+  const container = document.getElementById('topicsContainer');
+  DATA.forEach((cat, ci) => {
+    const section = document.createElement('div');
+    section.className = 'category';
+    let html = `<div class="category-header"><span class="icon">${cat.icon}</span> ${cat.name}</div>`;
+    cat.subcategories.forEach(sub => {
+      html += `<div class="subcategory-label">${sub.label}</div><div class="topics-grid">`;
+      sub.items.forEach(item => {
+        const id = slugify(item);
+        html += `
+          <div class="topic-card" data-id="${id}" onclick="toggle('${id}')" role="checkbox" aria-checked="false" tabindex="0">
+            <span class="check">✓</span>
+            <span>${item}</span>
+          </div>`;
+      });
+      html += '</div>';
+    });
+    section.innerHTML = html;
+    container.appendChild(section);
+  });
+}
+
+function slugify(str) {
+  return str.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+}
+
+// ── Selection Logic ──
+function toggle(id) {
+  if (selected.has(id)) {
+    selected.delete(id);
+  } else {
+    if (selected.size >= MAX) return;
+    selected.add(id);
+  }
+  updateUI();
+  save();
+}
+
+function updateUI() {
+  const count = selected.size + customTopics.length;
+
+  // Cards
+  document.querySelectorAll('.topic-card').forEach(card => {
+    const id = card.dataset.id;
+    const isSel = selected.has(id);
+    card.classList.toggle('selected', isSel);
+    card.setAttribute('aria-checked', isSel);
+    card.classList.toggle('disabled', !isSel && count >= MAX);
+  });
+
+  // Counter
+  document.getElementById('counterNum').textContent = count;
+  const pill = document.getElementById('counterPill');
+  pill.classList.toggle('full', count >= MAX);
+
+  // Hint
+  const hint = document.getElementById('counterHint');
+  if (count === 0) hint.textContent = 'Tap topics to choose';
+  else if (count < MAX) hint.textContent = `${MAX - count} more to go`;
+  else hint.textContent = 'All 10 chosen!';
+
+  // Progress dots
+  updateDots(count);
+
+  // Custom button state
+  document.getElementById('customBtn').disabled = count >= MAX;
+
+  // Summary
+  updateSummary();
+}
+
+function updateDots(count) {
+  const container = document.getElementById('progressDots');
+  container.innerHTML = '';
+  for (let i = 0; i < MAX; i++) {
+    const dot = document.createElement('span');
+    dot.className = 'dot' + (i < count ? ' filled' : '') + (count >= MAX ? ' full' : '');
+    container.appendChild(dot);
+  }
+}
+
+// ── Custom Topics ──
+function addCustomTopic() {
+  const input = document.getElementById('customInput');
+  const val = input.value.trim();
+  if (!val) return;
+  if (selected.size + customTopics.length >= MAX) return;
+  if (customTopics.includes(val)) return;
+  customTopics.push(val);
+  input.value = '';
+  renderCustomTopics();
+  updateUI();
+  save();
+}
+
+function removeCustomTopic(index) {
+  customTopics.splice(index, 1);
+  renderCustomTopics();
+  updateUI();
+  save();
+}
+
+function renderCustomTopics() {
+  const list = document.getElementById('customList');
+  list.innerHTML = customTopics.map((t, i) =>
+    `<span class="custom-tag">${t}<span class="remove" onclick="removeCustomTopic(${i})" title="Remove">&times;</span></span>`
+  ).join('');
+}
+
+document.getElementById('customInput').addEventListener('keydown', e => {
+  if (e.key === 'Enter') addCustomTopic();
+});
+
+// ── Summary ──
+function updateSummary() {
+  const section = document.getElementById('summarySection');
+  const list = document.getElementById('summaryList');
+  const total = selected.size + customTopics.length;
+
+  if (total === 0) {
+    section.classList.remove('visible');
+    return;
+  }
+
+  section.classList.add('visible');
+
+  // Build items with category labels
+  const items = [];
+  DATA.forEach(cat => {
+    cat.subcategories.forEach(sub => {
+      sub.items.forEach(item => {
+        const id = slugify(item);
+        if (selected.has(id)) {
+          items.push({ name: item, cat: cat.name });
+        }
+      });
+    });
+  });
+  customTopics.forEach(t => items.push({ name: t, cat: 'Your suggestion' }));
+
+  list.innerHTML = items.map((it, i) =>
+    `<li><strong>${i + 1}.</strong> ${it.name} <span class="cat-label">${it.cat}</span></li>`
+  ).join('');
+}
+
+function copySummary() {
+  const items = [];
+  DATA.forEach(cat => {
+    cat.subcategories.forEach(sub => {
+      sub.items.forEach(item => {
+        if (selected.has(slugify(item))) items.push(`${item} [${cat.name}]`);
+      });
+    });
+  });
+  customTopics.forEach(t => items.push(`${t} [Your suggestion]`));
+
+  const text = "My Top Tech Support Picks:\n" + items.map((t, i) => `${i + 1}. ${t}`).join('\n');
+
+  function showFeedback(msg) {
+    const fb = document.getElementById('copyFeedback');
+    fb.textContent = msg;
+    fb.style.opacity = '1';
+    setTimeout(() => fb.style.opacity = '0', 2500);
+  }
+
+  // Try modern API first, fall back to textarea trick
+  if (navigator.clipboard && window.isSecureContext) {
+    navigator.clipboard.writeText(text).then(() => showFeedback('Copied!')).catch(() => fallbackCopy(text));
+  } else {
+    fallbackCopy(text);
+  }
+}
+
+function fallbackCopy(text) {
+  const ta = document.createElement('textarea');
+  ta.value = text;
+  ta.style.cssText = 'position:fixed;left:-9999px;top:-9999px;opacity:0;';
+  document.body.appendChild(ta);
+  ta.focus();
+  ta.select();
+  try {
+    const ok = document.execCommand('copy');
+    const fb = document.getElementById('copyFeedback');
+    fb.textContent = ok ? 'Copied!' : 'Select & copy manually';
+    fb.style.opacity = '1';
+    setTimeout(() => fb.style.opacity = '0', 2500);
+  } catch (e) {
+    const fb = document.getElementById('copyFeedback');
+    fb.textContent = 'Copy not supported — try manually';
+    fb.style.opacity = '1';
+  }
+  document.body.removeChild(ta);
+}
+
+// ── Persistence (localStorage) ──
+function save() {
+  try {
+    localStorage.setItem('tss-selected', JSON.stringify([...selected]));
+    localStorage.setItem('tss-custom', JSON.stringify(customTopics));
+  } catch(e) {}
+}
+
+function load() {
+  try {
+    const s = localStorage.getItem('tss-selected');
+    const c = localStorage.getItem('tss-custom');
+    if (s) selected = new Set(JSON.parse(s));
+    if (c) customTopics = JSON.parse(c);
+  } catch(e) {}
+}
+
+// ── Keyboard support for cards ──
+document.addEventListener('keydown', e => {
+  if ((e.key === 'Enter' || e.key === ' ') && e.target.classList.contains('topic-card')) {
+    e.preventDefault();
+    e.target.click();
+  }
+});
+
+// ── Sticky bar shadow ──
+window.addEventListener('scroll', () => {
+  document.getElementById('counterBar').classList.toggle('scrolled', window.scrollY > 10);
+});
+
+// ── Init ──
+load();
+buildTopics();
+renderCustomTopics();
+updateUI();
+</script>
+</body>
+</html>

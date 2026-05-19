@@ -1,0 +1,1189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HotM Tech Support Priorities</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #F4F4F0;
+    --surface: #FFFFFF;
+    --surface-dim: #EAEAE4;
+    --ink: #111122;
+    --ink-light: #33334D;
+    --ink-muted: #6B6B85;
+    --indigo: #5B5BD6;
+    --indigo-light: #EDEDFC;
+    --indigo-dark: #4343A8;
+    --indigo-glow: rgba(91,91,214,0.12);
+    --violet: #8B5CF6;
+    --violet-light: #F1ECFE;
+    --teal: #14B8A6;
+    --teal-light: #E6FAF7;
+    --teal-dark: #0D9488;
+    --peach: #F97066;
+    --peach-light: #FEF1F0;
+    --amber: #F59E0B;
+    --amber-light: #FEF7E6;
+    --shadow-xs: 0 1px 2px rgba(26,26,46,0.04);
+    --shadow-sm: 0 1px 4px rgba(26,26,46,0.06);
+    --shadow-md: 0 4px 16px rgba(26,26,46,0.08);
+    --shadow-lg: 0 8px 32px rgba(26,26,46,0.1);
+    --radius: 16px;
+    --radius-sm: 10px;
+    --radius-xs: 8px;
+    /* Category accents */
+    --cat-hw: #14B8A6;
+    --cat-hw-light: #E6FAF7;
+    --cat-sw: #5B5BD6;
+    --cat-sw-light: #EDEDFC;
+    --cat-sec: #F59E0B;
+    --cat-sec-light: #FEF7E6;
+    --cat-acc: #8B5CF6;
+    --cat-acc-light: #F1ECFE;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+    background: var(--bg);
+    color: var(--ink);
+    line-height: 1.6;
+    font-size: 17px;
+    min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ── Header ── */
+  .hero {
+    background: var(--ink);
+    color: white;
+    padding: 3rem 1.5rem 2.5rem;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: -50%; left: -30%;
+    width: 600px; height: 600px;
+    background: radial-gradient(circle, rgba(91,91,214,0.25) 0%, transparent 60%);
+    pointer-events: none;
+  }
+
+  .hero-icon {
+    font-size: 2.2rem;
+    margin-bottom: 0.6rem;
+    display: block;
+    animation: gentleBounce 3s ease-in-out infinite;
+  }
+  @keyframes gentleBounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-4px); }
+  }
+  .hero h1 {
+    font-family: 'Sora', sans-serif;
+    font-size: clamp(1.9rem, 5vw, 3rem);
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    margin-bottom: 0.3rem;
+    line-height: 1.15;
+  }
+  .hero p {
+    font-size: 1.05rem;
+    opacity: 0.7;
+    max-width: 480px;
+    margin: 0 auto 1.5rem;
+    line-height: 1.5;
+    font-weight: 400;
+  }
+  .hero p strong { opacity: 1; color: #A5B4FC; font-weight: 600; }
+
+  /* ── View Toggle ── */
+  .view-toggle {
+    display: inline-flex;
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 50px;
+    padding: 4px;
+    gap: 4px;
+    position: relative;
+    z-index: 2;
+  }
+  .view-toggle button {
+    font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+    font-size: 0.9rem;
+    font-weight: 600;
+    padding: 0.5rem 1.6rem;
+    border: none;
+    border-radius: 50px;
+    background: transparent;
+    color: rgba(255,255,255,0.45);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    letter-spacing: 0.01em;
+  }
+  .view-toggle button.active {
+    background: white;
+    color: var(--ink);
+    box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+  }
+  .view-toggle button:not(.active):hover {
+    color: rgba(255,255,255,0.8);
+    background: rgba(255,255,255,0.06);
+  }
+
+  /* ── Sticky Counter Bar ── */
+  .counter-bar {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(244,244,240,0.85);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border-bottom: 1px solid rgba(26,26,46,0.06);
+    padding: 0.7rem 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    transition: box-shadow 0.3s;
+  }
+  .counter-bar.scrolled { box-shadow: var(--shadow-md); }
+  .counter-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    background: var(--indigo-light);
+    border: 1.5px solid var(--indigo);
+    border-radius: 50px;
+    padding: 0.35rem 1.1rem;
+    font-weight: 700;
+    font-size: 0.95rem;
+    transition: all 0.35s ease;
+    color: var(--indigo-dark);
+  }
+  .counter-pill.full {
+    background: var(--amber-light);
+    border-color: var(--amber);
+    color: #92400E;
+    box-shadow: 0 0 0 4px rgba(245,158,11,0.1);
+  }
+  .counter-pill .num {
+    font-family: 'Sora', sans-serif;
+    font-size: 1.5rem;
+    font-weight: 600;
+    min-width: 1.5ch;
+    text-align: center;
+  }
+  .counter-bar .hint { font-size: 0.9rem; color: var(--ink-muted); font-weight: 500; }
+
+  .progress-dots { display: flex; gap: 6px; align-items: center; }
+  .progress-dots .dot {
+    width: 8px; height: 8px; border-radius: 50%;
+    background: rgba(26,26,46,0.08);
+    transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+  .progress-dots .dot.filled {
+    background: var(--indigo);
+    transform: scale(1.4);
+    box-shadow: 0 0 0 2px var(--indigo-glow);
+  }
+  .progress-dots .dot.filled.full {
+    background: var(--amber);
+    box-shadow: 0 0 0 2px rgba(245,158,11,0.15);
+  }
+
+  /* ── Main ── */
+  .main { max-width: 860px; margin: 0 auto; padding: 1.5rem 1.5rem 4rem; }
+
+  .instructions {
+    background: var(--surface);
+    border: 1px solid rgba(26,26,46,0.06);
+    border-left: 4px solid var(--indigo);
+    border-radius: var(--radius-sm);
+    padding: 1.2rem 1.5rem;
+    margin-bottom: 2rem;
+    font-size: 1rem;
+    box-shadow: var(--shadow-xs);
+    color: var(--ink-light);
+  }
+  .instructions strong { color: var(--indigo-dark); }
+
+  /* ── Category Sections ── */
+  .category {
+    margin-bottom: 1.75rem;
+    animation: fadeUp 0.5s ease both;
+    background: var(--surface);
+    border-radius: var(--radius);
+    padding: 1.5rem;
+    box-shadow: var(--shadow-sm);
+    border: 1px solid rgba(26,26,46,0.04);
+    position: relative;
+    overflow: hidden;
+  }
+  .category::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+  }
+  .category[data-cat="hw"]::before { background: linear-gradient(90deg, var(--cat-hw), #2DD4BF); }
+  .category[data-cat="sw"]::before { background: linear-gradient(90deg, var(--cat-sw), #818CF8); }
+  .category[data-cat="sec"]::before { background: linear-gradient(90deg, var(--cat-sec), #FBBF24); }
+  .category[data-cat="acc"]::before { background: linear-gradient(90deg, var(--cat-acc), #A78BFA); }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .category-header {
+    font-family: 'Sora', sans-serif;
+    font-size: 1.5rem; font-weight: 600;
+    margin-bottom: 0.1rem;
+    display: flex; align-items: center; gap: 0.6rem;
+    padding-left: 0.25rem;
+  }
+  .category-header .icon {
+    font-size: 1.1rem;
+    width: 34px; height: 34px;
+    display: inline-flex; align-items: center; justify-content: center;
+    border-radius: var(--radius-xs);
+    flex-shrink: 0;
+  }
+  .category[data-cat="hw"] .icon { background: var(--cat-hw-light); }
+  .category[data-cat="sw"] .icon { background: var(--cat-sw-light); }
+  .category[data-cat="sec"] .icon { background: var(--cat-sec-light); }
+  .category[data-cat="acc"] .icon { background: var(--cat-acc-light); }
+
+  .subcategory-label {
+    font-weight: 700; font-size: 0.72rem; color: var(--ink-muted);
+    margin: 1rem 0 0.5rem 0.25rem;
+    text-transform: uppercase; letter-spacing: 0.1em;
+  }
+
+  /* ── Topic Cards ── */
+  .topics-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+    gap: 8px;
+  }
+
+  .topic-card {
+    background: var(--bg);
+    border: 1.5px solid transparent;
+    border-radius: var(--radius-xs);
+    padding: 0.85rem 1rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex; align-items: center; gap: 0.75rem;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+    font-size: 0.98rem;
+    min-height: 50px;
+    font-weight: 500;
+    color: var(--ink-light);
+  }
+  .topic-card:hover {
+    border-color: rgba(26,26,46,0.08);
+    background: var(--surface-dim);
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-xs);
+  }
+  .topic-card:active { transform: scale(0.97); }
+  .topic-card.selected {
+    border-color: var(--indigo);
+    background: var(--indigo-light);
+    color: var(--indigo-dark);
+    box-shadow: 0 0 0 3px var(--indigo-glow);
+  }
+  .topic-card.selected:hover { background: #E0E0F9; }
+  .topic-card.disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+    pointer-events: none;
+  }
+  .topic-card .check {
+    width: 22px; height: 22px; border-radius: 6px;
+    border: 2px solid rgba(26,26,46,0.12);
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+    transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+    font-size: 12px; color: transparent;
+    background: var(--surface);
+  }
+  .topic-card.selected .check {
+    background: var(--indigo);
+    border-color: var(--indigo);
+    color: white;
+    transform: scale(1.1);
+  }
+
+  /* ── Custom Topic Input ── */
+  .custom-section {
+    margin-top: 2rem; background: var(--surface);
+    border: 1px solid rgba(26,26,46,0.04);
+    border-radius: var(--radius); padding: 1.5rem;
+    box-shadow: var(--shadow-sm);
+  }
+  .custom-section h2 {
+    font-family: 'Sora', sans-serif;
+    font-size: 1.35rem; font-weight: 600;
+    margin-bottom: 0.75rem;
+  }
+  .custom-input-row { display: flex; gap: 0.5rem; }
+  .custom-input-row input {
+    flex: 1; font-family: inherit; font-size: 0.95rem;
+    padding: 0.7rem 1rem;
+    border: 1.5px solid rgba(26,26,46,0.1);
+    border-radius: var(--radius-xs);
+    background: var(--bg); color: var(--ink);
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    font-weight: 500;
+  }
+  .custom-input-row input:focus {
+    border-color: var(--indigo);
+    box-shadow: 0 0 0 3px var(--indigo-glow);
+  }
+  .custom-input-row button {
+    font-family: inherit; font-size: 0.9rem; font-weight: 700;
+    padding: 0.7rem 1.4rem; border: none;
+    border-radius: var(--radius-xs);
+    background: var(--indigo); color: white;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.15s;
+    white-space: nowrap;
+    letter-spacing: 0.01em;
+  }
+  .custom-input-row button:hover { background: var(--indigo-dark); }
+  .custom-input-row button:active { transform: scale(0.96); }
+
+  .custom-topics-list { margin-top: 0.75rem; display: flex; flex-wrap: wrap; gap: 8px; }
+  .custom-tag {
+    display: inline-flex; align-items: center; gap: 0.4rem;
+    background: var(--peach-light); border: 1px solid rgba(249,112,102,0.25);
+    border-radius: 50px; padding: 0.4rem 1rem;
+    font-size: 0.88rem; font-weight: 600;
+    color: #9A3412;
+    transition: transform 0.2s;
+  }
+  .custom-tag:hover { transform: scale(1.03); }
+  .custom-tag .remove {
+    cursor: pointer; font-size: 1.1rem; line-height: 1;
+    opacity: 0.5; transition: opacity 0.2s;
+  }
+  .custom-tag .remove:hover { opacity: 1; }
+
+  /* ── Summary Section ── */
+  .summary-section {
+    margin-top: 2rem; background: var(--surface);
+    border: 1.5px solid var(--indigo); border-radius: var(--radius);
+    padding: 1.5rem; box-shadow: var(--shadow-md); display: none;
+    position: relative;
+    overflow: hidden;
+  }
+  .summary-section::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--indigo), var(--violet));
+  }
+  .summary-section.visible { display: block; animation: fadeUp 0.4s ease both; }
+  .summary-section h2 {
+    font-family: 'Sora', sans-serif;
+    font-size: 1.35rem; font-weight: 600; margin-bottom: 0.75rem; color: var(--ink);
+  }
+  .summary-list { list-style: none; padding: 0; }
+  .summary-list li {
+    padding: 0.5rem 0; border-bottom: 1px solid rgba(26,26,46,0.04);
+    display: flex; align-items: center; gap: 0.5rem; font-size: 0.98rem;
+    font-weight: 500; color: var(--ink-light);
+  }
+  .summary-list li strong { color: var(--ink); font-weight: 700; }
+  .summary-list li:last-child { border: none; }
+  .summary-list .cat-label {
+    font-size: 0.68rem; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 0.06em; color: var(--ink-muted);
+    background: var(--surface-dim);
+    padding: 0.2em 0.55em;
+    border-radius: 4px;
+    margin-left: auto;
+    flex-shrink: 0;
+  }
+
+  .name-row {
+    margin-top: 1.5rem; display: flex; align-items: center;
+    gap: 0.75rem; flex-wrap: wrap;
+  }
+  .name-row label { font-weight: 600; white-space: nowrap; font-size: 0.95rem; }
+  .name-row input {
+    flex: 1; min-width: 180px; font-family: inherit; font-size: 0.95rem;
+    padding: 0.65rem 1rem;
+    border: 1.5px solid rgba(26,26,46,0.1);
+    border-radius: var(--radius-xs);
+    background: var(--bg); color: var(--ink);
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    font-weight: 500;
+  }
+  .name-row input:focus {
+    border-color: var(--indigo);
+    box-shadow: 0 0 0 3px var(--indigo-glow);
+  }
+
+  .btn-row { margin-top: 1.5rem; display: flex; flex-wrap: wrap; gap: 0.75rem; align-items: center; }
+  .btn-copy, .btn-submit {
+    font-family: inherit; font-size: 0.9rem; font-weight: 700;
+    padding: 0.75rem 1.8rem; border-radius: var(--radius-xs);
+    cursor: pointer; transition: all 0.25s;
+    letter-spacing: 0.01em;
+  }
+  .btn-copy {
+    background: var(--bg); color: var(--ink-light);
+    border: 1.5px solid rgba(26,26,46,0.1);
+  }
+  .btn-copy:hover { background: var(--surface-dim); border-color: rgba(26,26,46,0.15); }
+  .btn-submit {
+    background: var(--indigo); color: white;
+    border: 1.5px solid var(--indigo-dark);
+    box-shadow: 0 2px 8px rgba(91,91,214,0.25);
+  }
+  .btn-submit:hover {
+    background: var(--indigo-dark);
+    box-shadow: 0 4px 16px rgba(91,91,214,0.3);
+    transform: translateY(-1px);
+  }
+  .btn-submit:active { transform: translateY(0); }
+  .btn-submit:disabled { opacity: 0.45; cursor: not-allowed; transform: none; box-shadow: none; }
+
+  .feedback-msg { font-size: 0.9rem; transition: opacity 0.3s; font-weight: 600; }
+
+  /* ── Thank You ── */
+  .thank-you { display: none; text-align: center; padding: 4rem 2rem; }
+  .thank-you.visible { display: block; animation: fadeUp 0.5s ease both; }
+  .thank-you .big-check {
+    width: 88px; height: 88px; border-radius: 50%;
+    background: linear-gradient(135deg, var(--indigo), var(--violet));
+    color: white;
+    font-size: 2.8rem; display: inline-flex;
+    align-items: center; justify-content: center;
+    margin-bottom: 1.5rem;
+    box-shadow: 0 6px 24px rgba(91,91,214,0.3);
+    animation: popIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) 0.1s both;
+  }
+  @keyframes popIn {
+    from { transform: scale(0); opacity: 0; }
+    to   { transform: scale(1); opacity: 1; }
+  }
+  .thank-you h2 {
+    font-family: 'Sora', sans-serif;
+    font-size: 2.2rem; font-weight: 600; margin-bottom: 0.6rem;
+  }
+  .thank-you p {
+    font-size: 1.05rem; color: var(--ink-muted);
+    max-width: 420px; margin: 0 auto 2rem;
+    font-weight: 400;
+  }
+  .thank-you .btn-row { justify-content: center; }
+  .btn-another, .btn-results {
+    font-family: inherit; font-size: 0.9rem; font-weight: 700;
+    padding: 0.75rem 1.8rem; border: 1.5px solid var(--indigo);
+    border-radius: var(--radius-xs);
+    cursor: pointer; transition: all 0.25s;
+    letter-spacing: 0.01em;
+  }
+  .btn-another { background: var(--bg); color: var(--indigo-dark); }
+  .btn-another:hover { background: var(--indigo-light); }
+  .btn-results {
+    background: var(--indigo); color: white; border-color: var(--indigo-dark);
+    box-shadow: 0 2px 8px rgba(91,91,214,0.25);
+  }
+  .btn-results:hover { background: var(--indigo-dark); transform: translateY(-1px); }
+
+  /* ── Config Banner ── */
+  .config-banner {
+    background: var(--peach-light); border: 1.5px solid rgba(249,112,102,0.3);
+    border-radius: var(--radius-sm); padding: 1rem 1.25rem;
+    margin-bottom: 1.5rem; font-size: 0.9rem; line-height: 1.5;
+    color: #7C2D12;
+  }
+  .config-banner strong { color: var(--peach); }
+  .config-banner code {
+    background: rgba(26,26,46,0.05); padding: 0.15em 0.4em;
+    border-radius: 4px; font-size: 0.85em; word-break: break-all;
+  }
+
+  /* ── Results View ── */
+  .results-view { display: none; }
+  .results-view.visible { display: block; animation: fadeUp 0.4s ease both; }
+
+  .results-stats {
+    display: flex; gap: 1rem; margin-bottom: 2rem; flex-wrap: wrap;
+  }
+  .stat-card {
+    background: var(--surface);
+    border: 1px solid rgba(26,26,46,0.04);
+    border-radius: var(--radius);
+    padding: 1.5rem;
+    box-shadow: var(--shadow-sm);
+    flex: 1; min-width: 140px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .stat-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+  }
+  .stat-card:nth-child(1)::before { background: linear-gradient(90deg, var(--indigo), var(--violet)); }
+  .stat-card:nth-child(2)::before { background: linear-gradient(90deg, var(--teal), #2DD4BF); }
+  .stat-card:nth-child(3)::before { background: linear-gradient(90deg, var(--amber), #FBBF24); }
+  .stat-card .stat-num {
+    font-family: 'Sora', sans-serif;
+    font-size: 3rem;
+    font-weight: 700;
+    color: var(--ink);
+    line-height: 1.1;
+  }
+  .stat-card .stat-label {
+    font-size: 0.82rem;
+    color: var(--ink-muted);
+    font-weight: 600;
+    margin-top: 0.3rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .results-chart {
+    background: var(--surface);
+    border: 1px solid rgba(26,26,46,0.04);
+    border-radius: var(--radius);
+    padding: 1.75rem;
+    box-shadow: var(--shadow-sm);
+    margin-bottom: 1.75rem;
+  }
+  .results-chart h2 {
+    font-family: 'Sora', sans-serif;
+    font-size: 1.35rem; font-weight: 600;
+    margin-bottom: 1.5rem;
+    color: var(--ink);
+  }
+
+  .bar-row {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 0.55rem;
+    transition: opacity 0.2s;
+  }
+  .bar-row:hover { opacity: 0.8; }
+  .bar-label {
+    width: 240px;
+    flex-shrink: 0;
+    font-size: 0.88rem;
+    font-weight: 500;
+    text-align: right;
+    line-height: 1.3;
+    color: var(--ink-light);
+  }
+  .bar-track {
+    flex: 1;
+    height: 28px;
+    background: var(--surface-dim);
+    border-radius: var(--radius-xs);
+    overflow: hidden;
+  }
+  .bar-fill {
+    height: 100%;
+    border-radius: var(--radius-xs);
+    transition: width 1s cubic-bezier(0.25, 0.8, 0.25, 1);
+    min-width: 2px;
+  }
+  .bar-fill::after {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 50%;
+    background: linear-gradient(180deg, rgba(255,255,255,0.25), transparent);
+    border-radius: var(--radius-xs) var(--radius-xs) 0 0;
+  }
+  .bar-fill { position: relative; }
+  .bar-fill.hw { background: linear-gradient(90deg, #0D9488, #2DD4BF); }
+  .bar-fill.sw { background: linear-gradient(90deg, #4343A8, #818CF8); }
+  .bar-fill.sec { background: linear-gradient(90deg, #D97706, #FBBF24); }
+  .bar-fill.acc { background: linear-gradient(90deg, #7C3AED, #A78BFA); }
+  .bar-fill.custom { background: linear-gradient(90deg, #4A4A5E, #8888A0); }
+  .bar-count {
+    font-family: 'Sora', sans-serif;
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--ink);
+    min-width: 2.5ch;
+    text-align: left;
+  }
+
+  .results-custom {
+    background: var(--surface);
+    border: 1px solid rgba(26,26,46,0.04);
+    border-radius: var(--radius);
+    padding: 1.75rem;
+    box-shadow: var(--shadow-sm);
+    margin-bottom: 1.75rem;
+  }
+  .results-custom h2 {
+    font-family: 'Sora', sans-serif;
+    font-size: 1.35rem; font-weight: 600;
+    margin-bottom: 1rem;
+    color: var(--ink);
+  }
+  .custom-suggestion-row {
+    padding: 0.6rem 0;
+    border-bottom: 1px solid rgba(26,26,46,0.04);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.95rem;
+  }
+  .custom-suggestion-row:last-child { border: none; }
+  .custom-suggestion-row .cs-name { font-weight: 600; color: var(--ink); }
+  .custom-suggestion-row .cs-by {
+    font-size: 0.82rem; color: var(--ink-muted);
+    font-style: italic;
+  }
+
+  .results-loading {
+    text-align: center;
+    padding: 3rem 1rem;
+    font-size: 1rem;
+    color: var(--ink-muted);
+    font-weight: 500;
+  }
+  .results-loading .spinner {
+    display: inline-block;
+    width: 36px; height: 36px;
+    border: 3px solid rgba(26,26,46,0.06);
+    border-top-color: var(--indigo);
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+    margin-bottom: 1rem;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  .results-empty {
+    text-align: center;
+    padding: 4rem 1rem;
+    color: var(--ink-muted);
+  }
+  .results-empty h3 {
+    font-family: 'Sora', sans-serif;
+    font-size: 1.5rem; font-weight: 600;
+    margin-bottom: 0.5rem;
+    color: var(--ink);
+  }
+
+  .results-error {
+    background: var(--peach-light); border: 1.5px solid rgba(249,112,102,0.3);
+    border-radius: var(--radius-sm); padding: 1.5rem;
+    text-align: center; font-size: 0.95rem; color: #7C2D12;
+  }
+
+  .btn-refresh {
+    font-family: inherit; font-size: 0.85rem; font-weight: 700;
+    padding: 0.5rem 1.2rem;
+    border: 1.5px solid rgba(26,26,46,0.1);
+    border-radius: var(--radius-xs);
+    background: var(--surface);
+    color: var(--ink-light);
+    cursor: pointer;
+    transition: all 0.25s;
+    margin-bottom: 1.5rem;
+    letter-spacing: 0.01em;
+  }
+  .btn-refresh:hover { background: var(--surface-dim); border-color: rgba(26,26,46,0.15); }
+
+  .footer {
+    text-align: center; padding: 2.5rem 1rem;
+    font-size: 0.8rem; color: var(--ink-muted);
+    font-weight: 500;
+    letter-spacing: 0.02em;
+  }
+
+  /* ── Responsive ── */
+  @media (max-width: 600px) {
+    .hero { padding: 2rem 1rem 1.5rem; }
+    .main { padding: 1rem 1rem 3rem; }
+    .category { padding: 1rem; }
+    .topics-grid { grid-template-columns: 1fr; }
+    .progress-dots { display: none; }
+    .custom-input-row { flex-direction: column; }
+    .btn-row { flex-direction: column; }
+    .btn-copy, .btn-submit, .btn-another, .btn-results { width: 100%; text-align: center; }
+    .bar-label { width: 110px; font-size: 0.78rem; }
+    .bar-track { height: 22px; }
+    .results-stats { flex-direction: column; }
+    .stat-card .stat-num { font-size: 2.2rem; }
+  }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <span class="hero-icon">💡</span>
+  <h1>HotM Tech Support Priorities</h1>
+  <p>Help us focus our efforts. Pick up to <strong>10 topics</strong> that matter most to you.</p>
+  <div class="view-toggle">
+    <button id="tabSurvey" class="active" onclick="showView('survey')">Take the Survey</button>
+    <button id="tabResults" onclick="showView('results')">View Results</button>
+  </div>
+</header>
+
+<div class="counter-bar" id="counterBar">
+  <div class="progress-dots" id="progressDots"></div>
+  <div class="counter-pill" id="counterPill">
+    <span class="num" id="counterNum">0</span>
+    <span>of 10 chosen</span>
+  </div>
+  <span class="hint" id="counterHint">Tap topics to choose</span>
+</div>
+
+<main class="main">
+
+  <!-- ═══ SURVEY VIEW ═══ -->
+  <div id="surveyView">
+    <div id="surveyForm">
+      <div class="config-banner" id="configBanner" style="display:none;">
+        <strong>Setup needed:</strong> Paste your Google Apps Script web app URL into the
+        <code>APPS_SCRIPT_URL</code> variable near the top of the &lt;script&gt; tag.
+        See <code>SETUP.md</code> for step-by-step instructions.
+      </div>
+
+      <div class="instructions">
+        <strong>How it works:</strong> Browse the topics below and tap up to <strong>10</strong>
+        that you think are most important for our tech support sessions. Add your name at the
+        bottom and hit <strong>Submit</strong> — your picks go straight to our spreadsheet.
+      </div>
+
+      <div id="topicsContainer"></div>
+
+      <div class="custom-section">
+        <h2>Something Missing?</h2>
+        <p style="margin-bottom:0.75rem;color:var(--bark-muted);">Add a topic you'd like us to cover:</p>
+        <div class="custom-input-row">
+          <input type="text" id="customInput" placeholder="e.g. Electric wheelchair charging" maxlength="80" aria-label="Add a custom topic">
+          <button onclick="addCustomTopic()" id="customBtn">Add</button>
+        </div>
+        <div class="custom-topics-list" id="customList"></div>
+      </div>
+
+      <div class="summary-section" id="summarySection">
+        <h2>Your Top Picks</h2>
+        <ol class="summary-list" id="summaryList"></ol>
+
+        <div class="name-row">
+          <label for="nameInput">Your name: <span style="color:var(--coral)">*</span></label>
+          <input type="text" id="nameInput" placeholder="Required" maxlength="60" required>
+        </div>
+
+        <div class="btn-row">
+          <button class="btn-submit" id="submitBtn" onclick="submitToSheet()">Submit My Picks</button>
+          <button class="btn-copy" onclick="copySummary()">Copy to Clipboard</button>
+          <span class="feedback-msg" id="feedback"></span>
+        </div>
+      </div>
+    </div>
+
+    <div class="thank-you" id="thankYou">
+      <div class="big-check">✓</div>
+      <h2>Thank You!</h2>
+      <p>Your picks have been recorded. They'll help us decide what to cover first.</p>
+      <div class="btn-row">
+        <button class="btn-another" onclick="resetSurvey()">Submit Another Response</button>
+        <button class="btn-results" onclick="showView('results')">View Results</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ RESULTS VIEW ═══ -->
+  <div id="resultsView" class="results-view">
+    <div id="resultsContent"></div>
+  </div>
+
+</main>
+
+<footer class="footer">HotM Tech Support Subcommittee &middot; 2026</footer>
+
+<script>
+// ╔══════════════════════════════════════════════════════════════════╗
+// ║  PASTE YOUR GOOGLE APPS SCRIPT WEB APP URL BELOW               ║
+// ║  See SETUP.md for how to create it (takes ~5 minutes).         ║
+// ╚══════════════════════════════════════════════════════════════════╝
+const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyLkre8tVzNGhTh2bBfuh4lqgPIRj0IUBqI3ztxlD-LNW75r4E7rXya2ttjZFhRLulLjQ/exec';
+// Example: 'https://script.google.com/macros/s/AKfycbx.../exec'
+
+// ── Topic Data ──
+const DATA = [
+  {
+    name: "Hardware", icon: "🖥️", barClass: "hw",
+    subcategories: [
+      { label: "Computers", items: ["Laptops", "Desktops", "Peripherals (keyboards, mice, monitors)"] },
+      { label: "Printing", items: ["Printing Devices"] },
+      { label: "Mobile Devices", items: ["Smartphones", "Tablets"] },
+      { label: "Internet Connectivity", items: ["Wi-Fi setup & troubleshooting", "Modem / router configuration"] },
+      { label: "Entertainment Systems", items: ["Smart TVs", "Streaming devices (Roku, Apple TV, etc.)", "Audio systems (speakers, headphones)"] },
+      { label: "Assistive Technology", items: ["Hearing aids", "Screen readers", "Mobility devices"] },
+      { label: "Home Automation", items: ["Smart home devices (thermostats, lights, security)"] },
+      { label: "Wearables", items: ["Fitness trackers", "Smartwatches", "VR headsets"] }
+    ]
+  },
+  {
+    name: "Software", icon: "💾", barClass: "sw",
+    subcategories: [
+      { label: "Operating Systems", items: ["Windows", "macOS", "Linux", "iOS", "Android"] },
+      { label: "Productivity", items: ["Microsoft Office", "Google Workspace", "Email clients (Outlook, Gmail)"] },
+      { label: "Communication", items: ["Video calls (Zoom, Skype, FaceTime)", "Messaging apps (WhatsApp, Messenger)"] },
+      { label: "Social Media", items: ["Facebook", "Twitter / X", "Instagram"] },
+      { label: "Online Services", items: ["Online banking", "E-commerce (Amazon, eBay)", "Government portals (SSA, healthcare)"] },
+      { label: "Entertainment", items: ["Streaming (Netflix, Hulu)", "Music (Spotify, Apple Music)"] },
+      { label: "Learning", items: ["Online courses (Coursera, Udemy)", "E-books & audiobooks"] }
+    ]
+  },
+  {
+    name: "Security & Privacy", icon: "🔒", barClass: "sec",
+    subcategories: [
+      { label: "Protection", items: ["Antivirus programs", "Password managers", "VPN services"] },
+      { label: "Digital Literacy", items: ["Internet safety & privacy", "Recognizing scams & phishing"] }
+    ]
+  },
+  {
+    name: "Accessibility & Customization", icon: "♿", barClass: "acc",
+    subcategories: [
+      { label: "Accessibility Tools", items: ["Screen magnifiers", "Voice recognition software", "Text-to-speech"] },
+      { label: "Customization", items: ["Personalizing settings & preferences", "Using accessibility features effectively"] },
+      { label: "Maintenance", items: ["Software updates", "Troubleshooting common issues", "Cloud storage & backups", "File organization"] }
+    ]
+  }
+];
+
+// Lookup: topic name → category barClass
+const TOPIC_CAT = {};
+DATA.forEach(cat => cat.subcategories.forEach(sub => sub.items.forEach(item => {
+  TOPIC_CAT[item.toLowerCase()] = cat.barClass;
+})));
+
+const MAX = 10;
+let selected = new Set();
+let customTopics = [];
+let currentView = 'survey';
+
+if (!APPS_SCRIPT_URL) document.getElementById('configBanner').style.display = 'block';
+
+// ── View Toggle ──
+function showView(view) {
+  currentView = view;
+  document.getElementById('tabSurvey').classList.toggle('active', view === 'survey');
+  document.getElementById('tabResults').classList.toggle('active', view === 'results');
+  document.getElementById('surveyView').style.display = view === 'survey' ? '' : 'none';
+  document.getElementById('counterBar').style.display = view === 'survey' ? '' : 'none';
+  document.getElementById('resultsView').classList.toggle('visible', view === 'results');
+  if (view === 'results') loadResults();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// ── Build Survey UI ──
+function buildTopics() {
+  const container = document.getElementById('topicsContainer');
+  DATA.forEach(cat => {
+    const section = document.createElement('div');
+    section.className = 'category';
+    section.setAttribute('data-cat', cat.barClass);
+    let html = `<div class="category-header"><span class="icon">${cat.icon}</span> ${cat.name}</div>`;
+    cat.subcategories.forEach(sub => {
+      html += `<div class="subcategory-label">${sub.label}</div><div class="topics-grid">`;
+      sub.items.forEach(item => {
+        const id = slugify(item);
+        html += `<div class="topic-card" data-id="${id}" onclick="toggle('${id}')" role="checkbox" aria-checked="false" tabindex="0"><span class="check">✓</span><span>${item}</span></div>`;
+      });
+      html += '</div>';
+    });
+    section.innerHTML = html;
+    container.appendChild(section);
+  });
+}
+
+function slugify(s) { return s.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/(^-|-$)/g,''); }
+function escHtml(s) { const d = document.createElement('div'); d.textContent = s; return d.innerHTML; }
+
+function toggle(id) {
+  if (selected.has(id)) selected.delete(id);
+  else if (selected.size + customTopics.length < MAX) selected.add(id);
+  updateUI(); save();
+}
+
+function updateUI() {
+  const count = selected.size + customTopics.length;
+  document.querySelectorAll('.topic-card').forEach(card => {
+    const id = card.dataset.id, isSel = selected.has(id);
+    card.classList.toggle('selected', isSel);
+    card.setAttribute('aria-checked', isSel);
+    card.classList.toggle('disabled', !isSel && count >= MAX);
+  });
+  document.getElementById('counterNum').textContent = count;
+  document.getElementById('counterPill').classList.toggle('full', count >= MAX);
+  const hint = document.getElementById('counterHint');
+  if (count === 0) hint.textContent = 'Tap topics to choose';
+  else if (count < MAX) hint.textContent = `${MAX - count} more to go`;
+  else hint.textContent = 'All 10 chosen!';
+  updateDots(count);
+  document.getElementById('customBtn').disabled = count >= MAX;
+  updateSummary();
+}
+
+function updateDots(count) {
+  const c = document.getElementById('progressDots'); c.innerHTML = '';
+  for (let i = 0; i < MAX; i++) {
+    const d = document.createElement('span');
+    d.className = 'dot' + (i < count ? ' filled' : '') + (count >= MAX ? ' full' : '');
+    c.appendChild(d);
+  }
+}
+
+// ── Custom Topics ──
+function addCustomTopic() {
+  const input = document.getElementById('customInput'), val = input.value.trim();
+  if (!val || selected.size + customTopics.length >= MAX || customTopics.includes(val)) return;
+  customTopics.push(val); input.value = '';
+  renderCustomTopics(); updateUI(); save();
+}
+function removeCustomTopic(i) { customTopics.splice(i,1); renderCustomTopics(); updateUI(); save(); }
+function renderCustomTopics() {
+  document.getElementById('customList').innerHTML = customTopics.map((t,i) =>
+    `<span class="custom-tag">${escHtml(t)}<span class="remove" onclick="removeCustomTopic(${i})" title="Remove">&times;</span></span>`
+  ).join('');
+}
+document.getElementById('customInput').addEventListener('keydown', e => { if (e.key === 'Enter') addCustomTopic(); });
+
+// ── Summary ──
+function getPicksList() {
+  const items = [];
+  DATA.forEach(cat => cat.subcategories.forEach(sub => sub.items.forEach(item => {
+    if (selected.has(slugify(item))) items.push({ name: item, cat: cat.name });
+  })));
+  customTopics.forEach(t => items.push({ name: t, cat: 'Your suggestion' }));
+  return items;
+}
+
+function updateSummary() {
+  const section = document.getElementById('summarySection'), items = getPicksList();
+  if (items.length === 0) { section.classList.remove('visible'); return; }
+  section.classList.add('visible');
+  document.getElementById('summaryList').innerHTML = items.map((it,i) =>
+    `<li><strong>${i+1}.</strong> ${escHtml(it.name)} <span class="cat-label">${escHtml(it.cat)}</span></li>`
+  ).join('');
+}
+
+// ── Submit to Google Sheet ──
+async function submitToSheet() {
+  const items = getPicksList();
+  if (items.length === 0) { showFeedback('Pick at least one topic first.', 'var(--coral)'); return; }
+  if (!APPS_SCRIPT_URL) { showFeedback('Apps Script URL not configured — see SETUP.md', 'var(--coral)'); return; }
+
+  const nameVal = document.getElementById('nameInput').value.trim();
+  if (!nameVal) {
+    showFeedback('Please enter your name.', 'var(--coral)');
+    document.getElementById('nameInput').focus();
+    return;
+  }
+
+  const btn = document.getElementById('submitBtn');
+  btn.disabled = true; btn.textContent = 'Submitting…';
+
+  const payload = {
+    name: nameVal,
+    timestamp: new Date().toISOString(),
+    picks: items.map(it => it.name),
+    customSuggestions: customTopics.slice()
+  };
+
+  try {
+    await fetch(APPS_SCRIPT_URL, {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: { 'Content-Type': 'text/plain' },
+      body: JSON.stringify(payload)
+    });
+    showThankYou();
+  } catch (err) {
+    showFeedback('Something went wrong. Please try again.', 'var(--coral)');
+    btn.disabled = false; btn.textContent = 'Submit My Picks';
+  }
+}
+
+function showThankYou() {
+  document.getElementById('surveyForm').style.display = 'none';
+  document.getElementById('thankYou').classList.add('visible');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+  try { localStorage.removeItem('tss-selected'); localStorage.removeItem('tss-custom'); } catch(e) {}
+}
+
+function resetSurvey() {
+  selected = new Set(); customTopics = [];
+  document.getElementById('nameInput').value = '';
+  document.getElementById('submitBtn').disabled = false;
+  document.getElementById('submitBtn').textContent = 'Submit My Picks';
+  document.getElementById('thankYou').classList.remove('visible');
+  document.getElementById('surveyForm').style.display = '';
+  renderCustomTopics(); updateUI();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// ══════════════════════════════════════════
+// ── RESULTS VIEW ──
+// ══════════════════════════════════════════
+async function loadResults() {
+  const container = document.getElementById('resultsContent');
+
+  if (!APPS_SCRIPT_URL) {
+    container.innerHTML = `<div class="results-error">
+      <strong>Results unavailable:</strong> The Apps Script URL hasn't been configured yet.
+      See <code>SETUP.md</code> for instructions.</div>`;
+    return;
+  }
+
+  container.innerHTML = `<div class="results-loading">
+    <div class="spinner"></div><br>Loading results…</div>`;
+
+  try {
+    const resp = await fetch(APPS_SCRIPT_URL + '?action=results');
+    if (!resp.ok) throw new Error('HTTP ' + resp.status);
+    const data = await resp.json();
+    renderResults(data);
+  } catch (err) {
+    container.innerHTML = `<div class="results-error">
+      <strong>Couldn't load results.</strong> Make sure the Apps Script is deployed with
+      the updated <code>doGet</code> function (see SETUP.md).
+      <br><br><small>${escHtml(err.message)}</small></div>`;
+  }
+}
+
+function renderResults(data) {
+  const container = document.getElementById('resultsContent');
+  const { totalResponses, topicCounts, customSuggestions } = data;
+
+  if (totalResponses === 0) {
+    container.innerHTML = `<div class="results-empty">
+      <h3>No responses yet</h3>
+      <p>Be the first to submit your picks!</p></div>`;
+    return;
+  }
+
+  const sorted = Object.entries(topicCounts).sort((a, b) => b[1] - a[1]);
+  const maxVotes = sorted.length > 0 ? sorted[0][1] : 1;
+  const uniqueTopics = sorted.length;
+
+  let html = '';
+
+  // Stats
+  html += `<div class="results-stats">
+    <div class="stat-card"><div class="stat-num">${totalResponses}</div>
+      <div class="stat-label">Response${totalResponses !== 1 ? 's' : ''}</div></div>
+    <div class="stat-card"><div class="stat-num">${uniqueTopics}</div>
+      <div class="stat-label">Topics Chosen</div></div>
+    <div class="stat-card"><div class="stat-num">${customSuggestions.length}</div>
+      <div class="stat-label">Write-in Ideas</div></div>
+  </div>`;
+
+  html += `<button class="btn-refresh" onclick="loadResults()">↻ Refresh Results</button>`;
+
+  // Bar chart
+  html += `<div class="results-chart"><h2>Topic Popularity</h2>`;
+  sorted.forEach(([topic, count], i) => {
+    const pct = Math.max((count / maxVotes) * 100, 3);
+    const catClass = TOPIC_CAT[topic.toLowerCase()] || 'custom';
+    html += `<div class="bar-row" style="animation-delay:${i * 30}ms">
+      <span class="bar-label">${escHtml(topic)}</span>
+      <div class="bar-track">
+        <div class="bar-fill ${catClass}" style="width:${pct}%"></div>
+      </div>
+      <span class="bar-count">${count}</span>
+    </div>`;
+  });
+  html += '</div>';
+
+  // Custom suggestions
+  if (customSuggestions.length > 0) {
+    html += `<div class="results-custom"><h2>Write-in Suggestions</h2>`;
+    customSuggestions.forEach(s => {
+      html += `<div class="custom-suggestion-row">
+        <span class="cs-name">${escHtml(s.topic)}</span>
+        <span class="cs-by">— ${escHtml(s.submittedBy)}</span>
+      </div>`;
+    });
+    html += '</div>';
+  }
+
+  container.innerHTML = html;
+
+  // Animate bars
+  requestAnimationFrame(() => {
+    container.querySelectorAll('.bar-fill').forEach(bar => {
+      const w = bar.style.width;
+      bar.style.width = '0';
+      requestAnimationFrame(() => { bar.style.width = w; });
+    });
+  });
+}
+
+// ── Copy to Clipboard ──
+function copySummary() {
+  const items = getPicksList();
+  const text = "My Top Tech Support Picks:\n" + items.map((t,i) => `${i+1}. ${t.name} [${t.cat}]`).join('\n');
+  if (navigator.clipboard && window.isSecureContext) {
+    navigator.clipboard.writeText(text).then(() => showFeedback('Copied!','var(--sage-dark)')).catch(() => fallbackCopy(text));
+  } else { fallbackCopy(text); }
+}
+function fallbackCopy(text) {
+  const ta = document.createElement('textarea');
+  ta.value = text; ta.style.cssText = 'position:fixed;left:-9999px;top:-9999px;opacity:0;';
+  document.body.appendChild(ta); ta.focus(); ta.select();
+  try { const ok = document.execCommand('copy'); showFeedback(ok?'Copied!':'Select & copy manually', ok?'var(--sage-dark)':'var(--coral)');
+  } catch(e) { showFeedback('Copy not supported','var(--coral)'); }
+  document.body.removeChild(ta);
+}
+
+function showFeedback(msg, color) {
+  const fb = document.getElementById('feedback');
+  fb.textContent = msg; fb.style.color = color||'var(--sage-dark)'; fb.style.opacity = '1';
+  setTimeout(() => fb.style.opacity = '0', 3000);
+}
+
+// ── Local draft persistence ──
+function save() {
+  try { localStorage.setItem('tss-selected',JSON.stringify([...selected])); localStorage.setItem('tss-custom',JSON.stringify(customTopics)); } catch(e){}
+}
+function load() {
+  try { const s=localStorage.getItem('tss-selected'),c=localStorage.getItem('tss-custom');
+  if(s) selected=new Set(JSON.parse(s)); if(c) customTopics=JSON.parse(c); } catch(e){}
+}
+
+document.addEventListener('keydown', e => {
+  if ((e.key==='Enter'||e.key===' ') && e.target.classList.contains('topic-card')) { e.preventDefault(); e.target.click(); }
+});
+window.addEventListener('scroll', () => { document.getElementById('counterBar').classList.toggle('scrolled', window.scrollY > 10); });
+
+function checkHash() { if (window.location.hash === '#results') showView('results'); }
+
+load(); buildTopics(); renderCustomTopics(); updateUI(); checkHash();
+</script>
+</body>
+</html>

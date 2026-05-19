@@ -1,0 +1,1592 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HotM Tech Support Priorities</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Sora:wght@300;400;500;600;700;800&display=swap"
+    rel="stylesheet">
+  <style>
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      --bg: #F4F4F0;
+      --surface: #FFFFFF;
+      --surface-dim: #EAEAE4;
+      --ink: #111122;
+      --ink-light: #33334D;
+      --ink-muted: #6B6B85;
+      --indigo: #5B5BD6;
+      --indigo-light: #EDEDFC;
+      --indigo-dark: #4343A8;
+      --indigo-glow: rgba(91, 91, 214, 0.12);
+      --violet: #8B5CF6;
+      --violet-light: #F1ECFE;
+      --teal: #14B8A6;
+      --teal-light: #E6FAF7;
+      --teal-dark: #0D9488;
+      --peach: #F97066;
+      --peach-light: #FEF1F0;
+      --amber: #F59E0B;
+      --amber-light: #FEF7E6;
+      --shadow-xs: 0 1px 2px rgba(26, 26, 46, 0.04);
+      --shadow-sm: 0 1px 4px rgba(26, 26, 46, 0.06);
+      --shadow-md: 0 4px 16px rgba(26, 26, 46, 0.08);
+      --shadow-lg: 0 8px 32px rgba(26, 26, 46, 0.1);
+      --radius: 16px;
+      --radius-sm: 10px;
+      --radius-xs: 8px;
+      --cat-hw: #14B8A6;
+      --cat-hw-light: #E6FAF7;
+      --cat-sw: #5B5BD6;
+      --cat-sw-light: #EDEDFC;
+      --cat-sec: #F59E0B;
+      --cat-sec-light: #FEF7E6;
+      --cat-acc: #8B5CF6;
+      --cat-acc-light: #F1ECFE;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+      background: var(--bg);
+      color: var(--ink);
+      line-height: 1.6;
+      font-size: 17px;
+      min-height: 100vh;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* -- Header -- */
+    .hero {
+      background: var(--ink);
+      color: white;
+      padding: 3rem 1.5rem 2.5rem;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -30%;
+      width: 600px;
+      height: 600px;
+      background: radial-gradient(circle, rgba(91, 91, 214, 0.25) 0%, transparent 60%);
+      pointer-events: none;
+    }
+
+    .hero-icon {
+      font-size: 2.5rem;
+      display: inline-block;
+      animation: bounce 2s ease-in-out infinite;
+      position: relative;
+    }
+
+    @keyframes bounce {
+
+      0%,
+      100% {
+        transform: translateY(0);
+      }
+
+      50% {
+        transform: translateY(-8px);
+      }
+    }
+
+    .hero h1 {
+      font-family: 'Sora', sans-serif;
+      font-size: 2rem;
+      font-weight: 700;
+      margin: 0.5rem 0 0.25rem;
+      position: relative;
+    }
+
+    .hero p {
+      font-size: 1rem;
+      opacity: 0.8;
+      margin-bottom: 1.5rem;
+      position: relative;
+    }
+
+    /* -- View Toggle -- */
+    .view-toggle {
+      display: inline-flex;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 99px;
+      padding: 4px;
+      gap: 4px;
+      position: relative;
+    }
+
+    .view-toggle button {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 0.9rem;
+      font-weight: 600;
+      padding: 0.5rem 1.25rem;
+      border: none;
+      border-radius: 99px;
+      cursor: pointer;
+      background: transparent;
+      color: rgba(255, 255, 255, 0.6);
+      transition: all 0.25s ease;
+    }
+
+    .view-toggle button.active {
+      background: var(--indigo);
+      color: white;
+    }
+
+    /* -- Counter Bar -- */
+    .counter-bar {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: var(--surface);
+      border-bottom: 1px solid var(--surface-dim);
+      padding: 0.75rem 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 1rem;
+      box-shadow: var(--shadow-sm);
+      transition: box-shadow 0.2s;
+    }
+
+    .counter-bar.hidden {
+      display: none;
+    }
+
+    .counter-pill {
+      font-family: 'Sora', sans-serif;
+      font-weight: 600;
+      font-size: 0.95rem;
+      color: var(--indigo);
+      white-space: nowrap;
+      transition: color 0.3s;
+    }
+
+    .counter-pill.full {
+      color: var(--amber);
+    }
+
+    .progress-dots {
+      display: flex;
+      gap: 6px;
+      align-items: center;
+    }
+
+    .progress-dots .dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: var(--surface-dim);
+      transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    .progress-dots .dot.filled {
+      background: var(--indigo);
+      transform: scale(1.4);
+    }
+
+    .progress-dots .dot.filled-full {
+      background: var(--amber);
+      transform: scale(1.4);
+    }
+
+    .counter-hint {
+      font-size: 0.85rem;
+      color: var(--ink-muted);
+      white-space: nowrap;
+    }
+
+    /* -- Main Container -- */
+    .container {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 1.5rem;
+    }
+
+    /* -- Instructions Box -- */
+    .instructions {
+      background: var(--indigo-light);
+      border-radius: var(--radius-sm);
+      padding: 1.25rem 1.5rem;
+      margin-bottom: 1.5rem;
+      font-size: 0.95rem;
+      color: var(--ink-light);
+      line-height: 1.7;
+      animation: fadeUp 0.4s ease-out;
+    }
+
+    .instructions strong {
+      color: var(--indigo-dark);
+    }
+
+    /* -- Setup Banner -- */
+    .setup-banner {
+      background: var(--peach-light);
+      border: 1px solid var(--peach);
+      border-radius: var(--radius-sm);
+      padding: 1rem 1.25rem;
+      margin-bottom: 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      font-size: 0.9rem;
+      color: var(--ink-light);
+      animation: fadeUp 0.4s ease-out;
+    }
+
+    .setup-banner .dismiss-btn {
+      background: none;
+      border: none;
+      font-size: 1.2rem;
+      cursor: pointer;
+      color: var(--ink-muted);
+      padding: 0.25rem;
+      line-height: 1;
+    }
+
+    /* -- Category Cards -- */
+    .category-card {
+      background: var(--surface);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow-sm);
+      margin-bottom: 1.5rem;
+      overflow: hidden;
+      animation: fadeUp 0.5s ease-out both;
+    }
+
+    .category-card:nth-child(2) {
+      animation-delay: 0.05s;
+    }
+
+    .category-card:nth-child(3) {
+      animation-delay: 0.1s;
+    }
+
+    .category-card:nth-child(4) {
+      animation-delay: 0.15s;
+    }
+
+    .category-card .card-border {
+      height: 3px;
+    }
+
+    .category-card .card-border.hw {
+      background: var(--cat-hw);
+    }
+
+    .category-card .card-border.sw {
+      background: var(--cat-sw);
+    }
+
+    .category-card .card-border.sec {
+      background: var(--cat-sec);
+    }
+
+    .category-card .card-border.acc {
+      background: var(--cat-acc);
+    }
+
+    .category-card .card-body {
+      padding: 1.5rem;
+    }
+
+    .category-header {
+      font-family: 'Sora', sans-serif;
+      font-size: 1.2rem;
+      font-weight: 600;
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .subcategory-label {
+      font-size: 0.8rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--ink-muted);
+      margin: 1rem 0 0.5rem;
+    }
+
+    .subcategory-label:first-of-type {
+      margin-top: 0;
+    }
+
+    /* -- Topic Chips -- */
+    .chip-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 8px;
+    }
+
+    .chip {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 0.6rem 1rem;
+      border: 2px solid var(--surface-dim);
+      border-radius: var(--radius-xs);
+      font-size: 0.9rem;
+      cursor: pointer;
+      user-select: none;
+      transition: all 0.2s ease;
+      outline: none;
+      background: var(--surface);
+    }
+
+    .chip:hover {
+      border-color: var(--indigo);
+      background: var(--indigo-light);
+    }
+
+    .chip:focus-visible {
+      box-shadow: 0 0 0 3px var(--indigo-glow);
+      border-color: var(--indigo);
+    }
+
+    .chip[aria-checked="true"] {
+      border-color: var(--indigo);
+      background: var(--indigo-light);
+      font-weight: 600;
+    }
+
+    .chip[aria-checked="true"]::before {
+      content: '\2713';
+      color: var(--indigo);
+      font-weight: 700;
+      font-size: 0.85rem;
+    }
+
+    .chip.disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+      pointer-events: none;
+    }
+
+    /* -- Write-In Section -- */
+    .write-in-section {
+      background: var(--surface);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow-sm);
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+      animation: fadeUp 0.5s ease-out 0.2s both;
+    }
+
+    .write-in-section h3 {
+      font-family: 'Sora', sans-serif;
+      font-size: 1.1rem;
+      font-weight: 600;
+      margin-bottom: 0.75rem;
+    }
+
+    .write-in-row {
+      display: flex;
+      gap: 8px;
+    }
+
+    .write-in-row input {
+      flex: 1;
+      padding: 0.6rem 1rem;
+      border: 2px solid var(--surface-dim);
+      border-radius: var(--radius-xs);
+      font-family: inherit;
+      font-size: 0.9rem;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    .write-in-row input:focus {
+      border-color: var(--indigo);
+    }
+
+    .write-in-row button {
+      padding: 0.6rem 1.25rem;
+      background: var(--indigo);
+      color: white;
+      border: none;
+      border-radius: var(--radius-xs);
+      font-family: inherit;
+      font-size: 0.9rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .write-in-row button:hover {
+      background: var(--indigo-dark);
+    }
+
+    .write-in-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 0.75rem;
+    }
+
+    .write-in-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 0.4rem 0.75rem;
+      background: var(--violet-light);
+      border: 1px solid var(--violet);
+      border-radius: 99px;
+      font-size: 0.85rem;
+      font-weight: 500;
+      color: var(--ink-light);
+    }
+
+    .write-in-tag button.remove {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 18px;
+      height: 18px;
+      border: none;
+      border-radius: 50%;
+      background: var(--violet);
+      color: white;
+      font-size: 0.7rem;
+      cursor: pointer;
+      padding: 0;
+      line-height: 1;
+      transition: background 0.2s;
+    }
+
+    .write-in-tag button.remove:hover {
+      background: var(--indigo-dark);
+    }
+
+    /* -- Summary Panel -- */
+    .summary-panel {
+      background: var(--surface);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow-md);
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+      display: none;
+      animation: fadeUp 0.4s ease-out;
+    }
+
+    .summary-panel.visible {
+      display: block;
+    }
+
+    .summary-panel h3 {
+      font-family: 'Sora', sans-serif;
+      font-size: 1.1rem;
+      font-weight: 600;
+      margin-bottom: 1rem;
+    }
+
+    .summary-list {
+      list-style: none;
+      margin-bottom: 1.25rem;
+    }
+
+    .summary-list li {
+      padding: 0.4rem 0;
+      font-size: 0.9rem;
+      border-bottom: 1px solid var(--surface-dim);
+      display: flex;
+      gap: 0.5rem;
+    }
+
+    .summary-list li:last-child {
+      border-bottom: none;
+    }
+
+    .summary-num {
+      font-weight: 700;
+      color: var(--indigo);
+      min-width: 1.5rem;
+    }
+
+    .summary-cat {
+      font-size: 0.75rem;
+      color: var(--ink-muted);
+      margin-left: auto;
+      white-space: nowrap;
+    }
+
+    .name-field {
+      width: 100%;
+      padding: 0.7rem 1rem;
+      border: 2px solid var(--surface-dim);
+      border-radius: var(--radius-xs);
+      font-family: inherit;
+      font-size: 0.95rem;
+      outline: none;
+      margin-bottom: 1rem;
+      transition: border-color 0.2s;
+    }
+
+    .name-field:focus {
+      border-color: var(--indigo);
+    }
+
+    .summary-actions {
+      display: flex;
+      gap: 10px;
+    }
+
+    .btn-primary {
+      flex: 1;
+      padding: 0.75rem 1.5rem;
+      background: var(--indigo);
+      color: white;
+      border: none;
+      border-radius: var(--radius-xs);
+      font-family: inherit;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.15s;
+    }
+
+    .btn-primary:hover {
+      background: var(--indigo-dark);
+    }
+
+    .btn-primary:active {
+      transform: scale(0.97);
+    }
+
+    .btn-secondary {
+      padding: 0.75rem 1.5rem;
+      background: var(--surface);
+      color: var(--indigo);
+      border: 2px solid var(--indigo);
+      border-radius: var(--radius-xs);
+      font-family: inherit;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .btn-secondary:hover {
+      background: var(--indigo-light);
+    }
+
+    .btn-secondary:active {
+      transform: scale(0.97);
+    }
+
+    /* -- Thank You Screen -- */
+    .thank-you {
+      display: none;
+      text-align: center;
+      padding: 3rem 1.5rem;
+      animation: fadeUp 0.5s ease-out;
+    }
+
+    .thank-you.visible {
+      display: block;
+    }
+
+    .thank-check {
+      width: 80px;
+      height: 80px;
+      background: var(--teal-light);
+      border-radius: 50%;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2.5rem;
+      margin-bottom: 1.5rem;
+      animation: popIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    .thank-you h2 {
+      font-family: 'Sora', sans-serif;
+      font-size: 1.5rem;
+      margin-bottom: 0.75rem;
+    }
+
+    .thank-you p {
+      color: var(--ink-muted);
+      margin-bottom: 0.5rem;
+      font-size: 0.95rem;
+    }
+
+    .thank-you .caveat {
+      font-size: 0.85rem;
+      color: var(--ink-muted);
+      font-style: italic;
+      margin: 1rem 0 1.5rem;
+      max-width: 450px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .thank-you .actions {
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    /* -- Results View -- */
+    .results-view {
+      display: none;
+    }
+
+    .results-view.visible {
+      display: block;
+    }
+
+    .stat-cards {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+
+    .stat-card {
+      background: var(--surface);
+      border-radius: var(--radius-sm);
+      box-shadow: var(--shadow-sm);
+      padding: 1.25rem;
+      text-align: center;
+      animation: fadeUp 0.4s ease-out both;
+    }
+
+    .stat-card:nth-child(2) {
+      animation-delay: 0.05s;
+    }
+
+    .stat-card:nth-child(3) {
+      animation-delay: 0.1s;
+    }
+
+    .stat-card .stat-num {
+      font-family: 'Sora', sans-serif;
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--indigo);
+    }
+
+    .stat-card .stat-label {
+      font-size: 0.85rem;
+      color: var(--ink-muted);
+      margin-top: 0.25rem;
+    }
+
+    .results-section {
+      background: var(--surface);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow-sm);
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .results-section h3 {
+      font-family: 'Sora', sans-serif;
+      font-size: 1.1rem;
+      font-weight: 600;
+      margin-bottom: 1rem;
+    }
+
+    /* Bar Chart */
+    .bar-row {
+      display: flex;
+      align-items: center;
+      margin-bottom: 8px;
+      gap: 10px;
+    }
+
+    .bar-label {
+      width: 180px;
+      font-size: 0.85rem;
+      text-align: right;
+      flex-shrink: 0;
+      color: var(--ink-light);
+    }
+
+    .bar-track {
+      flex: 1;
+      height: 28px;
+      background: var(--surface-dim);
+      border-radius: 6px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .bar-fill {
+      height: 100%;
+      border-radius: 6px;
+      width: 0;
+      transition: width 1s cubic-bezier(0.25, 0.8, 0.25, 1);
+    }
+
+    .bar-fill.hw {
+      background: var(--cat-hw);
+    }
+
+    .bar-fill.sw {
+      background: var(--cat-sw);
+    }
+
+    .bar-fill.sec {
+      background: var(--cat-sec);
+    }
+
+    .bar-fill.acc {
+      background: var(--cat-acc);
+    }
+
+    .bar-fill.custom {
+      background: var(--violet);
+    }
+
+    .bar-count {
+      min-width: 2rem;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--ink-light);
+    }
+
+    /* Write-in results */
+    .writein-list {
+      list-style: none;
+    }
+
+    .writein-list li {
+      padding: 0.6rem 0;
+      border-bottom: 1px solid var(--surface-dim);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .writein-list li:last-child {
+      border-bottom: none;
+    }
+
+    .writein-topic {
+      font-weight: 500;
+    }
+
+    .writein-by {
+      font-size: 0.8rem;
+      color: var(--ink-muted);
+    }
+
+    .refresh-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 0.5rem 1rem;
+      background: var(--surface);
+      border: 2px solid var(--surface-dim);
+      border-radius: var(--radius-xs);
+      font-family: inherit;
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+      margin-bottom: 1.5rem;
+      transition: all 0.2s;
+    }
+
+    .refresh-btn:hover {
+      border-color: var(--indigo);
+      color: var(--indigo);
+    }
+
+    .results-empty {
+      text-align: center;
+      padding: 3rem 1rem;
+      color: var(--ink-muted);
+      font-size: 0.95rem;
+    }
+
+    /* -- Feedback Toast -- */
+    .toast {
+      position: fixed;
+      bottom: 1.5rem;
+      left: 50%;
+      transform: translateX(-50%) translateY(100px);
+      background: var(--ink);
+      color: white;
+      padding: 0.75rem 1.5rem;
+      border-radius: 99px;
+      font-size: 0.9rem;
+      font-weight: 500;
+      box-shadow: var(--shadow-lg);
+      z-index: 200;
+      opacity: 0;
+      transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+      pointer-events: none;
+    }
+
+    .toast.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+
+    /* -- Animations -- */
+    @keyframes fadeUp {
+      from {
+        opacity: 0;
+        transform: translateY(16px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes popIn {
+      0% {
+        transform: scale(0);
+        opacity: 0;
+      }
+
+      70% {
+        transform: scale(1.15);
+      }
+
+      100% {
+        transform: scale(1);
+        opacity: 1;
+      }
+    }
+
+    /* -- Mobile -- */
+    @media (max-width: 600px) {
+      .hero {
+        padding: 2rem 1rem 2rem;
+      }
+
+      .hero h1 {
+        font-size: 1.5rem;
+      }
+
+      .container {
+        padding: 1rem;
+      }
+
+      .progress-dots {
+        display: none;
+      }
+
+      .chip-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .stat-cards {
+        grid-template-columns: 1fr;
+      }
+
+      .summary-actions {
+        flex-direction: column;
+      }
+
+      .thank-you .actions {
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .bar-label {
+        width: 110px;
+        font-size: 0.78rem;
+      }
+
+      .write-in-row {
+        flex-direction: column;
+      }
+
+      .write-in-row button {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- Header -->
+  <header class="hero">
+    <div class="hero-icon">&#128161;</div>
+    <h1>HotM Tech Support Priorities</h1>
+    <p>Help us decide what to cover first</p>
+    <div class="view-toggle">
+      <button class="active" id="btnSurvey" onclick="showView('survey')">Take the Survey</button>
+      <button id="btnResults" onclick="showView('results')">View Results</button>
+    </div>
+  </header>
+
+  <!-- Counter Bar -->
+  <div class="counter-bar" id="counterBar">
+    <span class="counter-pill" id="counterPill">0 of 10 chosen</span>
+    <div class="progress-dots" id="progressDots"></div>
+    <span class="counter-hint" id="counterHint">Tap topics to choose</span>
+  </div>
+
+  <!-- Survey View -->
+  <div id="surveyView">
+    <div class="container">
+      <div class="instructions">
+        Browse the categories below and <strong>tap up to 10 topics</strong> you would most like the Tech Support
+        Subcommittee to cover. You can also add your own suggestions. When you are ready, enter your name and submit.
+      </div>
+
+      <div class="setup-banner" id="setupBanner" style="display:none">
+        <span>&#9888;&#65039; <strong>Setup needed:</strong> Paste your Google Apps Script URL into the
+          <code>APPS_SCRIPT_URL</code> variable to enable submissions. See SETUP.md for instructions.</span>
+        <button class="dismiss-btn" onclick="this.parentElement.style.display='none'"
+          aria-label="Dismiss">&times;</button>
+      </div>
+
+      <div id="categoryCards"></div>
+
+      <!-- Write-In Section -->
+      <div class="write-in-section">
+        <h3>&#9999;&#65039; Something Missing?</h3>
+        <div class="write-in-row">
+          <input type="text" id="customInput" placeholder="Type a topic and press Add" maxlength="80">
+          <button onclick="addCustomTopic()" id="addCustomBtn">Add</button>
+        </div>
+        <div class="write-in-tags" id="customTags"></div>
+      </div>
+
+      <!-- Summary Panel -->
+      <div class="summary-panel" id="summaryPanel">
+        <h3>&#128203; Your Picks</h3>
+        <ol class="summary-list" id="summaryList"></ol>
+        <input type="text" class="name-field" id="nameField" placeholder="Your name (required)" maxlength="100"
+          required>
+        <div class="summary-actions">
+          <button class="btn-primary" id="submitBtn" onclick="submitSurvey()">Submit</button>
+          <button class="btn-secondary" onclick="copyPicks()">&#128203; Copy to Clipboard</button>
+        </div>
+      </div>
+
+      <!-- Thank You Screen -->
+      <div class="thank-you" id="thankYou">
+        <div class="thank-check">&#10003;</div>
+        <h2>Thank you!</h2>
+        <p>Your picks have been recorded.</p>
+        <p class="caveat">Don't see your name in results? The network may have dropped &#8212; feel free to resubmit.
+        </p>
+        <div class="actions">
+          <button class="btn-primary" onclick="resetSurvey()">Submit Another Response</button>
+          <button class="btn-secondary" onclick="showView('results')">View Results</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Results View -->
+  <div id="resultsView" class="results-view">
+    <div class="container">
+      <button class="refresh-btn" onclick="loadResults(true)">&#8635; Refresh Results</button>
+      <div class="stat-cards" id="statCards">
+        <div class="stat-card">
+          <div class="stat-num" id="statResponses">&#8212;</div>
+          <div class="stat-label">Total Responses</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-num" id="statTopics">&#8212;</div>
+          <div class="stat-label">Topics Chosen</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-num" id="statWriteIns">&#8212;</div>
+          <div class="stat-label">Write-in Ideas</div>
+        </div>
+      </div>
+      <div class="results-section" id="chartSection">
+        <h3>&#128202; Topic Votes</h3>
+        <div id="barChart"></div>
+      </div>
+      <div class="results-section" id="writeInSection" style="display:none">
+        <h3>&#128172; Write-in Suggestions</h3>
+        <ul class="writein-list" id="writeInList"></ul>
+      </div>
+      <div class="results-empty" id="resultsEmpty" style="display:none">
+        No responses yet. Be the first to submit!
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast -->
+  <div class="toast" id="toast"></div>
+
+  <script>
+    // -- Configuration --
+    var APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyRMmlXbKxOxFNB9OATnrX6WbnTt6lQZbcm2CiVhy7hzx0CnaYGGkqM6qgMi4YDa8jaIA/exec';
+    var MAX = 10;
+
+    // -- Topic Data --
+    var DATA = [
+      {
+        name: "Hardware", icon: "\uD83D\uDDA5\uFE0F", barClass: "hw",
+        subcategories: [
+          { label: "Computers", items: [ "Laptops", "Desktops", "Peripherals (keyboards, mice, monitors)" ] },
+          { label: "Printing", items: [ "Printing Devices" ] },
+          { label: "Mobile Devices", items: [ "Smartphones", "Tablets" ] },
+          { label: "Internet Connectivity", items: [ "Wi-Fi setup & troubleshooting", "Modem / router configuration" ] },
+          { label: "Entertainment Systems", items: [ "Smart TVs", "Streaming devices (Roku, Apple TV, etc.)", "Audio systems (speakers, headphones)" ] },
+          { label: "Assistive Technology", items: [ "Hearing aids", "Screen readers", "Mobility devices" ] },
+          { label: "Home Automation", items: [ "Smart home devices (thermostats, lights, security)" ] },
+          { label: "Wearables", items: [ "Fitness trackers", "Smartwatches", "VR headsets" ] }
+        ]
+      },
+      {
+        name: "Software", icon: "\uD83D\uDCBE", barClass: "sw",
+        subcategories: [
+          { label: "Operating Systems", items: [ "Windows", "macOS", "Linux", "iOS", "Android" ] },
+          { label: "Productivity", items: [ "Microsoft Office", "Google Workspace", "Email clients (Outlook, Gmail)" ] },
+          { label: "Communication", items: [ "Video calls (Zoom, Skype, FaceTime)", "Messaging apps (WhatsApp, Messenger)" ] },
+          { label: "Social Media", items: [ "Facebook", "Twitter / X", "Instagram" ] },
+          { label: "Online Services", items: [ "Online banking", "E-commerce (Amazon, eBay)", "Government portals (SSA, healthcare)" ] },
+          { label: "Entertainment", items: [ "Streaming (Netflix, Hulu)", "Music (Spotify, Apple Music)" ] },
+          { label: "Learning", items: [ "Online courses (Coursera, Udemy)", "E-books & audiobooks" ] }
+        ]
+      },
+      {
+        name: "Security & Privacy", icon: "\uD83D\uDD12", barClass: "sec",
+        subcategories: [
+          { label: "Protection", items: [ "Antivirus programs", "Password managers", "VPN services" ] },
+          { label: "Digital Literacy", items: [ "Internet safety & privacy", "Recognizing scams & phishing" ] }
+        ]
+      },
+      {
+        name: "Accessibility & Customization", icon: "\u267F", barClass: "acc",
+        subcategories: [
+          { label: "Accessibility Tools", items: [ "Screen magnifiers", "Voice recognition software", "Text-to-speech" ] },
+          { label: "Customization", items: [ "Personalizing settings & preferences", "Using accessibility features effectively" ] },
+          { label: "Maintenance", items: [ "Software updates", "Troubleshooting common issues", "Cloud storage & backups", "File organization" ] }
+        ]
+      }
+    ];
+
+    // -- State --
+    var selected = [];
+    var customTopics = [];
+    var cachedResults = null;
+
+    // Build lookup: topic name -> category info
+    var topicCategoryMap = {};
+    DATA.forEach( function ( cat ) {
+      cat.subcategories.forEach( function ( sub ) {
+        sub.items.forEach( function ( item ) {
+          topicCategoryMap[ item ] = { category: cat.name, barClass: cat.barClass };
+        } );
+      } );
+    } );
+
+    // -- Helpers --
+    function escapeHTML ( str ) {
+      var div = document.createElement( 'div' );
+      div.appendChild( document.createTextNode( str ) );
+      return div.innerHTML;
+    }
+
+    function showToast ( msg, bg ) {
+      var toast = document.getElementById( 'toast' );
+      toast.textContent = msg;
+      toast.style.background = bg || 'var(--ink)';
+      toast.classList.add( 'show' );
+      clearTimeout( toast._timer );
+      toast._timer = setTimeout( function () { toast.classList.remove( 'show' ); }, 2500 );
+    }
+
+    // -- Initialization --
+    function init () {
+      // Show setup banner if URL is empty
+      if ( !APPS_SCRIPT_URL ) {
+        document.getElementById( 'setupBanner' ).style.display = 'flex';
+      }
+
+      // Create progress dots
+      var dotsContainer = document.getElementById( 'progressDots' );
+      for ( var i = 0; i < MAX; i++ ) {
+        var dot = document.createElement( 'span' );
+        dot.className = 'dot';
+        dotsContainer.appendChild( dot );
+      }
+
+      // Render category cards
+      renderCategories();
+
+      // Load draft from localStorage
+      loadDraft();
+
+      // Custom input Enter key
+      document.getElementById( 'customInput' ).addEventListener( 'keydown', function ( e ) {
+        if ( e.key === 'Enter' ) {
+          e.preventDefault();
+          addCustomTopic();
+        }
+      } );
+
+      // Reset name field border on input
+      document.getElementById( 'nameField' ).addEventListener( 'input', function () {
+        this.style.borderColor = '';
+      } );
+
+      updateUI();
+    }
+
+    function renderCategories () {
+      var container = document.getElementById( 'categoryCards' );
+      container.innerHTML = '';
+
+      DATA.forEach( function ( cat ) {
+        var card = document.createElement( 'div' );
+        card.className = 'category-card';
+
+        var chipHTML = '';
+        cat.subcategories.forEach( function ( sub ) {
+          chipHTML += '<div class="subcategory-label">' + escapeHTML( sub.label ) + '</div>';
+          chipHTML += '<div class="chip-grid">';
+          sub.items.forEach( function ( item ) {
+            var isSelected = selected.indexOf( item ) !== -1;
+            var isDisabled = !isSelected && ( selected.length + customTopics.length ) >= MAX;
+            chipHTML += '<div class="chip' + ( isDisabled ? ' disabled' : '' ) + '"'
+              + ' role="checkbox"'
+              + ' aria-checked="' + isSelected + '"'
+              + ' tabindex="0"'
+              + ' data-topic="' + escapeHTML( item ) + '"'
+              + ' data-cat="' + escapeHTML( cat.name ) + '"'
+              + ' data-bar="' + cat.barClass + '"'
+              + ' onclick="toggleChip(this)"'
+              + ' onkeydown="chipKey(event, this)"'
+              + '>' + escapeHTML( item ) + '</div>';
+          } );
+          chipHTML += '</div>';
+        } );
+
+        card.innerHTML = '<div class="card-border ' + cat.barClass + '"></div>'
+          + '<div class="card-body">'
+          + '<div class="category-header"><span>' + cat.icon + '</span> ' + escapeHTML( cat.name ) + '</div>'
+          + chipHTML
+          + '</div>';
+
+        container.appendChild( card );
+      } );
+    }
+
+    // -- Chip Interaction --
+    function toggleChip ( chip ) {
+      var topic = chip.dataset.topic;
+      var totalSelected = selected.length + customTopics.length;
+
+      if ( chip.getAttribute( 'aria-checked' ) === 'true' ) {
+        // Deselect
+        selected = selected.filter( function ( t ) { return t !== topic; } );
+        chip.setAttribute( 'aria-checked', 'false' );
+      } else {
+        // Select - check limit
+        if ( totalSelected >= MAX ) return;
+        selected.push( topic );
+        chip.setAttribute( 'aria-checked', 'true' );
+      }
+
+      updateUI();
+      saveDraft();
+    }
+
+    function chipKey ( e, chip ) {
+      if ( e.key === ' ' || e.key === 'Enter' ) {
+        e.preventDefault();
+        toggleChip( chip );
+      }
+    }
+
+    // -- Custom Topics --
+    function addCustomTopic () {
+      var input = document.getElementById( 'customInput' );
+      var value = input.value.trim();
+      if ( !value ) return;
+
+      var totalSelected = selected.length + customTopics.length;
+      if ( totalSelected >= MAX ) {
+        showToast( 'You have already chosen 10 topics', 'var(--peach)' );
+        return;
+      }
+
+      // Check duplicates among custom
+      var isDup = customTopics.some( function ( t ) {
+        return t.toLowerCase() === value.toLowerCase();
+      } );
+      if ( isDup ) {
+        showToast( 'Already added', 'var(--peach)' );
+        return;
+      }
+      // Check if it matches a predefined topic
+      if ( topicCategoryMap[ value ] ) {
+        showToast( 'That topic is in the list \u2014 tap it instead', 'var(--peach)' );
+        return;
+      }
+
+      customTopics.push( value );
+      input.value = '';
+      updateUI();
+      saveDraft();
+    }
+
+    function removeCustomTopic ( topic ) {
+      customTopics = customTopics.filter( function ( t ) { return t !== topic; } );
+      updateUI();
+      saveDraft();
+    }
+
+    // -- UI Update --
+    function updateUI () {
+      var total = selected.length + customTopics.length;
+
+      // Counter pill
+      var pill = document.getElementById( 'counterPill' );
+      pill.textContent = total + ' of ' + MAX + ' chosen';
+      pill.className = total >= MAX ? 'counter-pill full' : 'counter-pill';
+
+      // Progress dots
+      var dots = document.querySelectorAll( '#progressDots .dot' );
+      for ( var i = 0; i < dots.length; i++ ) {
+        if ( i < total ) {
+          dots[ i ].className = total >= MAX ? 'dot filled-full' : 'dot filled';
+        } else {
+          dots[ i ].className = 'dot';
+        }
+      }
+
+      // Hint text
+      var hint = document.getElementById( 'counterHint' );
+      if ( total === 0 ) {
+        hint.textContent = 'Tap topics to choose';
+      } else if ( total >= MAX ) {
+        hint.textContent = 'All 10 chosen!';
+      } else {
+        hint.textContent = ( MAX - total ) + ' more to go';
+      }
+
+      // Update chip disabled states
+      var allChips = document.querySelectorAll( '.chip' );
+      for ( var j = 0; j < allChips.length; j++ ) {
+        var chip = allChips[ j ];
+        var isChecked = chip.getAttribute( 'aria-checked' ) === 'true';
+        if ( !isChecked && total >= MAX ) {
+          chip.classList.add( 'disabled' );
+        } else {
+          chip.classList.remove( 'disabled' );
+        }
+      }
+
+      // Custom topic tags
+      var tagsContainer = document.getElementById( 'customTags' );
+      tagsContainer.innerHTML = '';
+      customTopics.forEach( function ( topic ) {
+        var tag = document.createElement( 'span' );
+        tag.className = 'write-in-tag';
+        tag.appendChild( document.createTextNode( topic + ' ' ) );
+        var btn = document.createElement( 'button' );
+        btn.className = 'remove';
+        btn.setAttribute( 'aria-label', 'Remove ' + topic );
+        btn.textContent = '\u00D7';
+        btn.addEventListener( 'click', ( function ( t ) {
+          return function () { removeCustomTopic( t ); };
+        } )( topic ) );
+        tag.appendChild( btn );
+        tagsContainer.appendChild( tag );
+      } );
+
+      // Disable add button if at limit
+      document.getElementById( 'addCustomBtn' ).disabled = total >= MAX;
+
+      // Summary panel
+      var panel = document.getElementById( 'summaryPanel' );
+      if ( total > 0 ) {
+        panel.classList.add( 'visible' );
+        renderSummary();
+      } else {
+        panel.classList.remove( 'visible' );
+      }
+    }
+
+    function renderSummary () {
+      var list = document.getElementById( 'summaryList' );
+      list.innerHTML = '';
+      var num = 1;
+
+      selected.forEach( function ( topic ) {
+        var cat = topicCategoryMap[ topic ];
+        var li = document.createElement( 'li' );
+        li.innerHTML = '<span class="summary-num">' + num + '.</span>'
+          + '<span>' + escapeHTML( topic ) + '</span>'
+          + '<span class="summary-cat">' + ( cat ? escapeHTML( cat.category ) : '' ) + '</span>';
+        list.appendChild( li );
+        num++;
+      } );
+
+      customTopics.forEach( function ( topic ) {
+        var li = document.createElement( 'li' );
+        li.innerHTML = '<span class="summary-num">' + num + '.</span>'
+          + '<span>' + escapeHTML( topic ) + '</span>'
+          + '<span class="summary-cat">Write-in</span>';
+        list.appendChild( li );
+        num++;
+      } );
+    }
+
+    // -- Submit --
+    function submitSurvey () {
+      var nameField = document.getElementById( 'nameField' );
+      var name = nameField.value.trim();
+      if ( !name ) {
+        nameField.style.borderColor = 'var(--peach)';
+        nameField.focus();
+        showToast( 'Please enter your name', 'var(--peach)' );
+        return;
+      }
+
+      var payload = {
+        name: name,
+        timestamp: new Date().toISOString(),
+        picks: selected.slice(),
+        customSuggestions: customTopics.slice()
+      };
+
+      if ( APPS_SCRIPT_URL ) {
+        fetch( APPS_SCRIPT_URL, {
+          method: 'POST',
+          mode: 'no-cors',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify( payload )
+        } ).catch( function () { } );
+      }
+
+      // Clear results cache so next view is fresh
+      cachedResults = null;
+
+      // Clear draft
+      clearDraft();
+
+      // Show thank-you
+      showThankYou();
+    }
+
+    function showThankYou () {
+      document.getElementById( 'summaryPanel' ).classList.remove( 'visible' );
+      var hideEls = document.querySelectorAll( '.category-card, .write-in-section, .instructions, .setup-banner' );
+      for ( var i = 0; i < hideEls.length; i++ ) {
+        hideEls[ i ].style.display = 'none';
+      }
+      document.getElementById( 'thankYou' ).classList.add( 'visible' );
+    }
+
+    function resetSurvey () {
+      selected = [];
+      customTopics = [];
+
+      // Re-show elements
+      var showEls = document.querySelectorAll( '.category-card, .write-in-section, .instructions' );
+      for ( var i = 0; i < showEls.length; i++ ) {
+        showEls[ i ].style.display = '';
+      }
+      if ( !APPS_SCRIPT_URL ) {
+        document.getElementById( 'setupBanner' ).style.display = 'flex';
+      }
+      document.getElementById( 'thankYou' ).classList.remove( 'visible' );
+      document.getElementById( 'nameField' ).value = '';
+      document.getElementById( 'nameField' ).style.borderColor = '';
+
+      // Re-render and update
+      renderCategories();
+      updateUI();
+      window.scrollTo( { top: 0, behavior: 'smooth' } );
+    }
+
+    // -- Copy to Clipboard --
+    function copyPicks () {
+      var text = 'My HotM Tech Support Picks:\n';
+      var num = 1;
+
+      selected.forEach( function ( topic ) {
+        var cat = topicCategoryMap[ topic ];
+        text += num + '. ' + topic + ' (' + ( cat ? cat.category : 'Custom' ) + ')\n';
+        num++;
+      } );
+      customTopics.forEach( function ( topic ) {
+        text += num + '. ' + topic + ' (Write-in)\n';
+        num++;
+      } );
+
+      navigator.clipboard.writeText( text ).then( function () {
+        showToast( 'Copied to clipboard!', 'var(--teal-dark)' );
+      } ).catch( function () {
+        showToast( 'Copy failed \u2014 try again', 'var(--peach)' );
+      } );
+    }
+
+    // -- View Toggle --
+    function showView ( view ) {
+      var btnSurvey = document.getElementById( 'btnSurvey' );
+      var btnResults = document.getElementById( 'btnResults' );
+      var surveyView = document.getElementById( 'surveyView' );
+      var resultsView = document.getElementById( 'resultsView' );
+      var counterBar = document.getElementById( 'counterBar' );
+
+      if ( view === 'survey' ) {
+        btnSurvey.classList.add( 'active' );
+        btnResults.classList.remove( 'active' );
+        surveyView.style.display = '';
+        resultsView.classList.remove( 'visible' );
+        counterBar.classList.remove( 'hidden' );
+      } else {
+        btnResults.classList.add( 'active' );
+        btnSurvey.classList.remove( 'active' );
+        surveyView.style.display = 'none';
+        resultsView.classList.add( 'visible' );
+        counterBar.classList.add( 'hidden' );
+        loadResults( false );
+      }
+      window.scrollTo( { top: 0, behavior: 'smooth' } );
+    }
+
+    // -- Results --
+    function loadResults ( force ) {
+      if ( !force && cachedResults ) {
+        renderResults( cachedResults );
+        return;
+      }
+
+      if ( !APPS_SCRIPT_URL ) {
+        document.getElementById( 'barChart' ).innerHTML = '';
+        document.getElementById( 'resultsEmpty' ).style.display = 'block';
+        document.getElementById( 'chartSection' ).style.display = 'none';
+        document.getElementById( 'writeInSection' ).style.display = 'none';
+        document.getElementById( 'statResponses' ).textContent = '\u2014';
+        document.getElementById( 'statTopics' ).textContent = '\u2014';
+        document.getElementById( 'statWriteIns' ).textContent = '\u2014';
+        return;
+      }
+
+      document.getElementById( 'barChart' ).innerHTML = '<div style="text-align:center;padding:2rem;color:var(--ink-muted)">Loading results\u2026</div>';
+
+      fetch( APPS_SCRIPT_URL )
+        .then( function ( res ) { return res.json(); } )
+        .then( function ( data ) {
+          cachedResults = data;
+          renderResults( data );
+        } )
+        .catch( function () {
+          document.getElementById( 'barChart' ).innerHTML =
+            '<div style="text-align:center;padding:2rem;color:var(--peach)">Unable to load results. Check your connection and try again.</div>';
+        } );
+    }
+
+    function renderResults ( data ) {
+      document.getElementById( 'resultsEmpty' ).style.display = 'none';
+      document.getElementById( 'chartSection' ).style.display = '';
+
+      // Stats
+      var topicCounts = data.topicCounts || {};
+      var customs = data.customSuggestions || [];
+      document.getElementById( 'statResponses' ).textContent = data.totalResponses || 0;
+      document.getElementById( 'statTopics' ).textContent = Object.keys( topicCounts ).length;
+      document.getElementById( 'statWriteIns' ).textContent = customs.length;
+
+      // Bar chart - sort descending
+      var sorted = Object.entries( topicCounts ).sort( function ( a, b ) { return b[ 1 ] - a[ 1 ]; } );
+      var maxCount = sorted.length ? sorted[ 0 ][ 1 ] : 1;
+
+      var chartContainer = document.getElementById( 'barChart' );
+      chartContainer.innerHTML = '';
+
+      sorted.forEach( function ( entry ) {
+        var topic = entry[ 0 ];
+        var count = entry[ 1 ];
+        var cat = topicCategoryMap[ topic ];
+        var barClass = cat ? cat.barClass : 'custom';
+        var pct = ( count / maxCount ) * 100;
+
+        var row = document.createElement( 'div' );
+        row.className = 'bar-row';
+        row.innerHTML = '<div class="bar-label">' + escapeHTML( topic ) + '</div>'
+          + '<div class="bar-track"><div class="bar-fill ' + barClass + '" data-width="' + pct + '"></div></div>'
+          + '<div class="bar-count">' + count + '</div>';
+        chartContainer.appendChild( row );
+      } );
+
+      // Animate bars
+      requestAnimationFrame( function () {
+        requestAnimationFrame( function () {
+          var bars = chartContainer.querySelectorAll( '.bar-fill' );
+          for ( var i = 0; i < bars.length; i++ ) {
+            bars[ i ].style.width = bars[ i ].dataset.width + '%';
+          }
+        } );
+      } );
+
+      // Write-in suggestions
+      if ( customs.length > 0 ) {
+        document.getElementById( 'writeInSection' ).style.display = '';
+        var list = document.getElementById( 'writeInList' );
+        list.innerHTML = '';
+        customs.forEach( function ( item ) {
+          var li = document.createElement( 'li' );
+          li.innerHTML = '<span class="writein-topic">' + escapeHTML( item.topic ) + '</span>'
+            + '<span class="writein-by">\u2014 ' + escapeHTML( item.submittedBy ) + '</span>';
+          list.appendChild( li );
+        } );
+      } else {
+        document.getElementById( 'writeInSection' ).style.display = 'none';
+      }
+    }
+
+    // -- localStorage Persistence --
+    function saveDraft () {
+      try {
+        localStorage.setItem( 'tss-selected', JSON.stringify( selected ) );
+        localStorage.setItem( 'tss-custom', JSON.stringify( customTopics ) );
+      } catch ( e ) { /* quota or private mode */ }
+    }
+
+    function loadDraft () {
+      try {
+        var sel = localStorage.getItem( 'tss-selected' );
+        var cust = localStorage.getItem( 'tss-custom' );
+        if ( sel ) selected = JSON.parse( sel );
+        if ( cust ) customTopics = JSON.parse( cust );
+      } catch ( e ) { /* ignore */ }
+    }
+
+    function clearDraft () {
+      try {
+        localStorage.removeItem( 'tss-selected' );
+        localStorage.removeItem( 'tss-custom' );
+      } catch ( e ) { /* ignore */ }
+    }
+
+    // -- Boot --
+    init();
+  </script>
+</body>
+
+</html>

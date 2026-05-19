@@ -1,5 +1,7 @@
 # Heritage Happenings Tech Support
 
+![]( https://heritage-happenings.github.io/tech//images/Heritage-Tech.jpeg )
+
 _Our focus is to help elder residents (ages 80–100+) maintain independence and connection, and empowering their caregivers to support them with technology._
 
 [Tech Support Charter]( https://heritage-happenings.github.io/tech/charter%2Bmission%2F2026-03-04-tech-support-subcommittee-charter.pdf )

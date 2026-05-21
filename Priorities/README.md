@@ -1,6 +1,6 @@
 # Tech Support Priorities
 
-![Tech Support Priorities]( Tech-Support-Priorities.jpeg)
+![Tech Support Priorities]( https://heritage-happenings.github.io/tech/Priorities/images/Tech-Support-Priorities.jpeg)
 
 This folder is dedicated to helping us decide support priorities for our residents, based on feedback and observations from our support sessions.
 

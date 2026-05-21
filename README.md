@@ -5,8 +5,6 @@
 _Our focus is to help elder residents (ages 80–100+) maintain independence and connection, and empowering their caregivers to support them with technology._
 
 
-
-
 ## Contents
 
 ## [Charter and Mission]( https://heritage-happenings.github.io/tech/#Charter-and-Mission/README.md )

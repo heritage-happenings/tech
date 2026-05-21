@@ -33,7 +33,7 @@ Topics will include:
 * Online safety and security
 * And more!
 
-## Accessibility Resources
+## [Accessibility Resources]( https://heritage-happenings.github.io/tech/#Accessibility-Resources/README.md )
 
 This folder contains links to catalogs and websites providing accessibility devices and services that might be of interest in the process of supporting our residents.
 

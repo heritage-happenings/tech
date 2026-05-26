@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="revised" content="2026-05-26 05:12">
+  <meta name="revised" content="2026-05-18 23:14">
   <title>TooToo</title>
   <link rel="icon" type="image/svg+xml"
     href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%232563eb'/%3E%3Cg font-family='system-ui,sans-serif' font-size='30' font-weight='700' fill='white' text-anchor='middle' dominant-baseline='middle'%3E%3Ctext x='22' y='28'%3ET%3C/text%3E%3Ctext x='42' y='40'%3ET%3C/text%3E%3C/g%3E%3C/svg%3E">
@@ -187,19 +187,6 @@
       background: var(--primary-bg);
       padding: 0;
       overflow: hidden;
-      container-type: inline-size; /* enables @container queries on sidebar width */
-    }
-
-    /* Narrow sidebar — drop the file size onto its own line beneath the name */
-    @container (max-width: 220px) {
-      .tree-item {
-        flex-direction: column;
-        align-items: flex-start;
-      }
-      .tree-item-size {
-        margin-left: 0;
-        padding-left: 1.4rem; /* aligns roughly with the filename text after the icon */
-      }
     }
 
     /* ── Panel Headers (shared) ── */
@@ -264,38 +251,6 @@
       padding: 0 0.5rem;
       flex: 1;
       overflow-y: auto;
-    }
-
-    /* ── Sidebar footer ── */
-    .sidebar-footer {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      padding: 0.15rem;
-      border-top: 1px solid var(--border-color);
-      background: var(--primary-bg);
-      flex-shrink: 0;
-    }
-
-    #btnScrollTreeTop {
-      background: none;
-      border: none;
-      padding: 0;
-      cursor: pointer;
-      border-radius: 4px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: opacity 0.2s, transform 0.1s;
-    }
-
-    #btnScrollTreeTop:hover {
-      opacity: 0.85;
-      transform: translateY(-1px);
-    }
-
-    #btnScrollTreeTop:active {
-      transform: translateY(0);
     }
 
     /* ── Resizer ── */
@@ -642,8 +597,7 @@
     .skip-link {
       position: absolute;
       left: 0.5rem;
-      top: 0.5rem;
-      transform: translateY(-200%);
+      top: -40px;
       z-index: 1000;
       padding: 0.4rem 0.8rem;
       background: var(--highlight-color);
@@ -653,7 +607,7 @@
     }
 
     .skip-link:focus {
-      transform: translateY(0);
+      top: 0.5rem;
     }
   </style>
 </head>
@@ -698,11 +652,6 @@
       </div>
       <div id="treeList">
         <!-- placeholder for future tree content -->
-      </div>
-      <div class="sidebar-footer">
-        <button id="btnScrollTreeTop" type="button" title="Scroll sidebar to top" aria-label="Scroll sidebar to top">
-          <img alt="" width="20" height="20">
-        </button>
       </div>
     </div>
 
@@ -771,10 +720,7 @@
          4. CONFIG.sourceRepoUrl             (below) — top-header GitHub
             icon target and About page "Source code" link. Point this
             at your fork so the header always links back to your repo.
-         5. CONFIG.hiddenFolders             (below) — folder names to
-            omit from the sidebar tree (case-insensitive, matches at any
-            depth). Files inside stay reachable by direct URL/hash.
-         6. <link rel="icon" ...>            in <head>     — SVG favicon
+         5. <link rel="icon" ...>            in <head>     — SVG favicon
 
        CONFIG_DEFAULTS just snapshots the starter values so detectRepo
        can fall back to them after auto-detection fails.
@@ -787,7 +733,6 @@
       storagePrefix: 'tootoo',  // localStorage namespace; change for forks
       appName: 'TooToo',        // <title>, header label, About heading
       sourceRepoUrl: 'https://github.com/pushme-pullyou/tootoo', // top-header GitHub icon target; About page "Source code" link
-      hiddenFolders: [ 'Images' ], // folder names to omit from the sidebar tree (case-insensitive, any depth)
     };
 
     const CONFIG_DEFAULTS = {
@@ -814,10 +759,6 @@
     const SHEET_EXTS = [ 'xlsx', 'xls', 'csv', 'ods' ];
     const STREAMABLE_EXTS = [ ...IMAGE_EXTS, ...AUDIO_EXTS, ...VIDEO_EXTS, 'pdf' ];
     const NO_COPY_EXTS = [ ...STREAMABLE_EXTS, ...SHEET_EXTS ];
-    // Extensions Pages serves with a MIME the browser downloads by default.
-    // In New Tab these go straight to raw.githubusercontent.com so the user
-    // gets the file on disk — the expected action for data/binary files.
-    const DOWNLOAD_PRONE_EXTS = [ ...SHEET_EXTS, 'tsv', 'zip', 'tar', 'gz', '7z', 'doc', 'docx' ];
     const LARGE_FILE_WARNING_BYTES = 1024 * 1024;
     const approvedLargeFiles = new Set();
     const RATE_LIMIT_MESSAGE = 'Rate limited. Add a GitHub token for higher limits.';
@@ -1176,7 +1117,7 @@
       }
     };
 
-    /* ── 12. showTokenPanel — render the token form, optionally with a reason ── */
+    /* ── 11b. showTokenPanel — render the token form, optionally with a reason ── */
     const showTokenPanel = ( reasonHtml = '' ) => {
       const cb = document.getElementById( 'contentBody' );
       const contentArea = document.getElementById( 'contentArea' );
@@ -1263,7 +1204,7 @@
     const privateRepoReasonHtml = () =>
       `<div class="error-panel">⚠️ <strong>GitHub returned 404.</strong> If this is a private repository, enter a GitHub access token with <em>Contents: Read</em> permission below. If you already have a token saved, make sure it is scoped to ${ escapeHTML( state.owner ) }/${ escapeHTML( state.repo ) }.</div>`;
 
-    /* ── 13. setupListeners ── */
+    /* ── 12. setupListeners ── */
     const setupListeners = () => {
       const contentArea = document.getElementById( 'contentArea' );
 
@@ -1359,17 +1300,6 @@
             <li>Use <strong>A−</strong> / <strong>A+</strong> to adjust font size — helpful on phones and small screens</li>
             <li>Click <strong>🌙</strong> to toggle dark mode — your choice is saved across visits</li>
           </ul>
-          <h3>Keyboard shortcuts</h3>
-          <ul>
-            <li><kbd>/</kbd> — focus the filter box</li>
-            <li><kbd>\\</kbd> — focus the sidebar tree (jumps to the current selection)</li>
-            <li><kbd>↑</kbd> <kbd>↓</kbd> — move one item up / down</li>
-            <li><kbd>Home</kbd> <kbd>End</kbd> — jump to first / last visible item</li>
-            <li><kbd>PgUp</kbd> <kbd>PgDn</kbd> — jump about one viewport</li>
-            <li><kbd>→</kbd> — open folder / step into</li>
-            <li><kbd>←</kbd> — close folder / step out</li>
-            <li><kbd>Enter</kbd> <kbd>Space</kbd> — toggle folder or select file</li>
-          </ul>
         `;
 
         // Restore original panel header (selectFile replaces it with breadcrumbs)
@@ -1450,18 +1380,6 @@
         contentArea.scrollTo( { top: 0, behavior: reduce ? 'auto' : 'smooth' } );
       } );
 
-      // Sidebar footer: favicon doubles as a "scroll tree to top" button.
-      // Pull the img src from the favicon link so forks only need to
-      // update one place in <head>.
-      const footerIcon = document.querySelector( '#btnScrollTreeTop img' );
-      const faviconHref = document.querySelector( 'link[rel="icon"]' )?.href;
-      if ( footerIcon && faviconHref ) footerIcon.src = faviconHref;
-
-      document.getElementById( 'btnScrollTreeTop' ).addEventListener( 'click', () => {
-        const reduce = window.matchMedia( '(prefers-reduced-motion: reduce)' ).matches;
-        document.getElementById( 'treeList' ).scrollTo( { top: 0, behavior: reduce ? 'auto' : 'smooth' } );
-      } );
-
       // Header title click — return to the *original* repo for this app
       // instance: clear the deep-link hash, the URL query overrides, the
       // cached repo, and the last-opened-file preference, then reload.
@@ -1478,7 +1396,7 @@
       } );
     };
 
-    /* ── 14. GitHub API helpers ── */
+    /* ── 13. GitHub API helpers (Public API) ── */
 
     const getToken = () => localStorage.getItem( tokenStorageKey() ) || localStorage.getItem( 'githubToken' ) || '';
 
@@ -1504,7 +1422,7 @@
 
     let currentAbortController = null;
 
-    /* ── 15. File type icons ── */
+    /* ── 14. File type icons ── */
     const getFileIcon = ( fileName ) => {
       const ext = fileName.includes( '.' ) ? '.' + fileName.split( '.' ).pop().toLowerCase() : '';
       const iconMap = {
@@ -1526,7 +1444,7 @@
       return iconMap[ ext ] || '📄';
     };
 
-    /* ── 16. File size formatting ── */
+    /* ── 15. File size formatting ── */
     const formatFileSize = ( bytes ) => {
       if ( bytes == null ) return '';
       if ( bytes < 1024 ) return `${ bytes } B`;
@@ -1534,7 +1452,7 @@
       return `${ ( bytes / ( 1024 * 1024 ) ).toFixed( 1 ) } MB`;
     };
 
-    /* ── 17. Repository statistics ── */
+    /* ── 16. Repository statistics ── */
     const getRepoStats = () => {
       if ( !state.tree ) return null;
       const blobs = state.tree.filter( ( i ) => i.type === 'blob' );
@@ -1560,13 +1478,12 @@
       return { fileCount: blobs.length, folderCount: trees.length, totalSize, topTypes, largest };
     };
 
-    /* ── 18. Build nested tree structure ── */
+    /* ── 17. Build nested tree structure ── */
     const buildNestedTree = ( flatTree ) => {
       const root = { children: {} };
-      const hidden = new Set( ( CONFIG.hiddenFolders || [] ).map( ( s ) => s.toLowerCase() ) );
       for ( const item of flatTree ) {
         const parts = item.path.split( '/' );
-        if ( parts.some( ( p ) => p.startsWith( '.' ) || hidden.has( p.toLowerCase() ) ) ) continue;
+        if ( parts.some( ( p ) => p.startsWith( '.' ) ) ) continue;
         let current = root;
         for ( let i = 0; i < parts.length; i++ ) {
           const part = parts[ i ];
@@ -1584,7 +1501,7 @@
       return root;
     };
 
-    /* ── 19. Sort tree children: folders first, then alphabetical ── */
+    /* ── 18. Sort tree children: folders first, then alphabetical ── */
     const sortedEntries = ( children ) =>
       Object.entries( children ).sort( ( [ aName, aNode ], [ bName, bNode ] ) => {
         const aIsFolder = aNode.type === 'tree' || Object.keys( aNode.children ).length > 0;
@@ -1594,7 +1511,7 @@
         return aName.toLowerCase().localeCompare( bName.toLowerCase() );
       } );
 
-    /* ── 20. Generate HTML for a tree node ── */
+    /* ── 19. Generate HTML for a tree node ── */
     const renderNode = ( name, node, parentPath ) => {
       const fullPath = parentPath ? `${ parentPath }/${ name }` : name;
       const isFolder = node.type === 'tree' || Object.keys( node.children ).length > 0;
@@ -1626,7 +1543,7 @@
         `</div>`;
     };
 
-    /* ── 21. renderTree — batched rendering ── */
+    /* ── 20. renderTree — batched rendering ── */
     const renderTree = ( treeArray ) => {
       const treeList = document.getElementById( 'treeList' );
       treeList.innerHTML = '';
@@ -1676,7 +1593,7 @@
       } );
     };
 
-    /* ── 22. fetchTree ── */
+    /* ── 21. fetchTree ── */
     const fetchTree = async () => {
       if ( currentAbortController ) currentAbortController.abort();
       currentAbortController = new AbortController();
@@ -1748,7 +1665,7 @@
       }
     };
 
-    /* ── 23. Filter logic ── */
+    /* ── 22. Filter logic ── */
     let preFilterOpenState = null;
 
     const runFilter = () => {
@@ -1804,7 +1721,7 @@
       } );
     };
 
-    /* ── 24. Debounce helper ── */
+    /* ── 23. Debounce helper ── */
     const debounce = ( fn, ms ) => {
       let timer;
       return ( ...args ) => {
@@ -1813,7 +1730,7 @@
       };
     };
 
-    /* ── 25. Expand All / Collapse All ── */
+    /* ── 24. Expand All / Collapse All ── */
     const setupExpandAll = () => {
       const btn = document.getElementById( 'btnExpandAll' );
       let expanded = false;
@@ -1826,7 +1743,7 @@
       } );
     };
 
-    /* ── 26. File selection (event delegation) — calls selectFile ── */
+    /* ── 25. File selection (event delegation) — calls selectFile ── */
     const setupFileSelection = () => {
       document.getElementById( 'treeList' ).addEventListener( 'click', ( e ) => {
         const target = e.target.closest( '[data-action="select-file"]' );
@@ -1835,7 +1752,7 @@
       } );
     };
 
-    /* ── 27. Keyboard navigation ── */
+    /* ── 26. Keyboard navigation ── */
     const getVisibleTreeItems = () => {
       const treeList = document.getElementById( 'treeList' );
       const all = treeList.querySelectorAll( '.tree-folder, .tree-item' );
@@ -1882,20 +1799,6 @@
           return;
         }
 
-        // `\` jumps focus into the tree so arrow / Page / Home / End keys
-        // start working. Prefers the currently-selected item, falls back
-        // to the first visible one.
-        if ( e.key === '\\' && active.tagName !== 'INPUT' && active.tagName !== 'TEXTAREA' ) {
-          e.preventDefault();
-          const visible = getVisibleTreeItems();
-          if ( visible.length === 0 ) return;
-          const activeItem = document.querySelector( '#treeList .tree-item.active' );
-          const target = ( activeItem && visible.includes( activeItem ) ) ? activeItem : visible[ 0 ];
-          target.focus();
-          target.scrollIntoView( { block: 'nearest' } );
-          return;
-        }
-
         if ( !treeList.contains( active ) ) return;
         if ( !active.classList.contains( 'tree-folder' ) && !active.classList.contains( 'tree-item' ) ) return;
 
@@ -1914,29 +1817,6 @@
             e.preventDefault();
             const prev = visible[ idx - 1 ];
             if ( prev ) { prev.focus(); selectFileItem( prev ); }
-            break;
-          }
-          case 'Home': {
-            e.preventDefault();
-            const first = visible[ 0 ];
-            if ( first && first !== active ) { first.focus(); selectFileItem( first ); }
-            break;
-          }
-          case 'End': {
-            e.preventDefault();
-            const last = visible[ visible.length - 1 ];
-            if ( last && last !== active ) { last.focus(); selectFileItem( last ); }
-            break;
-          }
-          case 'PageDown':
-          case 'PageUp': {
-            e.preventDefault();
-            const itemHeight = active.getBoundingClientRect().height || 24;
-            const pageSize = Math.max( 1, Math.floor( treeList.clientHeight / itemHeight ) - 1 );
-            const dir = e.key === 'PageDown' ? 1 : -1;
-            const newIdx = Math.max( 0, Math.min( idx + dir * pageSize, visible.length - 1 ) );
-            const target = visible[ newIdx ];
-            if ( target && target !== active ) { target.focus(); selectFileItem( target ); }
             break;
           }
           case 'Enter':
@@ -1988,7 +1868,7 @@
       } );
     };
 
-    /* ── 28. Auto-select README ── */
+    /* ── 27. Auto-select README ── */
     const autoSelectReadme = () => {
       if ( !state.tree ) return;
 
@@ -2009,7 +1889,7 @@
       if ( el ) el.scrollIntoView( { block: 'center', behavior: 'smooth' } );
     };
 
-    /* ── 29. scrollToTreeFolder ── */
+    /* ── 28. scrollToTreeFolder ── */
     const scrollToTreeFolder = ( folderPath ) => {
       const target = document.querySelector( `details[data-folder-path="${ CSS.escape( folderPath ) }"]` );
       if ( !target ) return;
@@ -2022,6 +1902,10 @@
       target.open = true;
       target.scrollIntoView( { block: 'center', behavior: 'smooth' } );
     };
+
+    /* ── 29. (resetToHome removed — was only called by the deprecated
+       breadcrumb reset-home action; the top-header click now handles the
+       "back to original repo" flow with a full reload.) ── */
 
     /* ── 30. Hash routing ── */
     const updateHash = ( path ) => {
@@ -2054,19 +1938,8 @@
       }
     };
 
-    /* ── 31. getNewTabUrl — local file, GitHub Pages, or raw fallback ── */
+    /* ── 31. getNewTabUrl — GitHub Pages or raw fallback ── */
     const getNewTabUrl = async ( path ) => {
-      const fileName = path.split( '/' ).pop();
-      const ext = fileName.includes( '.' ) ? fileName.split( '.' ).pop().toLowerCase() : '';
-
-      // Extensionless (LICENSE, AUTHORS) and download-prone (CSV, archives,
-      // Office docs) files go straight to the source. Local file shows as
-      // text in the tab when available; raw triggers a browser download for
-      // these MIME types, which is the expected action for a data/text file.
-      if ( !ext || DOWNLOAD_PRONE_EXTS.includes( ext ) ) {
-        return localUrlFor( path ) || rawUrl( path );
-      }
-
       if ( state.pagesEnabled === null ) {
         try {
           const headers = getAuthHeaders();
@@ -2083,6 +1956,7 @@
 
       if ( state.pagesEnabled ) {
         // GitHub Pages / Jekyll renders .md as HTML; README.md becomes the directory index.html
+        const fileName = path.split( '/' ).pop();
         const isReadme = /^readme\.md$/i.test( fileName );
         const pagesPath = isReadme
           ? path.slice( 0, path.length - fileName.length )  // strip filename → directory URL
@@ -2248,10 +2122,7 @@
     };
 
     const renderCode = ( text, ext ) => {
-      // Skip auto-detect highlighting for extensionless files (LICENSE,
-      // AUTHORS, etc.) — hljs often guesses a code language and colors
-      // natural-text words like "AS"/"OR"/"AND" as keywords.
-      const skipHighlight = !ext || text.length > 500 * 1024;
+      const skipHighlight = text.length > 500 * 1024;
       const code = document.createElement( 'code' );
       code.textContent = text;
       if ( !skipHighlight ) {
@@ -2325,7 +2196,7 @@
       }
     };
 
-    /* ── 34. Local-first helpers ── */
+    /* ── 33b. Local-first helpers ── */
     const localUrlFor = ( path ) => {
       if ( location.protocol !== 'file:' ) return null;
       if ( !state.localMode || state.localBase === null ) return null;
@@ -2366,7 +2237,7 @@
       }
     };
 
-    /* ── 35. fetchFileText — text content fetch ── */
+    /* ── 34. fetchFileText — text content fetch ── */
     const fetchFileText = async ( path, signal ) => {
       // Local-first: bypass cache so uncommitted edits show immediately
       const localUrl = localUrlFor( path );
@@ -2405,7 +2276,7 @@
       return text;
     };
 
-    /* ── 36. fetchFileBlob — binary content fetch ── */
+    /* ── 35. fetchFileBlob — binary content fetch ── */
     const fetchFileBlob = async ( path, signal, mimeType ) => {
       // Local-first
       const localUrl = localUrlFor( path );
@@ -2455,7 +2326,7 @@
       return rawUrl( path );
     };
 
-    /* ── 37. selectFile — main function ── */
+    /* ── 36. selectFile — main function ── */
     let lastRawText = '';
 
     const selectFile = async ( path, { skipHash = false } = {} ) => {
@@ -2587,7 +2458,7 @@
       contentArea.scrollTo( { top: 0 } );
     };
 
-    /* ── 38. setupContentActions — breadcrumb delegation, Copy, New Tab, view toggle ── */
+    /* ── 37. setupContentActions — breadcrumb delegation, Copy, New Tab, view toggle ── */
     const setupContentActions = () => {
       const contentArea = document.getElementById( 'contentArea' );
 
@@ -2649,7 +2520,7 @@
       } );
     };
 
-    /* ── 39. Global error handlers ── */
+    /* ── 38. Global error handlers ── */
     window.addEventListener( 'error', ( event ) => {
       const panel = document.createElement( 'div' );
       panel.className = 'error-panel';
@@ -2664,7 +2535,7 @@
       document.body.appendChild( panel );
     } );
 
-    /* ── 40. init ── */
+    /* ── 39. init ── */
     const init = async () => {
       // Sync Files-panel tooltip with the meta revised marker
       const revised = document.querySelector( 'meta[name="revised"]' )?.content || 'unknown';

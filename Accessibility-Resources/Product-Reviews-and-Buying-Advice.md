@@ -14,7 +14,7 @@ Wirecutter is very good about researching products for the elderly. An easy way 
 
 ### Wirecutter: Trouble Hearing TV Dialogue? The Right Soundbar Can Help
 
-![Soundbar](https://heritage-happenings.github.io/tech/Accessibility-Resources/imagessoundbar.png)
+![Soundbar](https://heritage-happenings.github.io/tech/Accessibility-Resources/images/soundbar.png)
 
 * https://www.nytimes.com/wirecutter/reviews/soundbar-can-help-hear-dialogue/
 

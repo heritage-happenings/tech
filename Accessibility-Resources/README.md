@@ -1,5 +1,7 @@
 # Accessibility Resources for Tech Support for the Elderly
 
+![Tech Support for the elderly]( https://heritage-happenings.github.io/tech/Accessibility-Resources/images/tech-support.jpg)
+
 Keeping track of all the resources available to help the elderly could be a full-time job. This file is an attempt to maintain a directory of the resources that are available to help the elderly with technology. It is a work in progress and will be updated as new resources are found.
 
 

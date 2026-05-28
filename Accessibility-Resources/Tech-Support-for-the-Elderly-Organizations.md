@@ -1,5 +1,8 @@
 # Tech Support for the Elderly Organizations
 
+There are a number of organizations dedicated to supporting the elderly with current technology. Apparently there's just one entry, but more will be added.
+
+
 ## AgeTech Collaborative
 
 > Join AgeTech Collaborative from AARP's one of a kind ecosystem of AgeTech Startups, Investors, Enterprises, Testbeds & Business Services. Apply today!

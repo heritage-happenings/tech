@@ -1,5 +1,7 @@
 # Product Reviews and Buying Advice
 
+When you're looking for a product and trying to decide which is the best one, having a good product review is invaluable. Below are some sources that we like for detailed reviews.
+
 ## New York Times Wirecutter
 
 >Wirecutter tests and reviews the best tech, appliances, gear, and more. You can trust our veteran journalists, scientists, and experts to find the best stuff for your home and life. We spend hours researching and testing products, and we only recommend the best.

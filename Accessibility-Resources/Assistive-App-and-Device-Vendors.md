@@ -1,6 +1,6 @@
 # Assistive App and Device Vendors
 
-![](https://heritage-happenings.github.io/tech/Accessibility-Resources/images/assistive-device-vendors)
+![](https://heritage-happenings.github.io/tech/Accessibility-Resources/images/assistive-device-vendors.jpg)
 
 Below is the first entry in what will eventually be a rather large list of vendors that supply assistive products for the elderly.
 

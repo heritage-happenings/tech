@@ -22,7 +22,7 @@ This folder contains the Charter and Mission Statement for our Tech Support init
 
 ### Phones
 
-This covers Both iPhones and Android phones from various manufacturers. It includes tips and tricks for using these devices, as well as common issues and solutions that residents may encounter.
+The Phones section covers both iPhones and Android phones from various manufacturers. It includes tips and tricks for using these devices, as well as common issues and solutions that residents may encounter.
 
 ### [Priorities]( https://heritage-happenings.github.io/tech/#Priorities/README.md )
 
@@ -31,14 +31,6 @@ This folder contains a list of Tech Support priorities for our residents, based 
 ### [Support Tips and Tricks]( https://heritage-happenings.github.io/tech/#Support-Tips-and-Tricks/README.md)
 
 This folder contains suggested guidelines for supporting elders on a variety of devices and technologies. These are not meant to be strict rules, but rather a starting point for our support sessions. Feel free to adapt and expand based on the needs of our residents.
-
-Topics will include:
-
-* Apple and Windows
-* TVs and entertainment devices
-* Accessibility aides and assistive technologies
-* Online safety and security
-* And more!
 
 ## [Accessibility Resources]( https://heritage-happenings.github.io/tech/#Accessibility-Resources/README.md )
 

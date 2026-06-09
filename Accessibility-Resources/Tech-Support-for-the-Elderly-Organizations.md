@@ -6,7 +6,12 @@ _The interesting question is: Can any of these service actually be useful to our
 
 ## [Center for Aging Services Technologies (CAST) - LeadingAge](https://leadingage.org/topic/technology-cast/)
 
+* https://leadingage.org/digital-transformation-in-aging-services/
+* https://leadingage.org/introducing-tech-to-older-adults/
+* https://leadingage.org/exploring-emerging-technologies-in-aging-services/
+
 LeadingAge's Center for Aging Services Technologies (CAST) is leading the charge to expedite the development, evaluation, and adoption of emerging technologies that can improve the aging experience. CAST has become a broad and far-reaching coalition of aging services organizations, technology companies, research universities, and government representatives.
+
 
 ## AgeTech Collaborative
 

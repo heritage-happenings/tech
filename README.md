@@ -14,6 +14,12 @@ And perhaps the most complex challenge: There appear to be nearly unlimited reso
 
 ## Contents
 
+### Blog
+
+[First Post](https://heritage-happenings.github.io/tech/#Blog/2026-06-08-First-Post.md)
+
+This folder contains blog posts about our Tech Support initiative, including updates on our progress, reflections on our experiences, and insights into the challenges and opportunities we encounter along the way.
+
 ### [Charter and Mission]( https://heritage-happenings.github.io/tech/#Charter-and-Mission/README.md )
 
 This folder contains the Charter and Mission Statement for our Tech Support initiative, as well as any related documents that help clarify our goals, strategies and values.

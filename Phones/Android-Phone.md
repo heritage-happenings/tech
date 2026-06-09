@@ -14,28 +14,10 @@ Scroll down for vendor-specific support for Samsung, Google Pixel, Motorola. If 
 
 ## Other Vendor-Specific Hubs
 
-### **[Samsung Mobile Accessibility Portal](https://www.samsung.com/us/sustainability/accessibility/mobile/)**
 
-Since Samsung uses its own "One UI" layout, its menu structure looks different than standard Android. Their hub is meticulously detailed and organized by specific needs:
 
-- **Vision Enhancements:** Detailed guides on pre-set **Display Modes** (which bundle high-contrast fonts, enlarged keyboard themes, and screen zoom into a single click), cursor customization, and **Speak Keyboard Input Aloud**.
-- **Interaction & Dexterity:** Outlines the **Assistant Menu** (a persistent on-screen floating pad providing large tap targets to replace hardware buttons) and touch adjustment tools like tap duration filters to ignore accidental double-taps.
-- **Quick Path:** For most modern Galaxy devices, the setup path is consistently `Settings` > `Accessibility`.
 
-### **[Google Pixel Phone Accessibility Help Hub](https://support.google.com/pixelphone/answer/6006564?hl=en)**
 
-This portal focuses on the "clean," unskinned version of Android natively found on Pixel devices. It highlights Google's industry-leading AI-driven assistance tools:
 
-- **Pixel Magnifier App:** Explains how to use the device's camera as an advanced magnifying glass with search filters that scan live environments or documents for specific words.
-- **Speech & Hearing Innovation:** Clear user guides for **Live Transcribe** (real-time speech-to-text), **Sound Notifications** (which alert users via screen flashes or vibrations if a doorbell or smoke alarm goes off), and **Lookout** (using the camera to read mail or identify objects aloud).
-- **Quick Path:** On a Pixel, navigate to `Settings` > `Accessibility` to adjust these options.
-
-### **[Motorola Consumer Accessibility & Corporate Responsibility Hub](https://www.motorola.com/us/en/about/corporate-responsibility-consumer-accessibility)**
-
-Motorola's site is structurally practical and focuses deeply on regulatory compliance and hardware adaptations alongside software:
-
-- **Audio & Hardware Clarity:** Highlights their proprietary **CrystalTalk™** software (which actively dampens background noise during calls) and provides a lookup system for hearing aid telecoil compatibility.
-- **Alternative Manuals:** Uniquely, Motorola provides links to request their phone user manuals in alternative formats, including **Large Print** and **Braille**.
-- **Quick Path:** On Motorola phones, the base configuration resides at `Settings` > `Accessibility` > `Accessibility Menu`.
 
 

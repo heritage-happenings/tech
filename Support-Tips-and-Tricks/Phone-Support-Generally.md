@@ -1,8 +1,8 @@
-# Support Tips and Tricks: Phone Support Generally
+# Phone Support Generally
 
 
 ## Key Features to Focus On First
-When helping someone configure their device, changing everything at once can be overwhelming. These three high-impact settings usually offer the most immediate relief:
+When helping a resident configure their device, changing everything at once can be overwhelming. These three high-impact settings usually offer the most immediate relief:
 | Feature | What It Does | Why It Helps |
 |---------|-------------|-------------|
 | Easy Mode / Simple Launcher | Replaces standard layout with massive icons and a basic grid. | Prevents accidental swipes and reduces visual clutter. |

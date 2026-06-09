@@ -13,7 +13,7 @@ This folder was created today. A lot of the material is copy-paste from the diff
 - **Expand Vendor Coverage:**
   - https://www.razmobility.com/
   - https://www.consumercellular.com/shopping/details/iris_easy_flip/details
-- **Tip sheets for common issues:** Create quick reference guides for troubleshooting common accessibility problems (e.g., "How to Enable TalkBack on Samsung Phones").
+- **Tip sheets for common issues:** Create quick reference guides for troubleshooting common accessibility problems (e.g., "How to Enable TalkBack on Samsung Phones"). Even better: "What's my password?" and "How to remember my password?" ;-)
 - **Reminders for Residents:** Printable sheets with tips and reminders for doing things like remembering your passwords, keeping your phone charged, and using voice commands.
 
 ## Key Features to Focus On First

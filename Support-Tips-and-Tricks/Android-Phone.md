@@ -4,7 +4,7 @@
 
  [Explore Google’s accessibility features and products](https://belonging.google/accessible-features)
 
-If you are assisting someone using a device from other manufacturers (like OnePlus, Sony, or carrier-branded phones), Google's overarching product matrix is an excellent backup. It filters every core Android accessibility feature by category (Cognitive, Hearing, Mobility, Speech, Vision) and links directly to clean, foundational documentation that applies broadly across the entire ecosystem.
+Scroll down for vendor-specific support for Samsung, Google Pixel, Motorola. If you are assisting someone using a device from other manufacturers (like OnePlus, Sony, or carrier-branded phones), Google's overarching product matrix is an excellent backup. It filters every core Android accessibility feature by category (Cognitive, Hearing, Mobility, Speech, Vision) and links directly to clean, foundational documentation that applies broadly across the entire ecosystem.
 
 ## Official Google (most authoritative, always up to date)
 - [Android Accessibility Help Center](https://support.google.com/accessibility/android/) — the hub. Step-by-step tutorials for every feature.

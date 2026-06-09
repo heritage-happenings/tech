@@ -10,3 +10,12 @@ There are a number of organizations dedicated to supporting the elderly with cur
 * https://agetechcollaborative.org/
 https://home.agetechcollaborative.org/startup/directory
 * https://www.linkedin.com/pulse/meet-summer-2025-startups-agetechcollab-qdhvc/
+
+## GARI ~ Global Accessibility Reporting Initiative
+
+We help consumers to find a device with the accessibility features that work best for them
+
+Not updated since 2025.
+
+https://www.gari.info/
+

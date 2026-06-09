@@ -10,6 +10,8 @@ Many of our residents are struggling to use their technology effectively, which 
 
 At the same time, the maintenance team, Tess, myself, and others Are enlisted to help residents repeatedly try to fix the same errors, which can be time-consuming and inefficient. We need to find a better way to provide tech support that is consistent, accessible, and effective for our residents.
 
+And perhaps the most complex challenge: There appear to be nearly unlimited resources for this effort. Thousands of organizations, websites, catalogs, and more. How do we find the most useful resources and make them accessible to our residents and caregivers?
+
 ## Contents
 
 ### [Charter and Mission]( https://heritage-happenings.github.io/tech/#Charter-and-Mission/README.md )

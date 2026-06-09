@@ -23,4 +23,4 @@ When you're looking for a product and trying to decide which is the best one, ha
 
 ## Tech Support for the Elderly Organizations
 
-There are a number of organizations dedicated to supporting the elderly with current technology. Apparently there's just one entry, but more will be added.
+There are a number of organizations dedicated to supporting the elderly with current technology. 

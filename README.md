@@ -4,17 +4,25 @@
 
 _The Tech Support focus is to help Heritage on the Marina residents (ages 80–100+) maintain independence and connection, and empowering their caregivers to support them with technology._
 
+## The Core Problem
+
+Many of our residents are struggling to use their technology effectively, which can lead to frustration, isolation, and missed opportunities for connection and engagement. This is a significant issue that affects the quality of life for our residents and their ability to stay connected with loved ones and the world around them.
+
+At the same time, the maintenance team, Tess, myself, and others Are enlisted to help residents repeatedly try to fix the same errors, which can be time-consuming and inefficient. We need to find a better way to provide tech support that is consistent, accessible, and effective for our residents.
 
 ## Contents
 
-## [Charter and Mission]( https://heritage-happenings.github.io/tech/#Charter-and-Mission/README.md )
+### [Charter and Mission]( https://heritage-happenings.github.io/tech/#Charter-and-Mission/README.md )
 
 This folder contains the Charter and Mission Statement for our Tech Support initiative, as well as any related documents that help clarify our goals, strategies and values.
 
 [Tech Support Charter]( https://heritage-happenings.github.io/tech/#Charter-and-Mission/2026-03-04-tech-support-subcommittee-charter.pdf )
 
+### Phones
 
-## [Priorities]( https://heritage-happenings.github.io/tech/#Priorities/README.md )
+This covers Both iPhones and Android phones from various manufacturers. It includes tips and tricks for using these devices, as well as common issues and solutions that residents may encounter.
+
+### [Priorities]( https://heritage-happenings.github.io/tech/#Priorities/README.md )
 
 This folder contains a list of Tech Support priorities for our residents, based on feedback and observations from our support sessions. This is meant to be a living document that can be updated and refined as we learn more about the needs and interests of our residents.
 
@@ -24,7 +32,6 @@ This folder contains suggested guidelines for supporting elders on a variety of 
 
 Topics will include:
 
-* Iphone and Android devices
 * Apple and Windows
 * TVs and entertainment devices
 * Accessibility aides and assistive technologies

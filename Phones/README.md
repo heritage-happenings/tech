@@ -1,5 +1,16 @@
 # Read Me: Phone Support Generally
 
+![Many phones]( https://heritage-happenings.github.io/tech/Phones/images/many-phones.jpg )
+
+## 2026-06-08
+
+First, a quick note on the structure of this directory. Each file is a deep dive into a specific phone brand or model, with a focus on accessibility features and support resources. The goal is to provide a comprehensive guide for caregivers and residents alike, helping them navigate the often complex world of smartphone accessibility.
+
+## Roadmap for Future Edits and Additions
+
+- **Expand Vendor Coverage:**
+- **Tip sheets for common issues:** Create quick reference guides for troubleshooting common accessibility problems (e.g., "How to Enable TalkBack on Samsung Phones").
+- **Reminders for Residents:** Printable sheets with tips and reminders for doing things like remembering your passwords, keeping your phone charged, and using voice commands.
 
 ## Key Features to Focus On First
 When helping a resident configure their device, changing everything at once can be overwhelming. These three high-impact settings usually offer the most immediate relief:

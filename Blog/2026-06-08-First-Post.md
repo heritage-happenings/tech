@@ -1,5 +1,7 @@
 # 2026-06-08 - First Post
 
+_There is so much to say. One day I hope to learn how to be brief and to the point. But for now, I will just say a lot._
+
 ## Scope of the Project
 
 Getting to this point, the first post on this blog on this Tech Support website has taken far more time than I anticipated. Nonetheless, I am happy that it is finally up. Using AI and vibe coding, I am in the process of developing a website to be used by this group, and also by the full _Heritage Happenings_ "publishing empire". This content will eventually include all the files of the newsletter sent to residents, as well as copies of the Julia Morgan drawings, scans of several books and documents that have been published regarding Heritage on the Marina and the San Francisco Ladies' Protection and Relief Society As well as copies of the scans Board of Director's Minute going back over a hundred years.

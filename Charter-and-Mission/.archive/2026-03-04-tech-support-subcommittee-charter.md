@@ -1,6 +1,5 @@
 # Tech Support Subcommittee Charter
 
-![]( ./.images/Tech_Support_Subcommittee_Charter.png )
 ## Vision — Why We Exist
 
 * Elders well-prepared for cognitive or physical challenges, with technology that enhances quality of life, independence, and social connection

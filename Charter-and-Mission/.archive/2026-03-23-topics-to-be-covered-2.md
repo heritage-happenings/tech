@@ -8,8 +8,6 @@ Our tech support world is huge and really complicated. What problems should we t
 
 Feel free to scribble notes and add comments.
 
-https://claude.ai/public/artifacts/02797c61-d6d6-4be9-80ce-30428d6d10e4
-
 ## Hardware
 
 ### Computers
@@ -98,6 +96,6 @@ https://claude.ai/public/artifacts/02797c61-d6d6-4be9-80ce-30428d6d10e4
 
 If you think of a topic not listed above that our elders or caregivers need help with, please write it here:
 
--
--
--
+- 
+- 
+- 

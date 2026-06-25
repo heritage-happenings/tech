@@ -9,6 +9,14 @@ The first set of tip sheets is now available in the `Support-Tips-and-Tricks` fo
 - [Helping Android Phone Users](../Support-Tips-and-Tricks/Helping-Android-Phone-Users/README.md)
 - [How to Help](../Support-Tips-and-Tricks/How-to-Help/README.md)
 
+## Tips and TricksRoadmap
+
+Future revisions of these cards could include some of the following:
+
+- Images of the actual screens you will see
+- Sources for this information and links to where to go for further information
+- Updates arising from your feedback
+- Additional tips and tricks as they become available
 
 
 

@@ -14,9 +14,9 @@ And perhaps the most complex challenge: There appear to be nearly unlimited reso
 
 ## Contents
 
-### Blog
+### [Blog]( https://heritage-happenings.github.io/tech/#Blog/README.md )
 
-[First Post](https://heritage-happenings.github.io/tech/#Blog/2026-06-08-First-Post.md)
+[First Post](https://heritage-happenings.github.io/tech/#Blog/06-June/2026-06-08-First-Post.md)
 
 This folder contains blog posts about our Tech Support initiative, including updates on our progress, reflections on our experiences, and insights into the challenges and opportunities we encounter along the way.
 

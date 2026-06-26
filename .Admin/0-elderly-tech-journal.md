@@ -1,5 +1,10 @@
 # Elderly Tech Journal
 
+
+## 2026-06-25
+
+- Added: Tips: Samsung Easy
+
 ## 2026-04
 
 - Charter no responses. Assume OK

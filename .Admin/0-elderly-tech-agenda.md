@@ -5,7 +5,7 @@
 - Mailing Group
 - Home: Update Read Me
 - Blog: Finish post
-- Tips: Samsung Easy
+
 
 
 ## Recommendations

@@ -11,8 +11,9 @@ The first set of tip sheets is now available in the [Support-Tips-and-Tricks](..
 
 ## Tips and Tricks Roadmap
 
-Future revisions of these cards could include some of the following:
+Frankly, this first set of tip sheets is just OK. We have a lot of work to do to make them more useful and effective. Future revisions of these cards could include some of the following:
 
+- Make sure they actually help the older adult
 - Images of the actual screens you will see
 - Sources for this information and links to where to go for further information
 - Updates arising from your feedback

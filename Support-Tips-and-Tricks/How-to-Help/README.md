@@ -2,14 +2,16 @@
 
 Helping older adults with their phones can be surprisingly challenging.
 
-Many people face cognitive or physical changes that are not always obvious at first.
+Many face cognitive or physical changes that aren't obvious at first — vision or hearing loss, arthritis, or memory issues. You may move through tasks quickly, while a basic step is a real hurdle for them.
 
-You may be very comfortable with current technology and move through tasks quickly, while they may struggle with basic steps.
+You can make a big difference by slowing down, being patient, and giving clear, simple instructions.
 
-Common challenges can include vision or hearing loss, arthritis, and memory issues.
+These three handouts walk you through it, in order:
 
-You can make a big difference by being patient, understanding, and giving clear, simple instructions.
+1. **[Before you walk in](1-Before-you-walk-in.pdf)** — how to prepare and set the right tone
+2. **[While you are helping](2-While-you-are-helping.pdf)** — what to do, and what to avoid, in the moment
+3. **[Helping elders with tech — poster](3-Helping-elders-with-tech_poster.pdf)** — a quick-reference summary to keep nearby
 
-The guides in this folder are designed to help you support older adults more effectively, regardless of phone brand or model.
+The advice here applies to any phone, regardless of brand or model.
 
 

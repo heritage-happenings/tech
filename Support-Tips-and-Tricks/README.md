@@ -1,29 +1,40 @@
 # Support Tips and Tricks
 
-![](./images/Support-Tips-and-Tricks.png)
+![Support Tips and Tricks](./images/Support-Tips-and-Tricks.png)
 
-This folder contains practical, beginner-friendly materials to help team members support older adults with phones and everyday tech.
+Practical, beginner-friendly materials that help our team support older adults with their phones and everyday tech.
 
-The goal is simple: make support easier for staff and less stressful for residents.
+The goal is simple: **make support easier for staff and less stressful for residents.**
 
-## What you’ll find here
+## Start here
 
-- `How-to-Help/` — foundational guidance on communication, pacing, and support mindset
-- `Helping-iPhone-Users/` — iPhone-specific tips and printable materials
-- `Helping-Android-Phone-Users/` — Android-specific tips and printable materials
-- `images/` — visuals and downloadable resources used across the guides
+New to helping? Read **How-to-Help** first. It covers the mindset that makes everything else work — going slow, letting the resident do the tapping, and reassuring them they can't break anything.
 
-## How the tip sets are organized
+Then pick the tip that matches what the resident needs help with, and print it.
 
-Most tip topics include:
+## What's inside
 
-- a **resident guide** (simple, keepable handout)
-- a **staff poster** (quick-reference support material)
+- **[How-to-Help](How-to-Help/README.md)** — the basics of helping well: before, during, and a quick-reference poster
+- **[Helping-iPhone-Users](Helping-iPhone-Users/README.md)** — step-by-step iPhone tips, ready to print
+- **[Helping-Android-Phone-Users](Helping-Android-Phone-Users/README.md)** — step-by-step Android tips, ready to print
 
-## Contribution notes
+## Two materials for every tip
 
-This collection is actively evolving. Suggestions and additions are welcome.
+Each tip comes as a matched pair:
 
-If you notice unclear wording, missing steps, or better ways to explain a task, please share updates with Theo or Claire.
+- **Resident guide** — a simple, large-print handout for the resident to keep near their phone.
+- **Staff poster** — a quick-reference sheet for the helper, with setup steps and common snags.
 
-You can also contribute new tips, revised guides, visual assets, or alternate formats (for example, short videos or audio walkthroughs).
+Print the resident guide for the person you're helping; keep the staff poster at the support desk.
+
+Everything is a print-ready **PDF**.
+
+## Contributing
+
+This is a living collection — suggestions and additions are always welcome.
+
+The guides were drafted with help from Claude AI, and any of them can be reviewed, improved, expanded, or revised at any time.
+
+If you spot unclear wording, a missing step, or a better way to explain something, share it with **Theo or Claire**.
+
+You can also contribute new tips, revised guides, visual assets, or alternate formats — short videos or audio walkthroughs, for example.

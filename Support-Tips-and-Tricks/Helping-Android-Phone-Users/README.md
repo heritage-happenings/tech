@@ -1,15 +1,8 @@
 # Helping Android Phone Users
 
-The following materials are designed to help you support Android phone users more effectively, regardless of their experience level or familiarity with the device.
+Tips for supporting residents who use an Android phone.
 
-They are organized as individual tips.
+Android phones vary more than iPhones — menus and labels differ by brand (Samsung, Google Pixel, Motorola, and others), so check the resident's specific phone as you go. The first tip covers Samsung's **Easy Mode**, which simplifies the home screen with larger text and icons.
 
-Each tip includes:
-
-- a resident guide designed to be read and kept by residents
-- a staff poster designed for team use
-
-All of these tips were created with help from Claude AI, and they can be reviewed, improved, expanded, or revised at any time.
-
-Please let Theo or Claire know if you have suggestions for improvements or if you would like to add your own tips to this collection.
+Each tip comes as a resident guide to hand out and a staff poster for the helper — see the [main page](../README.md) for how to use them.
 

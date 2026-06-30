@@ -16,19 +16,28 @@ And perhaps the most complex challenge: There appear to be nearly unlimited reso
 
 ### [Blog]( https://heritage-happenings.github.io/tech/#Blog/README.md )
 
-[First Post](https://heritage-happenings.github.io/tech/#Blog/06-June/2026-06-08-First-Post.md)
-
 This folder contains blog posts about our Tech Support initiative, including updates on our progress, reflections on our experiences, and insights into the challenges and opportunities we encounter along the way.
+
+- [First Post]( https://heritage-happenings.github.io/tech/#Blog/06-June/2026-06-08-First-Post.md )
+- [New Support Tip Sheets]( https://heritage-happenings.github.io/tech/#Blog/06-June/2026-06-24-New-Support-Tip-Sheets.md )
 
 ### [Charter and Mission]( https://heritage-happenings.github.io/tech/#Charter-and-Mission/README.md )
 
 This folder contains the Charter and Mission Statement for our Tech Support initiative, as well as any related documents that help clarify our goals, strategies and values.
 
-[Tech Support Charter]( https://heritage-happenings.github.io/tech/#Charter-and-Mission/2026-03-04-tech-support-subcommittee-charter.pdf )
+- [Tech Support Charter]( https://heritage-happenings.github.io/tech/#Charter-and-Mission/2026-03-04-tech-support-subcommittee-charter.pdf )
+- [Topics to Be Covered]( https://heritage-happenings.github.io/tech/#Charter-and-Mission/2026-03-23-topics-to-be-covered.md )
 
-### Phones
+### [Phones]( https://heritage-happenings.github.io/tech/#Phones/README.md )
 
-The Phones section covers both iPhones and Android phones from various manufacturers. It includes tips and tricks for using these devices, as well as common issues and solutions that residents may encounter.
+The Phones section covers iPhones and Android phones from various manufacturers, with a focus on accessibility features, common issues, and solutions residents may encounter. Each brand has its own deep-dive page:
+
+- [Apple iPhones]( https://heritage-happenings.github.io/tech/#Phones/Apple-iPhones.md )
+- [Android Phones]( https://heritage-happenings.github.io/tech/#Phones/Android-Phones.md )
+- [Samsung]( https://heritage-happenings.github.io/tech/#Phones/Samsung.md )
+- [Google Pixel]( https://heritage-happenings.github.io/tech/#Phones/Google-Pixel.md )
+- [Motorola]( https://heritage-happenings.github.io/tech/#Phones/Motorola.md )
+- [Jitterbug]( https://heritage-happenings.github.io/tech/#Phones/Jitterbug.md )
 
 ### [Priorities]( https://heritage-happenings.github.io/tech/#Priorities/README.md )
 
@@ -36,11 +45,19 @@ This folder contains a list of Tech Support priorities for our residents, based 
 
 ### [Support Tips and Tricks]( https://heritage-happenings.github.io/tech/#Support-Tips-and-Tricks/README.md)
 
-This folder contains suggested guidelines for supporting elders on a variety of devices and technologies. These are not meant to be strict rules, but rather a starting point for our support sessions. Feel free to adapt and expand based on the needs of our residents.
+Practical, print-ready materials for supporting residents one-on-one. Each tip comes as a resident guide to hand out and a staff poster for the helper:
 
-## [Accessibility Resources]( https://heritage-happenings.github.io/tech/#Accessibility-Resources/README.md )
+- [How to Help]( https://heritage-happenings.github.io/tech/#Support-Tips-and-Tricks/How-to-Help/README.md ) — the basics of helping well
+- [Helping iPhone Users]( https://heritage-happenings.github.io/tech/#Support-Tips-and-Tricks/Helping-iPhone-Users/README.md ) — Magnifier, Siri, steadier taps, getting unstuck, and more
+- [Helping Android Phone Users]( https://heritage-happenings.github.io/tech/#Support-Tips-and-Tricks/Helping-Android-Phone-Users/README.md ) — starting with Samsung Easy Mode
 
-This folder contains links to catalogs and websites providing accessibility devices and services that might be of interest in the process of supporting our residents.
+### [Accessibility Resources]( https://heritage-happenings.github.io/tech/#Accessibility-Resources/README.md )
 
-In particular, it may highlight new ideas and devices to help spur the imagination of how technology can be used to support our residents in maintaining their independence and connection.
+A growing library of accessibility devices, services, and reading to spur ideas for supporting our residents' independence and connection:
+
+- [Articles]( https://heritage-happenings.github.io/tech/#Accessibility-Resources/Articles.md )
+- [Catalogs with Tech for the Elderly]( https://heritage-happenings.github.io/tech/#Accessibility-Resources/Catalogs-with-Tech-for-the-Elderly.md )
+- [Product Reviews and Buying Advice]( https://heritage-happenings.github.io/tech/#Accessibility-Resources/Product-Reviews-and-Buying-Advice.md )
+- [Tech Support for the Elderly Organizations]( https://heritage-happenings.github.io/tech/#Accessibility-Resources/Tech-Support-for-the-Elderly-Organizations.md )
+- [Assistive App and Device Vendors]( https://heritage-happenings.github.io/tech/#Accessibility-Resources/Assistive-App-and-Device-Vendors.md )
 

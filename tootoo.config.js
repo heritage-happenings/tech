@@ -12,6 +12,6 @@ window.TOOTOO_CONFIG = {
   subtitle: 'a GitHub repository browser',
   headingFontUrl: 'https://fonts.googleapis.com/css2?family=Patua+One&display=swap',
   headingFont: '"Patua One", serif',
-  hiddenFiles: [ 'tootoo.config.js' ],
+  hiddenFiles: [ 'favicon.ico', 'tootoo.config.js' ],
   hiddenFolders: [ 'Images' ],
 };
